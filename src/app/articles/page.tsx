@@ -1,6 +1,7 @@
 import {sanityFetch} from '@/lib/sanity.client'
 import {ARTICLES_LIST_QUERY} from '@/lib/sanity.queries'
 import LiveArticlesList from '@/components/LiveArticlesList'
+import NewsletterForm from '@/components/NewsletterForm'
 
 type ArticleListItem = {
   _id: string
@@ -42,26 +43,23 @@ export default async function ArticlesPage() {
 
           <aside className="hidden lg:block lg:col-span-4 pl-8 border-l border-gray-200 dark:border-gray-800">
             <div className="sticky top-24 flex flex-col gap-10">
-              <div className="border border-gray-200 dark:border-gray-700 rounded p-5 flex flex-col gap-3">
-                <span className="material-symbols-outlined text-gray-900 dark:text-white text-[32px]">mail</span>
-                <h4 className="font-bold text-gray-900 dark:text-white text-lg">Daily Briefing</h4>
-                <p className="text-sm text-gray-600 dark:text-gray-400">
+              <div className="p-6 bg-primary/5 rounded-sm border border-primary/10">
+                <div className="flex items-center gap-2 mb-3">
+                  <span className="material-symbols-outlined text-primary">mail</span>
+                  <h4 className="font-serif font-bold text-lg text-primary uppercase tracking-wide">Daily Briefing</h4>
+                </div>
+                <p className="text-sm text-text-main dark:text-gray-300 mb-4 leading-relaxed font-medium">
                   Get the most important stories delivered to your inbox every morning.
                 </p>
-                <div className="flex flex-col gap-2 mt-2">
-                  <input
-                    className="text-sm rounded border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-900 focus:ring-primary focus:border-primary"
-                    placeholder="work@email.com"
-                    type="email"
-                  />
-                  <button
-                    className="bg-primary dark:bg-white text-white dark:text-gray-900 font-bold text-sm py-2 rounded hover:opacity-90 transition-opacity"
-                    type="button"
-                  >
-                    Sign Up
-                  </button>
-                </div>
-                <p className="text-[10px] text-gray-400 mt-1">By signing up, you agree to our Terms and Privacy Policy.</p>
+                <NewsletterForm
+                  source="news_daily_briefing"
+                  placeholder="work@email.com"
+                  inputClassName="w-full px-3 py-2 text-sm border border-primary/20 bg-white rounded-sm focus:border-primary focus:ring-1 focus:ring-primary outline-none dark:bg-gray-900 dark:border-gray-600 dark:text-white font-mono placeholder:text-gray-400"
+                  buttonClassName="w-full bg-primary hover:bg-primary/90 text-white text-sm font-bold py-2 rounded-sm transition-colors uppercase tracking-widest font-mono disabled:opacity-70"
+                />
+                <p className="text-[10px] text-text-subtle dark:text-gray-500 mt-2">
+                  By signing up, you agree to our Terms and Privacy Policy.
+                </p>
               </div>
             </div>
           </aside>

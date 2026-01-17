@@ -24,9 +24,14 @@ export default function NewsletterForm({
   const [email, setEmail] = useState('')
   const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle')
   const [error, setError] = useState<string>('')
+  const [successMessage, setSuccessMessage] = useState<string>('You are subscribed.')
 
   type SubscribeErrorResponse = {
     error?: string
+  }
+
+  type SubscribeOkResponse = {
+    alreadySubscribed?: boolean
   }
 
   const submit = async () => {
@@ -53,6 +58,13 @@ export default function NewsletterForm({
         setStatus('error')
         setError(message)
         return
+      }
+
+      const data = (await res.json().catch(() => null)) as SubscribeOkResponse | null
+      if (data?.alreadySubscribed) {
+        setSuccessMessage("You're already subscribed.")
+      } else {
+        setSuccessMessage('You are subscribed.')
       }
 
       setStatus('success')
@@ -84,7 +96,9 @@ export default function NewsletterForm({
           {status === 'loading' ? 'Subscribing…' : status === 'success' ? 'Subscribed' : 'Subscribe'}
         </button>
         {status === 'error' ? <p className="text-xs text-red-600 dark:text-red-400 font-mono">{error}</p> : null}
-        {status === 'success' ? <p className="text-xs text-green-700 dark:text-green-400 font-mono">You are subscribed.</p> : null}
+        {status === 'success' ? (
+          <p className="text-xs text-green-700 dark:text-green-400 font-mono">{successMessage}</p>
+        ) : null}
       </div>
     </div>
   )

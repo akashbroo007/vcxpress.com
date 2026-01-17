@@ -1,6 +1,7 @@
+
 'use client'
 
-import {useState} from 'react'
+import {useRef, useState} from 'react'
 
 import Link from 'next/link'
 import {useRouter} from 'next/navigation'
@@ -51,6 +52,7 @@ export default function GlobalNavbar() {
   const [open, setOpen] = useState(false)
   const [searchOpen, setSearchOpen] = useState(false)
   const [subscribeOpen, setSubscribeOpen] = useState(false)
+  const closeSubscribeTimer = useRef<number | null>(null)
   const [searchQuery, setSearchQuery] = useState('')
   const [mobileSearchQuery, setMobileSearchQuery] = useState('')
   const {theme, toggleTheme, mounted} = useTheme()
@@ -311,7 +313,12 @@ export default function GlobalNavbar() {
                 <div className="mt-5">
                   <NewsletterForm
                     source="navbar_subscribe"
-                    onSuccess={() => setSubscribeOpen(false)}
+                    onSuccess={() => {
+                      if (closeSubscribeTimer.current) window.clearTimeout(closeSubscribeTimer.current)
+                      closeSubscribeTimer.current = window.setTimeout(() => {
+                        setSubscribeOpen(false)
+                      }, 1400)
+                    }}
                     inputClassName="w-full px-3 py-2 text-sm border border-primary/20 bg-white rounded-sm focus:border-primary focus:ring-1 focus:ring-primary outline-none dark:bg-gray-900 dark:border-gray-600 dark:text-white font-mono placeholder:text-gray-400"
                     buttonClassName="w-full bg-primary hover:bg-primary/90 text-white text-sm font-bold py-2 rounded-sm transition-colors uppercase tracking-widest font-mono disabled:opacity-70"
                   />
