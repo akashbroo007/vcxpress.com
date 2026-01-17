@@ -1,0 +1,23 @@
+.sanity-studio-scope [data-ui='Button'],
+.sanity-studio-scope [data-ui='MenuButton'],
+.sanity-studio-scope [data-ui='Tab'] {
+  min-height: 44px;
+  font-size: 14px;
+}
+
+.sanity-studio-scope [data-ui='Button'][data-mode='bleed'],
+.sanity-studio-scope [data-ui='MenuButton'][data-mode='bleed'] {
+  padding: 12px;
+  min-width: 44px;
+}
+
+.sanity-studio-scope [data-ui='Button'] svg,
+.sanity-studio-scope [data-ui='MenuButton'] svg,
+.sanity-studio-scope [data-ui='Tab'] svg {
+  width: 20px;
+  height: 20px;
+}
+
+.sanity-studio-scope [data-ui='Text'] {
+  font-size: 14px;
+}

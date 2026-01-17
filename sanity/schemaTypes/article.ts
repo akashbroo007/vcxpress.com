@@ -4,6 +4,7 @@ export const article = defineType({
   name: 'article',
   title: 'Article',
   type: 'document',
+  description: 'Use this for news, funding announcements, and time-sensitive updates.',
   fields: [
     defineField({
       name: 'title',
