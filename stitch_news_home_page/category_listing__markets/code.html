@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Markets - VCXpress</title>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@300;400;500;600;700;800&amp;family=Merriweather:wght@300;400;700;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#135bec",
+                        "background-light": "#f6f6f8",
+                        "background-dark": "#101622",
+                    },
+                    fontFamily: {
+                        "display": ["Work Sans", "sans-serif"],
+                        "serif": ["Merriweather", "serif"],
+                    },
+                    borderRadius: {"DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem"},
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark text-[#0d121b] font-display antialiased min-h-screen flex flex-col">
+<header class="sticky top-0 z-50 bg-[#f8f9fc] border-b border-[#e7ebf3]">
+<div class="px-4 md:px-10 py-3 flex items-center justify-between max-w-[1440px] mx-auto w-full">
+<div class="flex items-center gap-8">
+<div class="flex items-center gap-2 text-[#0d121b]">
+<div class="size-6 text-primary flex items-center justify-center">
+<span class="material-symbols-outlined text-[28px]">candlestick_chart</span>
+</div>
+<h2 class="text-[#0d121b] text-2xl font-black leading-tight tracking-tighter hidden sm:block">VCXpress</h2>
+</div>
+<nav class="hidden lg:flex items-center gap-9">
+<a class="text-[#0d121b] text-sm font-medium hover:text-primary transition-colors" href="#">Business</a>
+<a class="text-[#0d121b] text-sm font-medium hover:text-primary transition-colors" href="#">Tech</a>
+<a class="text-primary text-sm font-bold border-b-2 border-primary pb-0.5" href="#">Markets</a>
+<a class="text-[#0d121b] text-sm font-medium hover:text-primary transition-colors" href="#">Politics</a>
+<a class="text-[#0d121b] text-sm font-medium hover:text-primary transition-colors" href="#">Opinion</a>
+</nav>
+</div>
+<div class="flex flex-1 justify-end gap-6 items-center">
+<label class="hidden md:flex flex-col min-w-40 h-10 max-w-64 group">
+<div class="flex w-full flex-1 items-stretch rounded h-full bg-[#e7ebf3] group-focus-within:ring-2 ring-primary/20 transition-all">
+<div class="text-[#4c669a] flex border-none items-center justify-center pl-3">
+<span class="material-symbols-outlined text-[20px]">search</span>
+</div>
+<input class="form-input flex w-full min-w-0 flex-1 bg-transparent border-none text-[#0d121b] focus:ring-0 placeholder:text-[#4c669a] px-3 text-sm" placeholder="Search news..."/>
+</div>
+</label>
+<div class="flex gap-3">
+<button class="flex items-center justify-center rounded h-9 px-4 bg-primary text-white text-sm font-bold hover:bg-blue-700 transition-colors">
+                    Subscribe
+                </button>
+<button class="flex items-center justify-center rounded h-9 px-4 bg-[#e7ebf3] text-[#0d121b] text-sm font-bold hover:bg-gray-200 transition-colors">
+                    Log In
+                </button>
+</div>
+</div>
+</div>
+</header>
+<main class="flex-1 w-full max-w-[1440px] mx-auto px-4 md:px-10 py-8 lg:py-12">
+<div class="flex flex-col gap-6 mb-10 border-b border-[#e7ebf3] pb-8">
+<div class="flex flex-col md:flex-row justify-between items-start md:items-end gap-4">
+<div class="max-w-2xl">
+<span class="text-primary font-bold tracking-widest text-xs uppercase mb-2 block">Section</span>
+<h1 class="text-[#0d121b] text-5xl md:text-6xl font-serif font-black leading-tight tracking-[-0.02em] mb-4">Markets</h1>
+<p class="text-[#4c669a] text-lg md:text-xl font-normal leading-relaxed max-w-xl">
+                    Real-time analysis on global financial markets, tracking equities, commodities, and currency fluctuations that shape the economy.
+                </p>
+</div>
+<div class="flex gap-4 overflow-x-auto pb-2 md:pb-0 w-full md:w-auto">
+<div class="flex flex-col bg-white border border-gray-200 p-3 rounded min-w-[120px]">
+<span class="text-xs font-bold text-gray-500">S&amp;P 500</span>
+<div class="flex items-center gap-1">
+<span class="text-sm font-bold text-green-600">5,234.12</span>
+<span class="text-[10px] text-green-600">▲ 0.4%</span>
+</div>
+</div>
+<div class="flex flex-col bg-white border border-gray-200 p-3 rounded min-w-[120px]">
+<span class="text-xs font-bold text-gray-500">NASDAQ</span>
+<div class="flex items-center gap-1">
+<span class="text-sm font-bold text-red-600">16,399.50</span>
+<span class="text-[10px] text-red-600">▼ 0.1%</span>
+</div>
+</div>
+<div class="flex flex-col bg-white border border-gray-200 p-3 rounded min-w-[120px]">
+<span class="text-xs font-bold text-gray-500">DJIA</span>
+<div class="flex items-center gap-1">
+<span class="text-sm font-bold text-green-600">39,120.80</span>
+<span class="text-[10px] text-green-600">▲ 0.8%</span>
+</div>
+</div>
+</div>
+</div>
+<div class="flex gap-2 flex-wrap pt-2">
+<button class="flex h-8 items-center justify-center px-4 rounded-full bg-primary text-white text-sm font-medium transition-colors">
+                All News
+            </button>
+<button class="flex h-8 items-center justify-center px-4 rounded-full bg-white border border-[#e7ebf3] hover:border-primary/50 hover:bg-primary/5 text-[#0d121b] text-sm font-medium transition-colors">
+                Equities
+            </button>
+<button class="flex h-8 items-center justify-center px-4 rounded-full bg-white border border-[#e7ebf3] hover:border-primary/50 hover:bg-primary/5 text-[#0d121b] text-sm font-medium transition-colors">
+                Commodities
+            </button>
+<button class="flex h-8 items-center justify-center px-4 rounded-full bg-white border border-[#e7ebf3] hover:border-primary/50 hover:bg-primary/5 text-[#0d121b] text-sm font-medium transition-colors">
+                Currencies
+            </button>
+<button class="flex h-8 items-center justify-center px-4 rounded-full bg-white border border-[#e7ebf3] hover:border-primary/50 hover:bg-primary/5 text-[#0d121b] text-sm font-medium transition-colors">
+                Bonds
+            </button>
+<button class="flex h-8 items-center justify-center px-4 rounded-full bg-white border border-[#e7ebf3] hover:border-primary/50 hover:bg-primary/5 text-[#0d121b] text-sm font-medium transition-colors">
+                Crypto
+            </button>
+</div>
+</div>
+<section class="mb-12">
+<div class="group cursor-pointer grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch rounded overflow-hidden">
+<div class="lg:col-span-8 relative h-64 lg:h-auto overflow-hidden rounded">
+<div class="w-full h-full bg-center bg-cover transition-transform duration-700 group-hover:scale-105" data-alt="Stock market chart overlay on city skyline" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuCYnwGQMynS86AsH6FY93FHNOkMFMfdTn-KghDfhUBLH807dv4IVRx2IAniePEY-WvjyidWmlECCqs128JA0pZbMQSDrJnLKZNGIyP4Gq0k_xrWLYY1__-r3XOwDwCapdTJ55zQJLmRlM1ZKwwaEUnrHXsioJgqsZnSBx8ZVzwb6jZKCz30cK4SW7pU-JL1GPfCF73NKDFd8Ci_Lkz1c2ZepRS-HH_pjtkWVpM9y38BQfyoeIFhFoiv9dFSbDVdT71ut0HgAeGDjD4");'>
+</div>
+<div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent lg:hidden"></div>
+<div class="absolute bottom-4 left-4 lg:hidden text-white">
+<span class="inline-block px-2 py-1 mb-2 text-xs font-bold uppercase tracking-wider bg-primary text-white rounded-sm">Featured</span>
+</div>
+</div>
+<div class="lg:col-span-4 flex flex-col justify-center gap-4 py-2">
+<div class="flex items-center gap-3">
+<span class="px-2 py-1 text-xs font-bold uppercase tracking-wider bg-primary/10 text-primary rounded-sm hidden lg:inline-block">Policy</span>
+<span class="text-[#4c669a] text-xs font-medium uppercase tracking-wider">Today • 15 min read</span>
+</div>
+<h2 class="text-[#0d121b] text-3xl md:text-4xl font-serif font-bold leading-tight group-hover:text-primary transition-colors">
+                    Federal Reserve Signals Potential Rate Cuts in Q3 Amid New Inflation Data
+                </h2>
+<p class="text-[#4c669a] text-base leading-relaxed line-clamp-3">
+                    Chairman Powell's remarks at the Jackson Hole symposium have ignited a rally across global indices. Analysts weigh in on what a dovish pivot means for emerging markets and tech valuations heading into the second half of the year.
+                </p>
+<div class="flex items-center gap-3 mt-2 pt-4 border-t border-[#e7ebf3]">
+<div class="size-8 rounded-full bg-gray-200 overflow-hidden" data-alt="Portrait of Sarah Jenkins">
+<img alt="Author" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBBb4nYbHtUlMZt0oG6zWtsWgbbivYfotckYrKPJj8pi95d5F2C7cws171FwzdPGTATVSwMt_xOME9uxpF9RWmmHdQxej7ACFp_74lUuCSBoHAPw71l_ps_z3Ma8t2w-rqsHSN8Og4cNwL-g6t24Tt0I4rY9yICEgqPl-aW9AK-fU2Bm4SVCcUMpWROIf3JWEteufurmjhJExzOlrfeLBiF7Vv_TOj6gTnB5Xa4R9Zj-G6qRZjUhBmoD8bMvrmFnOGXuNOMRGdPLrU"/>
+</div>
+<div class="text-sm">
+<p class="font-bold text-[#0d121b]">Sarah Jenkins</p>
+<p class="text-[#4c669a]">Senior Financial Analyst</p>
+</div>
+</div>
+</div>
+</div>
+</section>
+<div class="grid grid-cols-1 lg:grid-cols-4 gap-8">
+<div class="lg:col-span-3 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-6 gap-y-10">
+<article class="flex flex-col gap-3 group cursor-pointer">
+<div class="w-full aspect-[4/3] bg-gray-100 rounded overflow-hidden relative">
+<div class="w-full h-full bg-center bg-cover transition-transform duration-500 group-hover:scale-105" data-alt="Abstract digital blue chip technology pattern" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuAQrHWVJQAbXOOtuHhM4q9oTXbKSQN5-I2HZnKKo0KrL3SrJg7oRd73lUnOvG0Yp3G35UiPmvkszgKY0oGurd8zlrD5Qn1ZLo57dSuyUrJbEt9MnQI9_VMxW4bH1KVLkDwO3FxT6PTzh7iwcbc-kayOu_hX8DAFW1kAEpiHf_PjUrROoM8-0ppzkq4AnHmFBE1p0wTxy8hxBmxRz_qbAISdtcL7cdcWTOKDM_-cY4myPjyoruXyP1X6wTyiyHe3chh2dnnCa4ttRIo");'>
+</div>
+<div class="absolute top-3 left-3">
+<span class="px-2 py-1 bg-white/90 backdrop-blur text-primary text-xs font-bold rounded-sm uppercase tracking-wide shadow-sm">Equities</span>
+</div>
+</div>
+<div class="flex flex-col gap-2">
+<h3 class="text-[#0d121b] text-xl font-serif font-bold leading-tight group-hover:text-primary transition-colors">
+                        Tech Stocks Rally on AI Optimism
+                    </h3>
+<p class="text-[#4c669a] text-sm leading-normal line-clamp-2">
+                        Nasdaq leads gains as major players announce new chip integration strategies, pushing valuations to record highs.
+                    </p>
+<span class="text-[#4c669a] text-xs mt-1">3 hours ago</span>
+</div>
+</article>
+<article class="flex flex-col gap-3 group cursor-pointer">
+<div class="w-full aspect-[4/3] bg-gray-100 rounded overflow-hidden relative">
+<div class="w-full h-full bg-center bg-cover transition-transform duration-500 group-hover:scale-105" data-alt="Oil rigs in ocean at sunset" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuDGtgoFxOyPuNYgGqKVai3rDI7o1ZlNBqhNmDjkMj2tO_wKFdKzRCJcH-HL6Cw4bZFrgwtCOoXAMEwyZVVKninmJ7PXtWdvLFvbk6ts6nm2cuMlZrXgmxnF3lz2Z308AmflMagDQez-5v0Tlh3LOr2Xr7Vz6KZTZIBcbagbN_3w0qxd40PMHRP-0TEC7oXcqwof033hR4zLfH-jw6XVzz7yq8q-XnBU_djK9FpTp9wEmFKaU7zjSnaMezEfcTmgCIWmf9Xpu7xkd08");'>
+</div>
+<div class="absolute top-3 left-3">
+<span class="px-2 py-1 bg-white/90 backdrop-blur text-primary text-xs font-bold rounded-sm uppercase tracking-wide shadow-sm">Commodities</span>
+</div>
+</div>
+<div class="flex flex-col gap-2">
+<h3 class="text-[#0d121b] text-xl font-serif font-bold leading-tight group-hover:text-primary transition-colors">
+                        Oil Prices Stabilize After Volatility
+                    </h3>
+<p class="text-[#4c669a] text-sm leading-normal line-clamp-2">
+                        OPEC+ output decisions remain the key driver for crude oil futures this week as geopolitical tensions ease slightly.
+                    </p>
+<span class="text-[#4c669a] text-xs mt-1">5 hours ago</span>
+</div>
+</article>
+<article class="flex flex-col gap-3 group cursor-pointer">
+<div class="w-full aspect-[4/3] bg-gray-100 rounded overflow-hidden relative">
+<div class="w-full h-full bg-center bg-cover transition-transform duration-500 group-hover:scale-105" data-alt="Bitcoin coins on computer circuit board" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuDehaDQjhDVZZJMqyeIvnUCkF7bT1-H76lnq-Ig3gkC9wUpijJHW4G4BrVgwohUV6om2zAha70FaQm7-hSZYKrtz4U6ZteITz2m3knuQKmO6lMRBoH5i6n_obIDQXmOALzn36gXD0J3L6aQjrAG9K_9-58CPlRmdH56ylCloDM2ktrAQszHA1H5h_xK1-d4V-KGj6Mw3qVYYWxr-gBoAaNaP7ez4g6XHUkVuQFqTF4p4p2yVRLsSQreU9WqVd73R5dkf8k02koOpng");'>
+</div>
+<div class="absolute top-3 left-3">
+<span class="px-2 py-1 bg-white/90 backdrop-blur text-primary text-xs font-bold rounded-sm uppercase tracking-wide shadow-sm">FinTech</span>
+</div>
+</div>
+<div class="flex flex-col gap-2">
+<h3 class="text-[#0d121b] text-xl font-serif font-bold leading-tight group-hover:text-primary transition-colors">
+                        Crypto Regulation Talks Resume
+                    </h3>
+<p class="text-[#4c669a] text-sm leading-normal line-clamp-2">
+                        Lawmakers push for clarity on digital asset classification in new bill, sparking mixed reactions from major exchanges.
+                    </p>
+<span class="text-[#4c669a] text-xs mt-1">6 hours ago</span>
+</div>
+</article>
+<article class="flex flex-col gap-3 group cursor-pointer">
+<div class="w-full aspect-[4/3] bg-gray-100 rounded overflow-hidden relative">
+<div class="w-full h-full bg-center bg-cover transition-transform duration-500 group-hover:scale-105" data-alt="Euro coins and banknotes fan" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuCgaBT2jC1OUlWUb-_MEOhCyBvQ2nocDI_JlJwu20zNsY31mMNxOsi-51hQnmvJ34hbDo0bBJoOYfMCnzGe10wKlEEQ7S3De5grJFc6GhSJRB2IwIh7W3yZvPej8uq3HQeJP57-K2w8GAzLYsnUoK-C_7yo551GQxZZE2kcbOVADwrhI_5dnQHaQ1Y6YbOPfFCtB9K_JpeQJCmUoDyPk9eGfFK4A-GD3aP84nSTh0VWx9LmqQRIX0Ds9bKJZZs0O4c6Oee4lDv7sp4");'>
+</div>
+<div class="absolute top-3 left-3">
+<span class="px-2 py-1 bg-white/90 backdrop-blur text-primary text-xs font-bold rounded-sm uppercase tracking-wide shadow-sm">Currencies</span>
+</div>
+</div>
+<div class="flex flex-col gap-2">
+<h3 class="text-[#0d121b] text-xl font-serif font-bold leading-tight group-hover:text-primary transition-colors">
+                        Euro Slides Against Dollar
+                    </h3>
+<p class="text-[#4c669a] text-sm leading-normal line-clamp-2">
+                        ECB hints at earlier than expected easing, putting downward pressure on the Euro as the Dollar strengthens on job reports.
+                    </p>
+<span class="text-[#4c669a] text-xs mt-1">8 hours ago</span>
+</div>
+</article>
+<article class="flex flex-col gap-3 group cursor-pointer">
+<div class="w-full aspect-[4/3] bg-gray-100 rounded overflow-hidden relative">
+<div class="w-full h-full bg-center bg-cover transition-transform duration-500 group-hover:scale-105" data-alt="Modern electric car charging station" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuAc6-w2X3gy3kLV_Hta7TEh-zjTxh93uFE57AHnJv298KL1j2FvQM82ZdUuip1n_TIOrrEkEv03gYTgH3E1duMUuaDmqruy9Z44kFWg8lB8FFEtRFJz1ccsUOqQ3kAfOPDjupQqM70hMCM7CwyJlyzDAVIynQTWXeYZ8L9yVL1r73GMVtytJgqvswOP8-Xw40jq_1w9vBM4mYljjC9v6bARUdzB6azFdZfQT90elszl65pI7F2v734LmoqG2nTr7BPqE07E2suapEE");'>
+</div>
+<div class="absolute top-3 left-3">
+<span class="px-2 py-1 bg-white/90 backdrop-blur text-primary text-xs font-bold rounded-sm uppercase tracking-wide shadow-sm">Automotive</span>
+</div>
+</div>
+<div class="flex flex-col gap-2">
+<h3 class="text-[#0d121b] text-xl font-serif font-bold leading-tight group-hover:text-primary transition-colors">
+                        EV Maker Shares Drop
+                    </h3>
+<p class="text-[#4c669a] text-sm leading-normal line-clamp-2">
+                        Increased competition from legacy automakers and Chinese brands creates a challenging quarter for EV pure-plays.
+                    </p>
+<span class="text-[#4c669a] text-xs mt-1">10 hours ago</span>
+</div>
+</article>
+<article class="flex flex-col gap-3 group cursor-pointer">
+<div class="w-full aspect-[4/3] bg-gray-100 rounded overflow-hidden relative">
+<div class="w-full h-full bg-center bg-cover transition-transform duration-500 group-hover:scale-105" data-alt="Construction cranes in city skyline" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuAjwaEL9a2TRen02MtyUuHupl_3ryr8_k3EbGJD6nTzeZOPxiSEQcKpgfkJPiZQn2v5NaHm0JJHNk_AJqCa-li7op187tt4V8f4fXfCS779g5xFX1pDAAK90dq6w3kYf693_HbHWoCKl3FzmM5zo5vl2tnqSVjEoX54_0tcbsft8dUwItOH1-PBs00errUN6GbZ12wqzpQu0xJTMy2dqpKCnTR_jLmMMl8TrnqrHWfkiQPxTWQL4ABNowWqhGhzjKk9Gy_ydQISIxE");'>
+</div>
+<div class="absolute top-3 left-3">
+<span class="px-2 py-1 bg-white/90 backdrop-blur text-primary text-xs font-bold rounded-sm uppercase tracking-wide shadow-sm">Real Estate</span>
+</div>
+</div>
+<div class="flex flex-col gap-2">
+<h3 class="text-[#0d121b] text-xl font-serif font-bold leading-tight group-hover:text-primary transition-colors">
+                        Commercial Real Estate Outlook
+                    </h3>
+<p class="text-[#4c669a] text-sm leading-normal line-clamp-2">
+                        Empty office spaces continue to plague metro areas, forcing investors to repurpose assets into residential units.
+                    </p>
+<span class="text-[#4c669a] text-xs mt-1">12 hours ago</span>
+</div>
+</article>
+</div>
+<aside class="hidden lg:flex flex-col gap-8">
+<div class="bg-white rounded border border-[#e7ebf3] p-5">
+<div class="flex items-center gap-2 mb-4 border-b border-[#e7ebf3] pb-3">
+<span class="material-symbols-outlined text-primary text-xl">trending_up</span>
+<h4 class="font-bold text-[#0d121b] uppercase tracking-wide text-xs">Trending Now</h4>
+</div>
+<div class="flex flex-col gap-4">
+<a class="group" href="#">
+<span class="text-primary text-xs font-bold mb-1 block">1</span>
+<p class="text-[#0d121b] text-sm font-medium group-hover:text-primary transition-colors leading-snug">
+                            Why Gold is hitting all-time highs again
+                        </p>
+</a>
+<a class="group" href="#">
+<span class="text-primary text-xs font-bold mb-1 block">2</span>
+<p class="text-[#0d121b] text-sm font-medium group-hover:text-primary transition-colors leading-snug">
+                            NVIDIA earnings report breakdown
+                        </p>
+</a>
+<a class="group" href="#">
+<span class="text-primary text-xs font-bold mb-1 block">3</span>
+<p class="text-[#0d121b] text-sm font-medium group-hover:text-primary transition-colors leading-snug">
+                            Housing market predictions for 2025
+                        </p>
+</a>
+<a class="group" href="#">
+<span class="text-primary text-xs font-bold mb-1 block">4</span>
+<p class="text-[#0d121b] text-sm font-medium group-hover:text-primary transition-colors leading-snug">
+                            Asian markets open mixed amidst trade talks
+                        </p>
+</a>
+<a class="group" href="#">
+<span class="text-primary text-xs font-bold mb-1 block">5</span>
+<p class="text-[#0d121b] text-sm font-medium group-hover:text-primary transition-colors leading-snug">
+                            Startup funding falls to 3-year low
+                        </p>
+</a>
+</div>
+</div>
+<div class="bg-[#f0f2f5] rounded p-6 text-center">
+<h4 class="font-serif font-bold text-lg text-[#0d121b] mb-2">VCXpress Daily</h4>
+<p class="text-[#4c669a] text-sm mb-4">Get the most important financial news delivered to your inbox every morning.</p>
+<input class="w-full h-10 rounded border-none px-3 text-sm mb-3 focus:ring-2 ring-primary/20" placeholder="Your email address" type="email"/>
+<button class="w-full h-10 rounded bg-primary text-white text-sm font-bold hover:bg-blue-700 transition-colors">Sign Up Free</button>
+<p class="text-[#4c669a] text-[10px] mt-2">No spam, unsubscribe anytime.</p>
+</div>
+</aside>
+</div>
+<div class="flex justify-center mt-12 mb-8">
+<button class="flex items-center gap-2 px-6 py-3 bg-white border border-[#e7ebf3] rounded hover:border-primary text-[#0d121b] font-bold text-sm transition-all group">
+            Load More Articles
+            <span class="material-symbols-outlined text-lg group-hover:translate-y-0.5 transition-transform">expand_more</span>
+</button>
+</div>
+</main>
+<footer class="bg-white border-t border-[#e7ebf3] mt-auto">
+<div class="max-w-[1440px] mx-auto px-4 md:px-10 py-12 flex flex-col md:flex-row justify-between gap-10">
+<div class="max-w-xs">
+<div class="flex items-center gap-2 text-[#0d121b] mb-4">
+<div class="size-5 text-primary">
+<svg fill="none" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+<path d="M24 4C25.7818 14.2173 33.7827 22.2182 44 24C33.7827 25.7818 25.7818 33.7827 24 44C22.2182 33.7827 14.2173 25.7818 4 24C14.2173 22.2182 22.2182 14.2173 24 4Z" fill="currentColor"></path>
+</svg>
+</div>
+<h2 class="text-[#0d121b] text-lg font-bold leading-tight">VCXpress</h2>
+</div>
+<p class="text-[#4c669a] text-sm leading-relaxed">
+                Providing professionals with the insights, data, and analysis they need to make smarter financial decisions.
+            </p>
+</div>
+<div class="flex flex-wrap gap-10 lg:gap-20">
+<div class="flex flex-col gap-3">
+<h5 class="font-bold text-[#0d121b] text-sm">Sections</h5>
+<a class="text-[#4c669a] hover:text-primary text-sm" href="#">Markets</a>
+<a class="text-[#4c669a] hover:text-primary text-sm" href="#">Tech</a>
+<a class="text-[#4c669a] hover:text-primary text-sm" href="#">Business</a>
+<a class="text-[#4c669a] hover:text-primary text-sm" href="#">Politics</a>
+</div>
+<div class="flex flex-col gap-3">
+<h5 class="font-bold text-[#0d121b] text-sm">Company</h5>
+<a class="text-[#4c669a] hover:text-primary text-sm" href="#">About Us</a>
+<a class="text-[#4c669a] hover:text-primary text-sm" href="#">Careers</a>
+<a class="text-[#4c669a] hover:text-primary text-sm" href="#">Advertise</a>
+<a class="text-[#4c669a] hover:text-primary text-sm" href="#">Contact</a>
+</div>
+<div class="flex flex-col gap-3">
+<h5 class="font-bold text-[#0d121b] text-sm">Legal</h5>
+<a class="text-[#4c669a] hover:text-primary text-sm" href="#">Privacy Policy</a>
+<a class="text-[#4c669a] hover:text-primary text-sm" href="#">Terms of Service</a>
+</div>
+</div>
+</div>
+<div class="bg-[#f8f9fc] py-4 border-t border-[#e7ebf3]">
+<div class="max-w-[1440px] mx-auto px-4 md:px-10 text-center md:text-left text-xs text-[#4c669a]">
+            © 2024 VCXpress Inc. All rights reserved.
+        </div>
+</div>
+</footer>
+
+</body></html>

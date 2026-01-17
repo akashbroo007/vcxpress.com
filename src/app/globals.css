@@ -1,26 +1,129 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
+@custom-variant dark (&:where(.dark, .dark *));
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-primary: #0047bb;
+  --color-background-light: #ffffff;
+  --color-background-dark: #101622;
+  --color-surface-light: #ffffff;
+  --color-surface-dark: #1a2233;
+  --color-text-main: #0d121b;
+  --color-text-subtle: #4c669a;
+  --color-text-dark: #1a1a1a;
+  --color-text-light: #ffffff;
+
+  --font-display: "Work Sans", sans-serif;
+  --font-serif: "Merriweather", serif;
+  --font-mono: "IBM Plex Mono", monospace;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+.theme-home {
+  --color-primary: #0047bb;
+  --color-background-light: #ffffff;
+  --color-background-dark: #101622;
+  --color-text-main: #0d121b;
+  --color-text-subtle: #4c669a;
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+.theme-feed {
+  --color-primary: #135bec;
+  --color-background-light: #f6f6f8;
+  --color-background-dark: #101622;
+  --color-surface-light: #ffffff;
+  --color-surface-dark: #1a2230;
+  --color-text-dark: #1a1a1a;
+  --color-text-light: #ffffff;
 }
+
+.theme-detail {
+  --color-primary: #0047bb;
+  --color-background-light: #f6f6f8;
+  --color-background-dark: #101622;
+}
+
+.material-symbols-outlined {
+  font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+}
+
+.sticky-header {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  background-color: rgba(255, 255, 255, 0.98);
+  backdrop-filter: blur(8px);
+}
+
+.x-line {
+  width: 3rem;
+  height: 3px;
+  background-color: rgb(0 71 187);
+  margin-bottom: 1rem;
+}
+
+.drop-cap:first-letter {
+  float: left;
+  font-size: 3.5rem;
+  line-height: 0.85;
+  font-weight: 700;
+  margin-right: 0.75rem;
+  color: #0047bb;
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+ html {
+   scroll-behavior: smooth;
+ }
+
+ body {
+   font-family: var(--font-display);
+ }
+
+ /* Responsive safeguards */
+ html,
+ body {
+   max-width: 100%;
+   overflow-x: hidden;
+ }
+
+ img,
+ video,
+ canvas,
+ svg {
+   max-width: 100%;
+   height: auto;
+ }
+
+ input,
+ button,
+ select,
+ textarea {
+   font: inherit;
+ }
+
+ /* Breakpoints */
+ @media (max-width: 1024px) {
+   .x-line {
+     width: 2.5rem;
+   }
+ }
+
+ @media (max-width: 768px) {
+   .sticky-header {
+     backdrop-filter: blur(6px);
+   }
+ }
+
+ @media (max-width: 480px) {
+   .x-line {
+     width: 2rem;
+   }
+ }

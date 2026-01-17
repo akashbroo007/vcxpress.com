@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Latest News Feed - VCXpress</title>
+<link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@300;400;700;900&amp;family=Work+Sans:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#135bec",
+                        "background-light": "#f6f6f8",
+                        "background-dark": "#101622",
+                        "text-dark": "#1A1A1A",
+                        "text-light": "#FFFFFF",
+                    },
+                    fontFamily: {
+                        "display": ["Work Sans", "sans-serif"],
+                        "serif": ["Merriweather", "serif"],
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.125rem",
+                        "sm": "0.125rem",
+                        "md": "0.25rem", 
+                        "lg": "0.5rem",
+                        "xl": "0.75rem"
+                    },
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            font-family: "Work Sans", sans-serif;
+        }
+        .font-serif {
+            font-family: "Merriweather", serif;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark text-text-dark dark:text-text-light transition-colors duration-200">
+<header class="sticky top-0 z-50 bg-white dark:bg-[#1a2233] border-b border-gray-200 dark:border-gray-800 shadow-sm">
+<div class="max-w-7xl mx-auto px-4 lg:px-8">
+<div class="flex items-center justify-between h-16">
+<div class="flex items-center gap-8">
+<a class="flex items-center gap-3 text-text-dark dark:text-white group" href="#">
+<div class="size-8 bg-primary rounded flex items-center justify-center text-white">
+<span class="material-symbols-outlined">trending_up</span>
+</div>
+<h1 class="text-xl font-bold tracking-tight group-hover:text-primary transition-colors">VCXpress</h1>
+</a>
+<nav class="hidden md:flex items-center gap-6">
+<a class="text-sm font-medium text-gray-600 dark:text-gray-300 hover:text-primary dark:hover:text-primary transition-colors" href="#">Business</a>
+<a class="text-sm font-medium text-gray-600 dark:text-gray-300 hover:text-primary dark:hover:text-primary transition-colors" href="#">Finance</a>
+<a class="text-sm font-medium text-gray-600 dark:text-gray-300 hover:text-primary dark:hover:text-primary transition-colors" href="#">Tech</a>
+<a class="text-sm font-medium text-gray-600 dark:text-gray-300 hover:text-primary dark:hover:text-primary transition-colors" href="#">Global</a>
+<a class="text-sm font-medium text-gray-600 dark:text-gray-300 hover:text-primary dark:hover:text-primary transition-colors" href="#">Markets</a>
+</nav>
+</div>
+<div class="flex items-center gap-4">
+<div class="relative hidden sm:block">
+<input class="h-9 w-64 bg-gray-100 dark:bg-gray-800 border-none rounded text-sm px-3 pl-9 focus:ring-1 focus:ring-primary text-gray-900 dark:text-white placeholder-gray-500" placeholder="Search news..." type="text"/>
+<span class="material-symbols-outlined absolute left-2 top-1.5 text-gray-500 text-[20px]">search</span>
+</div>
+<button class="h-9 px-4 bg-primary text-white text-sm font-bold rounded hover:bg-blue-700 transition-colors">Subscribe</button>
+<button class="h-9 px-4 text-gray-700 dark:text-gray-300 text-sm font-bold hover:bg-gray-100 dark:hover:bg-gray-800 rounded transition-colors">Log In</button>
+</div>
+</div>
+</div>
+</header>
+<div class="bg-gray-900 text-white text-xs py-2 overflow-hidden whitespace-nowrap border-b border-gray-800">
+<div class="max-w-7xl mx-auto px-4 lg:px-8 flex items-center gap-6 overflow-x-auto no-scrollbar">
+<span class="font-bold text-primary flex items-center gap-1"><span class="material-symbols-outlined text-[16px]">trending_up</span> MARKET SNAPSHOT</span>
+<span class="text-gray-300">S&amp;P 500 <span class="text-green-400 font-medium">+0.42%</span></span>
+<span class="text-gray-500">|</span>
+<span class="text-gray-300">NASDAQ <span class="text-green-400 font-medium">+0.85%</span></span>
+<span class="text-gray-500">|</span>
+<span class="text-gray-300">DOW JONES <span class="text-red-400 font-medium">-0.12%</span></span>
+<span class="text-gray-500">|</span>
+<span class="text-gray-300">BTC/USD <span class="text-green-400 font-medium">+1.2%</span></span>
+<div class="flex-1"></div>
+<span class="text-gray-400 italic">Data delayed by 15 mins</span>
+</div>
+</div>
+<div class="max-w-7xl mx-auto px-4 lg:px-8 py-10">
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-10">
+<main class="lg:col-span-8 flex flex-col gap-8">
+<div class="border-b-2 border-black dark:border-white pb-6 mb-2">
+<h2 class="text-4xl font-black tracking-tight text-gray-900 dark:text-white mb-2">Latest News</h2>
+<p class="text-lg text-gray-600 dark:text-gray-400 font-serif italic">Real-time updates from the world of business, finance, and technology.</p>
+</div>
+<div class="flex flex-col">
+<article class="group flex flex-col sm:flex-row gap-6 py-8 border-b border-gray-200 dark:border-gray-800 hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors -mx-4 px-4 rounded-lg">
+<div class="sm:w-28 shrink-0 flex flex-row sm:flex-col items-center sm:items-end justify-between sm:justify-start gap-2 pt-1">
+<time class="text-gray-900 dark:text-white font-medium text-lg leading-none">14:30</time>
+<span class="text-primary text-[11px] font-bold tracking-wider uppercase bg-blue-50 dark:bg-blue-900/30 px-2 py-0.5 rounded">Finance</span>
+</div>
+<div class="flex-1 flex flex-col gap-3">
+<h3 class="font-serif text-2xl font-bold text-gray-900 dark:text-gray-100 leading-tight group-hover:text-primary transition-colors cursor-pointer">
+                                Federal Reserve Signals Potential Rate Cut in Q4
+                            </h3>
+<p class="text-gray-600 dark:text-gray-400 leading-relaxed line-clamp-2">
+                                Analysts predict a shift in monetary policy as inflation indicators soften below key thresholds, sparking optimism in the bond markets and causing a rally in tech stocks.
+                            </p>
+<div class="flex items-center gap-4 mt-1">
+<a class="text-xs font-semibold text-gray-500 hover:text-primary flex items-center gap-1" href="#">
+                                    Read Analysis <span class="material-symbols-outlined text-[14px]">arrow_forward</span>
+</a>
+<span class="text-xs text-gray-400">•</span>
+<span class="text-xs text-gray-400">By Sarah Jenkins</span>
+</div>
+</div>
+<div class="sm:w-40 shrink-0">
+<div class="aspect-[4/3] w-full rounded overflow-hidden bg-gray-200 dark:bg-gray-700 relative shadow-sm">
+<img alt="Finance Chart" class="object-cover w-full h-full group-hover:scale-105 transition-transform duration-500" data-alt="Stock market chart graph on a digital screen" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDsNQc4uP6idrakql6aUPKxgI0ISsY1v3eUhc2wQD5RR3m0oASBrpcVQJgmExChrZozJJYrrAhOjEfttObC4WhbSLxYu4QTmgE_8LjLc-ELKy2ZBM90jjbDqnPSHhRaGcLeLIoeUfOrV8u2AgR5DpZgOs8c5TMUmbg5Ex26bfQKrpdjLmZ_8oT38_5MDAJtJ4dpRp5dhX3LRLmT2wB29MwgVWdZxJuA-kJah2ZyOemJ2TBCVy-DEKp3Bmq6K2_ne8a05mBMXwouem4"/>
+</div>
+</div>
+</article>
+<article class="group flex flex-col sm:flex-row gap-6 py-8 border-b border-gray-200 dark:border-gray-800 hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors -mx-4 px-4 rounded-lg">
+<div class="sm:w-28 shrink-0 flex flex-row sm:flex-col items-center sm:items-end justify-between sm:justify-start gap-2 pt-1">
+<time class="text-gray-900 dark:text-white font-medium text-lg leading-none">13:15</time>
+<span class="text-primary text-[11px] font-bold tracking-wider uppercase bg-blue-50 dark:bg-blue-900/30 px-2 py-0.5 rounded">Tech</span>
+</div>
+<div class="flex-1 flex flex-col gap-3">
+<h3 class="font-serif text-2xl font-bold text-gray-900 dark:text-gray-100 leading-tight group-hover:text-primary transition-colors cursor-pointer">
+                                New AI Chip Architecture Revealed by Silicon Valley Giant
+                            </h3>
+<p class="text-gray-600 dark:text-gray-400 leading-relaxed line-clamp-2">
+                                The new processor promises 40% efficiency gains for large language model training tasks, potentially reducing the massive energy costs associated with data centers.
+                            </p>
+<div class="flex items-center gap-4 mt-1">
+<a class="text-xs font-semibold text-gray-500 hover:text-primary flex items-center gap-1" href="#">
+                                    Read Analysis <span class="material-symbols-outlined text-[14px]">arrow_forward</span>
+</a>
+<span class="text-xs text-gray-400">•</span>
+<span class="text-xs text-gray-400">By David Chen</span>
+</div>
+</div>
+<div class="sm:w-40 shrink-0">
+<div class="aspect-[4/3] w-full rounded overflow-hidden bg-gray-200 dark:bg-gray-700 relative shadow-sm">
+<img alt="Microchip" class="object-cover w-full h-full group-hover:scale-105 transition-transform duration-500" data-alt="Close up of a computer microchip processor" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDGNWcp-8qQgQgkw0ovYhIGQWjJUeZjMfVVlb9PWWjqjlSFhvh_VPA3oX454Ma71gdib4WN9rT4iJVQhl1KZ-42100uo8Fh6XiCuvl_mMN_IMXOUvgO1ODsASpiL1Qwz-KG_laZQjA8tmhz7-oY3ojNs8amzotCKs_cu6ziq6Gbi-XmpWC0WNEM1u3z4wXt-cogGjDMdKc7Qo1bIoCSSbclanRFyfm-PrYhpGpMb2IfwQm4McHw1NxtRz4MNQNi_6kPz2CHbc9MUqw"/>
+</div>
+</div>
+</article>
+<article class="group flex flex-col sm:flex-row gap-6 py-8 border-b border-gray-200 dark:border-gray-800 hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors -mx-4 px-4 rounded-lg">
+<div class="sm:w-28 shrink-0 flex flex-row sm:flex-col items-center sm:items-end justify-between sm:justify-start gap-2 pt-1">
+<time class="text-gray-900 dark:text-white font-medium text-lg leading-none">12:00</time>
+<span class="text-primary text-[11px] font-bold tracking-wider uppercase bg-blue-50 dark:bg-blue-900/30 px-2 py-0.5 rounded">Business</span>
+</div>
+<div class="flex-1 flex flex-col gap-3">
+<h3 class="font-serif text-2xl font-bold text-gray-900 dark:text-gray-100 leading-tight group-hover:text-primary transition-colors cursor-pointer">
+                                Global Supply Chain Pressures Ease Slightly in May
+                            </h3>
+<p class="text-gray-600 dark:text-gray-400 leading-relaxed line-clamp-2">
+                                Shipping costs have stabilized across major Pacific routes, offering relief to retailers ahead of the busy holiday planning season, though geopolitical risks remain.
+                            </p>
+<div class="flex items-center gap-4 mt-1">
+<a class="text-xs font-semibold text-gray-500 hover:text-primary flex items-center gap-1" href="#">
+                                    Read Analysis <span class="material-symbols-outlined text-[14px]">arrow_forward</span>
+</a>
+<span class="text-xs text-gray-400">•</span>
+<span class="text-xs text-gray-400">By Marcus Thorne</span>
+</div>
+</div>
+<div class="sm:w-40 shrink-0">
+<div class="aspect-[4/3] w-full rounded overflow-hidden bg-gray-200 dark:bg-gray-700 relative shadow-sm">
+<img alt="Shipping Containers" class="object-cover w-full h-full group-hover:scale-105 transition-transform duration-500" data-alt="Cargo containers stacked at a busy shipping port" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDJ03KulgwSSKFY0hPi4NCzl5eFDk-FfJqFieeI4XneWrGCYhGh3vfqQZ4R3aXBjSlgdRYw7_5Remx40kIwPzyNMYNl41JMEUQ_wS-GgdryeaP0x9H7ta7npOeeYk_r1VICA1yJ9gRLPvSt-wEmJ64mlFw6JJ0WktIEb7WaRrGtZy7utgz8VuTiLs7pB941HrDMcxqnlSGgDY9e3vJ7_Lv9TSh5zkh2-R3Qkkf0RCE5N_6mu8_K8IMZrVF90km7S0JLvzh3WI1t9EQ"/>
+</div>
+</div>
+</article>
+<article class="group flex flex-col sm:flex-row gap-6 py-8 border-b border-gray-200 dark:border-gray-800 hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors -mx-4 px-4 rounded-lg">
+<div class="sm:w-28 shrink-0 flex flex-row sm:flex-col items-center sm:items-end justify-between sm:justify-start gap-2 pt-1">
+<time class="text-gray-900 dark:text-white font-medium text-lg leading-none">10:45</time>
+<span class="text-primary text-[11px] font-bold tracking-wider uppercase bg-blue-50 dark:bg-blue-900/30 px-2 py-0.5 rounded">Markets</span>
+</div>
+<div class="flex-1 flex flex-col gap-3">
+<h3 class="font-serif text-2xl font-bold text-gray-900 dark:text-gray-100 leading-tight group-hover:text-primary transition-colors cursor-pointer">
+                                Asian Markets Close Higher Following Wall Street Rally
+                            </h3>
+<p class="text-gray-600 dark:text-gray-400 leading-relaxed line-clamp-2">
+                                Nikkei and Hang Seng indices saw significant gains as investor sentiment improves globally. Tech sector leads the charge with semiconductor stocks reaching new highs.
+                            </p>
+<div class="flex items-center gap-4 mt-1">
+<a class="text-xs font-semibold text-gray-500 hover:text-primary flex items-center gap-1" href="#">
+                                    Read Analysis <span class="material-symbols-outlined text-[14px]">arrow_forward</span>
+</a>
+<span class="text-xs text-gray-400">•</span>
+<span class="text-xs text-gray-400">By Li Wei</span>
+</div>
+</div>
+<div class="sm:w-40 shrink-0">
+<div class="aspect-[4/3] w-full rounded overflow-hidden bg-gray-200 dark:bg-gray-700 relative shadow-sm">
+<img alt="Asian Markets" class="object-cover w-full h-full group-hover:scale-105 transition-transform duration-500" data-alt="Digital representation of stock market candlesticks in blue and red" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA20Ol3HFzJp1S-hxLdTxOziupUpZCCga0vw8eLgiAil5XK17-UUQ7l1i1LMnnxL0nOkWEcl83NbrguALgPwdErwPbsYxraQzZC__NxZeKCeGDSrEIewg-XrPEHdmzNe_wtJEK6hpGFu06Uu8IqdUhoLMdnLIO-fPFKUYk5_xZ_uTxJaxpBmNM3HkY0qBqFc1resiGcB4I8K6p1zbLfKcvTYWG5c2P0gjBZpmFpZNCUuYPfNttriEGXs36Ddw6dn6CPiffCkWLPUjw"/>
+</div>
+</div>
+</article>
+<article class="group flex flex-col sm:flex-row gap-6 py-8 border-b border-gray-200 dark:border-gray-800 hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors -mx-4 px-4 rounded-lg">
+<div class="sm:w-28 shrink-0 flex flex-row sm:flex-col items-center sm:items-end justify-between sm:justify-start gap-2 pt-1">
+<time class="text-gray-900 dark:text-white font-medium text-lg leading-none">09:30</time>
+<span class="text-primary text-[11px] font-bold tracking-wider uppercase bg-blue-50 dark:bg-blue-900/30 px-2 py-0.5 rounded">Energy</span>
+</div>
+<div class="flex-1 flex flex-col gap-3">
+<h3 class="font-serif text-2xl font-bold text-gray-900 dark:text-gray-100 leading-tight group-hover:text-primary transition-colors cursor-pointer">
+                                Renewable Energy Investment To Top $2 Trillion by 2030
+                            </h3>
+<p class="text-gray-600 dark:text-gray-400 leading-relaxed line-clamp-2">
+                                A new IEA report outlines the rapid acceleration of green energy funding, driven by policy shifts in Europe and North America aiming for net-zero targets.
+                            </p>
+<div class="flex items-center gap-4 mt-1">
+<a class="text-xs font-semibold text-gray-500 hover:text-primary flex items-center gap-1" href="#">
+                                    Read Analysis <span class="material-symbols-outlined text-[14px]">arrow_forward</span>
+</a>
+<span class="text-xs text-gray-400">•</span>
+<span class="text-xs text-gray-400">By Elena Rossi</span>
+</div>
+</div>
+<div class="sm:w-40 shrink-0">
+<div class="aspect-[4/3] w-full rounded overflow-hidden bg-gray-200 dark:bg-gray-700 relative shadow-sm">
+<img alt="Renewable Energy" class="object-cover w-full h-full group-hover:scale-105 transition-transform duration-500" data-alt="Wind turbines in a field during sunset" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCrdShKW6Prk0O18m7TIsKmjWwveByqrjkF3s6tR8BucWWhY2DDprarIe2w6XBHsIOF11O_MUbpV2ZhxvGM3w8phNu88fWSqRkUth6O165ppuByurGhBtlqv3xLFaBnlcVmx8FWe1RWhegE9bp3kFSaidiopF82-cs39s_l6_1YAZo3x4E8YF2mUX7OXMdgehyxQn1FMQB1oQfcEGN_h9IiFX9l3Qye8G8Dma87ifW6DjohcWxD8tpa1UQsztcw8Qkq_Ai9qNJUwzQ"/>
+</div>
+</div>
+</article>
+</div>
+<div class="flex justify-center items-center gap-2 mt-8 py-6">
+<button class="px-4 py-2 text-sm font-medium text-gray-500 hover:text-primary border border-gray-300 dark:border-gray-700 rounded hover:bg-gray-50 dark:hover:bg-gray-800">Previous</button>
+<button class="w-9 h-9 flex items-center justify-center text-sm font-bold bg-primary text-white rounded shadow-sm">1</button>
+<button class="w-9 h-9 flex items-center justify-center text-sm font-medium text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 rounded">2</button>
+<button class="w-9 h-9 flex items-center justify-center text-sm font-medium text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 rounded">3</button>
+<span class="text-gray-400 px-2">...</span>
+<button class="w-9 h-9 flex items-center justify-center text-sm font-medium text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 rounded">8</button>
+<button class="px-4 py-2 text-sm font-medium text-gray-500 hover:text-primary border border-gray-300 dark:border-gray-700 rounded hover:bg-gray-50 dark:hover:bg-gray-800">Next</button>
+</div>
+</main>
+<aside class="hidden lg:block lg:col-span-4 pl-8 border-l border-gray-200 dark:border-gray-800">
+<div class="sticky top-24 flex flex-col gap-10">
+<div class="flex flex-col gap-4">
+<div class="flex items-center justify-between">
+<h4 class="font-bold text-gray-900 dark:text-white uppercase tracking-wider text-xs">Trending Now</h4>
+<span class="material-symbols-outlined text-primary text-[20px]">bolt</span>
+</div>
+<ul class="flex flex-col gap-4">
+<li class="group cursor-pointer">
+<span class="text-2xl font-black text-gray-200 dark:text-gray-700 absolute -ml-6 -mt-1 font-serif">1</span>
+<h5 class="text-sm font-bold text-gray-800 dark:text-gray-200 leading-snug group-hover:text-primary transition-colors pl-2 relative">Housing Market Cools Faster Than Expected</h5>
+</li>
+<li class="group cursor-pointer">
+<span class="text-2xl font-black text-gray-200 dark:text-gray-700 absolute -ml-6 -mt-1 font-serif">2</span>
+<h5 class="text-sm font-bold text-gray-800 dark:text-gray-200 leading-snug group-hover:text-primary transition-colors pl-2 relative">Crypto Regulation Bill Passes Senate Committee</h5>
+</li>
+<li class="group cursor-pointer">
+<span class="text-2xl font-black text-gray-200 dark:text-gray-700 absolute -ml-6 -mt-1 font-serif">3</span>
+<h5 class="text-sm font-bold text-gray-800 dark:text-gray-200 leading-snug group-hover:text-primary transition-colors pl-2 relative">Tech IPOs Scheduled for Q3 2024</h5>
+</li>
+<li class="group cursor-pointer">
+<span class="text-2xl font-black text-gray-200 dark:text-gray-700 absolute -ml-6 -mt-1 font-serif">4</span>
+<h5 class="text-sm font-bold text-gray-800 dark:text-gray-200 leading-snug group-hover:text-primary transition-colors pl-2 relative">Oil Prices Surge Amid Middle East Tensions</h5>
+</li>
+<li class="group cursor-pointer">
+<span class="text-2xl font-black text-gray-200 dark:text-gray-700 absolute -ml-6 -mt-1 font-serif">5</span>
+<h5 class="text-sm font-bold text-gray-800 dark:text-gray-200 leading-snug group-hover:text-primary transition-colors pl-2 relative">Eurozone Manufacturing PMI Hits 6-Month Low</h5>
+</li>
+</ul>
+</div>
+<div class="bg-gray-100 dark:bg-gray-800 rounded p-5 flex flex-col gap-4">
+<h4 class="font-bold text-gray-900 dark:text-white uppercase tracking-wider text-xs border-b border-gray-300 dark:border-gray-600 pb-2">Editor's Pick</h4>
+<div class="flex flex-col gap-3">
+<div class="aspect-video w-full rounded overflow-hidden bg-gray-300">
+<img alt="Analysis" class="w-full h-full object-cover" data-alt="Abstract colorful financial graph growing" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCS614Hc2icrqWh4kpLOGpTcxBQu6_3rw2SKZ712dAmFcpExaTGraN1mHXn_lWdAJkYChO0XZIedo-GR48G_MR1vkW1OBbR2CEKEBq0wZmhSCJBUJRIeZRrLyIq2qq5TwnYmO81V-6-UsXrhRpLZHonhqH2hAKocr_mbFodi25eiYuCjtdVTmAGB4GwoN7CaTa1JTXsv2T0UEzrDhpwqqX1nAMa-ykNmEWrc3TGZdV5GVi9hvhYxBRSD-CSwBzni3FIAagE2l54oJc"/>
+</div>
+<h5 class="font-serif font-bold text-lg text-gray-900 dark:text-white leading-tight">Why the 'Soft Landing' Might Still Be Hard</h5>
+<p class="text-xs text-gray-600 dark:text-gray-400 leading-relaxed">Economic resilience is surprising everyone, but underlying cracks in consumer debt could derail the narrative.</p>
+<button class="text-xs font-bold text-primary self-start hover:underline mt-1">Read Deep Dive →</button>
+</div>
+</div>
+<div class="border border-gray-200 dark:border-gray-700 rounded p-5 flex flex-col gap-3">
+<span class="material-symbols-outlined text-gray-900 dark:text-white text-[32px]">mail</span>
+<h4 class="font-bold text-gray-900 dark:text-white text-lg">Daily Briefing</h4>
+<p class="text-sm text-gray-600 dark:text-gray-400">Get the most important stories delivered to your inbox every morning.</p>
+<div class="flex flex-col gap-2 mt-2">
+<input class="text-sm rounded border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-900 focus:ring-primary focus:border-primary" placeholder="work@email.com" type="email"/>
+<button class="bg-gray-900 dark:bg-white text-white dark:text-gray-900 font-bold text-sm py-2 rounded hover:opacity-90 transition-opacity">Sign Up</button>
+</div>
+<p class="text-[10px] text-gray-400 mt-1">By signing up, you agree to our Terms and Privacy Policy.</p>
+</div>
+</div>
+</aside>
+</div>
+</div>
+<footer class="bg-gray-900 text-white pt-16 pb-8 border-t border-gray-800 mt-12">
+<div class="max-w-7xl mx-auto px-4 lg:px-8">
+<div class="grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
+<div class="col-span-1 md:col-span-1">
+<div class="flex items-center gap-3 mb-4">
+<div class="size-8 bg-primary rounded flex items-center justify-center text-white">
+<span class="material-symbols-outlined">trending_up</span>
+</div>
+<h2 class="text-lg font-bold tracking-tight">VCXpress</h2>
+</div>
+<p class="text-gray-400 text-sm leading-relaxed">
+                        The premier source for business, finance, and technology news. Delivering clarity in a complex world since 2024.
+                    </p>
+</div>
+<div>
+<h4 class="font-bold mb-4 text-sm uppercase tracking-wider text-gray-500">Sections</h4>
+<ul class="flex flex-col gap-2 text-sm text-gray-300">
+<li><a class="hover:text-primary transition-colors" href="#">Business</a></li>
+<li><a class="hover:text-primary transition-colors" href="#">Finance</a></li>
+<li><a class="hover:text-primary transition-colors" href="#">Technology</a></li>
+<li><a class="hover:text-primary transition-colors" href="#">Markets</a></li>
+<li><a class="hover:text-primary transition-colors" href="#">Global</a></li>
+</ul>
+</div>
+<div>
+<h4 class="font-bold mb-4 text-sm uppercase tracking-wider text-gray-500">Company</h4>
+<ul class="flex flex-col gap-2 text-sm text-gray-300">
+<li><a class="hover:text-primary transition-colors" href="#">About Us</a></li>
+<li><a class="hover:text-primary transition-colors" href="#">Careers</a></li>
+<li><a class="hover:text-primary transition-colors" href="#">Code of Ethics</a></li>
+<li><a class="hover:text-primary transition-colors" href="#">Contact</a></li>
+</ul>
+</div>
+<div>
+<h4 class="font-bold mb-4 text-sm uppercase tracking-wider text-gray-500">Legal</h4>
+<ul class="flex flex-col gap-2 text-sm text-gray-300">
+<li><a class="hover:text-primary transition-colors" href="#">Privacy Policy</a></li>
+<li><a class="hover:text-primary transition-colors" href="#">Terms of Service</a></li>
+<li><a class="hover:text-primary transition-colors" href="#">Cookie Policy</a></li>
+<li><a class="hover:text-primary transition-colors" href="#">Accessibility</a></li>
+</ul>
+</div>
+</div>
+<div class="border-t border-gray-800 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
+<p class="text-gray-500 text-sm">© 2024 VCXpress. All rights reserved.</p>
+<div class="flex gap-6">
+<a class="text-gray-500 hover:text-white transition-colors" href="#"><span class="sr-only">Twitter</span><svg class="h-5 w-5" fill="currentColor" viewBox="0 0 24 24"><path d="M8.29 20.251c7.547 0 11.675-6.253 11.675-11.675 0-.178 0-.355-.012-.53A8.348 8.348 0 0022 5.92a8.19 8.19 0 01-2.357.646 4.118 4.118 0 001.804-2.27 8.224 8.224 0 01-2.605.996 4.107 4.107 0 00-6.993 3.743 11.65 11.65 0 01-8.457-4.287 4.106 4.106 0 001.27 5.477A4.072 4.072 0 012.8 9.713v.052a4.105 4.105 0 003.292 4.022 4.095 4.095 0 01-1.853.07 4.108 4.108 0 003.834 2.85A8.233 8.233 0 012 18.407a11.616 11.616 0 006.29 1.84"></path></svg></a>
+<a class="text-gray-500 hover:text-white transition-colors" href="#"><span class="sr-only">LinkedIn</span><svg class="h-5 w-5" fill="currentColor" viewBox="0 0 24 24"><path clip-rule="evenodd" d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z" fill-rule="evenodd"></path></svg></a>
+</div>
+</div>
+</div>
+</footer>
+
+</body></html>
