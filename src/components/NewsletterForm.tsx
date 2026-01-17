@@ -78,7 +78,7 @@ export default function NewsletterForm({
 
   return (
     <div className={className}>
-      <div className="flex flex-col gap-3">
+      <div className="flex flex-col sm:flex-row sm:items-stretch gap-3">
         <input
           className={inputClassName}
           placeholder={placeholder}

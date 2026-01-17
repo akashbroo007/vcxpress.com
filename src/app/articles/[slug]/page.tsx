@@ -6,8 +6,10 @@ import {PortableText, type PortableTextComponents} from '@portabletext/react'
 import type {PortableTextBlock} from '@portabletext/types'
 
 import {sanityFetch} from '@/lib/sanity.client'
-import {ARTICLE_BY_SLUG_QUERY} from '@/lib/sanity.queries'
+import {ARTICLE_BY_SLUG_QUERY, LATEST_NEWS_SIDEBAR_QUERY, NEWS_RECOMMENDED_NEXT_QUERY} from '@/lib/sanity.queries'
 import {urlFor} from '@/lib/sanity/image'
+import ArticleActionButtons from '@/components/ArticleActionButtons'
+import NewsletterForm from '@/components/NewsletterForm'
 
 const portableTextComponents: PortableTextComponents = {
   marks: {
@@ -55,6 +57,22 @@ type ArticleDetail = {
   } | null
 }
 
+type NewsRecommendedItem = {
+  _id: string
+  title: string
+  slug: string
+  summary: string
+  publishedDate: string
+  companyName: string
+  fundingRound: string
+  featuredImage?: unknown
+  category?: {
+    _id: string
+    name: string
+    slug: string
+  } | null
+}
+
 type PageProps = {
   params: Promise<{slug: string}>
 }
@@ -70,9 +88,32 @@ export async function generateMetadata({params}: PageProps): Promise<Metadata> {
 
   if (!article) return {}
 
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000'
+  const canonicalUrl = new URL(`/news/${article.slug}`, siteUrl)
+  const ogImage = article.featuredImage
+    ? urlFor(article.featuredImage).width(1200).height(630).fit('crop').url()
+    : undefined
+
   return {
     title: article.seoTitle || article.title,
     description: article.seoDescription || article.summary,
+    metadataBase: new URL(siteUrl),
+    alternates: {
+      canonical: canonicalUrl,
+    },
+    openGraph: {
+      type: 'article',
+      url: canonicalUrl,
+      title: article.seoTitle || article.title,
+      description: article.seoDescription || article.summary,
+      images: ogImage ? [{url: ogImage, width: 1200, height: 630, alt: article.title}] : undefined,
+    },
+    twitter: {
+      card: ogImage ? 'summary_large_image' : 'summary',
+      title: article.seoTitle || article.title,
+      description: article.seoDescription || article.summary,
+      images: ogImage ? [ogImage] : undefined,
+    },
   }
 }
 
@@ -86,6 +127,19 @@ export default async function ArticleDetailPage({params}: PageProps) {
   )
 
   if (!article) notFound()
+
+  const recommendedLimit = 4
+  const recommended = article.category?._id
+    ? await sanityFetch<NewsRecommendedItem[]>(
+        NEWS_RECOMMENDED_NEXT_QUERY,
+        {categoryId: article.category._id, currentId: article._id, limit: recommendedLimit},
+        {revalidate: 60, useCdn: false, tags: ['articles', `article:${slug}`, 'recommended']},
+      )
+    : await sanityFetch<NewsRecommendedItem[]>(
+        LATEST_NEWS_SIDEBAR_QUERY,
+        {slug, limit: recommendedLimit},
+        {revalidate: 60, useCdn: false, tags: ['articles', `article:${slug}`, 'recommended']},
+      )
 
   return (
     <div className="theme-detail bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-slate-100 antialiased overflow-x-hidden">
@@ -138,14 +192,7 @@ export default async function ArticleDetailPage({params}: PageProps) {
               </div>
             </div>
 
-            <div className="flex items-center justify-end gap-2 mb-10 pb-6 border-b border-slate-200 dark:border-slate-800">
-              <button className="text-slate-400 hover:text-primary transition-colors" type="button">
-                <span className="material-symbols-outlined">share</span>
-              </button>
-              <button className="text-slate-400 hover:text-primary transition-colors" type="button">
-                <span className="material-symbols-outlined">more_horiz</span>
-              </button>
-            </div>
+            <ArticleActionButtons className="mb-10 pb-6 border-b border-slate-200 dark:border-slate-800" title={article.title} />
           </div>
 
           <div className="mb-12 p-6 md:p-8 bg-blue-50 dark:bg-slate-900 border-l-4 border-primary rounded-r-lg shadow-sm">
@@ -221,6 +268,47 @@ export default async function ArticleDetailPage({params}: PageProps) {
               </div>
             </div>
 
+            {recommended.length ? (
+              <section className="mt-10">
+                <div className="flex items-end justify-between gap-4">
+                  <h2 className="text-2xl font-black tracking-tight text-slate-900 dark:text-white">Recommended next</h2>
+                  <Link className="text-sm font-mono text-primary hover:opacity-80" href="/news">
+                    View all
+                  </Link>
+                </div>
+                <div className="mt-5 grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  {recommended.map((a) => (
+                    <Link
+                      key={a._id}
+                      href={`/news/${a.slug}`}
+                      className="rounded-lg border border-slate-200 dark:border-slate-800 bg-white/60 dark:bg-white/5 p-5 hover:bg-white dark:hover:bg-white/10 transition-colors"
+                    >
+                      <div className="flex gap-4">
+                        <div className="relative w-24 h-20 rounded-md overflow-hidden bg-slate-100 dark:bg-slate-800 flex-shrink-0">
+                          {a.featuredImage ? (
+                            <Image
+                              alt={a.title}
+                              className="object-cover"
+                              fill
+                              sizes="96px"
+                              src={urlFor(a.featuredImage).width(320).height(240).fit('crop').auto('format').url()}
+                            />
+                          ) : null}
+                        </div>
+                        <div className="flex flex-col gap-1">
+                          <div className="text-xs font-mono text-slate-500 dark:text-slate-400 uppercase tracking-widest">
+                            {a.category?.name ?? ''}
+                          </div>
+                          <h3 className="font-serif font-bold text-lg text-slate-900 dark:text-white leading-snug">{a.title}</h3>
+                          <p className="text-sm text-slate-600 dark:text-slate-400 line-clamp-2">{a.summary}</p>
+                        </div>
+                      </div>
+                    </Link>
+                  ))}
+                </div>
+              </section>
+            ) : null}
+
             <div className="mt-20 p-8 md:p-12 bg-surface-light dark:bg-slate-800 rounded-xl relative overflow-hidden">
               <div className="absolute top-0 right-0 w-64 h-64 bg-primary/20 rounded-full blur-3xl -mr-16 -mt-16 pointer-events-none"></div>
               <div className="relative z-10 flex flex-col md:flex-row items-center justify-between gap-8">
@@ -228,19 +316,14 @@ export default async function ArticleDetailPage({params}: PageProps) {
                   <h3 className="text-2xl font-bold text-slate-900 dark:text-white mb-2 transition-colors duration-300 ease-in-out">Stay ahead of the curve</h3>
                   <p className="text-slate-600 dark:text-slate-400 transition-colors duration-300 ease-in-out">Get the latest business and tech insights delivered to your inbox daily.</p>
                 </div>
-                <form className="flex flex-col sm:flex-row sm:items-stretch gap-3 w-full md:w-1/2">
-                  <input
-                    className="flex-1 w-full bg-white dark:bg-white/10 border border-slate-300 dark:border-white/20 text-slate-900 dark:text-white placeholder-slate-500 dark:placeholder-slate-400 rounded px-4 py-3 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-colors duration-300 ease-in-out"
-                    placeholder="Enter your email address"
-                    type="email"
+                <div className="w-full md:w-1/2">
+                  <NewsletterForm
+                    source="article_detail_stay_ahead"
+                    inputClassName="flex-1 w-full bg-white dark:bg-white/10 border border-slate-300 dark:border-white/20 text-slate-900 dark:text-white placeholder-slate-500 dark:placeholder-slate-400 rounded px-4 py-3 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-colors duration-300 ease-in-out"
+                    buttonClassName="bg-primary hover:bg-primary/90 text-white font-bold px-6 py-3 rounded transition-colors whitespace-nowrap sm:shrink-0"
+                    className="w-full"
                   />
-                  <button
-                    className="bg-primary hover:bg-primary/90 text-white font-bold px-6 py-3 rounded transition-colors whitespace-nowrap sm:shrink-0"
-                    type="button"
-                  >
-                    Subscribe
-                  </button>
-                </form>
+                </div>
               </div>
             </div>
           </div>

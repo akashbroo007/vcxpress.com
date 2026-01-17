@@ -3,7 +3,7 @@ import {defineField, defineType} from 'sanity'
 
 export const generalCategory = defineType({
   name: 'generalCategory',
-  title: 'General Categories',
+  title: 'Learn Categories',
   type: 'document',
   icon: TagIcon,
   fields: [
@@ -29,6 +29,18 @@ export const generalCategory = defineType({
       title: 'Description',
       type: 'text',
       rows: 3,
+    }),
+    defineField({
+      name: 'tags',
+      title: 'Tags',
+      type: 'array',
+      of: [{type: 'string'}],
+    }),
+    defineField({
+      name: 'order',
+      title: 'Order',
+      type: 'number',
+      validation: (rule) => rule.integer().min(0),
     }),
   ],
   preview: {

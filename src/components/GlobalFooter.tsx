@@ -2,6 +2,39 @@ import type {ReactNode} from 'react'
 
 import Link from 'next/link'
 
+import {sanityFetch} from '@/lib/sanity.client'
+import {LEARN_CATEGORIES_LIST_QUERY} from '@/lib/sanity.queries'
+
+type LearnCategory = {
+  _id: string
+  title: string
+  slug: string
+  tags?: string[] | null
+}
+
+function getLearnFooterLabel(category: LearnCategory): string {
+  const tag = Array.isArray(category.tags) ? category.tags.find((t) => typeof t === 'string' && t.trim().length > 0) : undefined
+  if (tag) return tag.trim()
+
+  const slug = category.slug
+  if (slug === 'funding-and-investments') return 'Funding'
+  if (slug === 'venture-capital') return 'VC'
+
+  const title = category.title.trim()
+  if (!title) return 'Learn'
+
+  const normalized = title
+    .replace(/\b(Basics|Guide|Guides|Explained|101)\b/gi, '')
+    .replace(/\band\b/gi, '&')
+    .replace(/\bof\b/gi, '')
+    .replace(/\s+/g, ' ')
+    .trim()
+
+  const words = normalized.split(' ')
+  if (words.length <= 2) return normalized
+  return words.slice(0, 2).join(' ')
+}
+
 function SocialIconLink({
   href,
   label,
@@ -24,7 +57,15 @@ function SocialIconLink({
   )
 }
 
-export default function GlobalFooter() {
+export default async function GlobalFooter() {
+  const learnCategories = await sanityFetch<LearnCategory[]>(
+    LEARN_CATEGORIES_LIST_QUERY,
+    {},
+    {revalidate: 300, useCdn: false, tags: ['learn']},
+  )
+
+  const learnFooterItems = learnCategories.slice(0, 3)
+
   return (
     <footer className="bg-background-light dark:bg-background-dark border-t border-black/10 dark:border-white/10 pt-16 pb-10 text-text-main dark:text-white transition-colors duration-300 ease-in-out">
       <div className="max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-8">
@@ -69,19 +110,57 @@ export default function GlobalFooter() {
               Venture Capital
             </Link>
             <div className="pt-1">
-              <Link className="text-sm text-text-main/80 dark:text-white/80 font-semibold hover:text-primary transition-colors duration-300 ease-in-out" href="/categories">
-                Category
-              </Link>
-              <div className="mt-2 flex flex-col gap-2 pl-3 border-l border-black/10 dark:border-white/10 transition-colors duration-300 ease-in-out">
-                <Link className="text-sm text-text-main/60 dark:text-white/60 hover:text-primary transition-colors" href="/category/tech">
-                  Tech
-                </Link>
-                <Link className="text-sm text-text-main/60 dark:text-white/60 hover:text-primary transition-colors" href="/category/finance">
-                  Finance
-                </Link>
-                <Link className="text-sm text-text-main/60 dark:text-white/60 hover:text-primary transition-colors" href="/category/business">
-                  Business
-                </Link>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-y-6 gap-x-12">
+                <div className="min-w-0">
+                  <div className="text-sm text-text-main/80 dark:text-white/80 font-semibold transition-colors duration-300 ease-in-out">
+                    <div className="flex flex-wrap items-center gap-2">
+                      <span>News</span>
+                      <span className="whitespace-nowrap rounded-full bg-slate-900/5 dark:bg-white/10 px-2 py-0.5 text-[10px] font-mono uppercase tracking-wider text-text-main/70 dark:text-white/70">
+                        Categories
+                      </span>
+                    </div>
+                  </div>
+                  <div className="mt-2 flex flex-col gap-2 pl-3 border-l border-black/10 dark:border-white/10 transition-colors duration-300 ease-in-out">
+                    <Link className="text-sm text-text-main/60 dark:text-white/60 hover:text-primary transition-colors" href="/category/tech">
+                      Tech
+                    </Link>
+                    <Link className="text-sm text-text-main/60 dark:text-white/60 hover:text-primary transition-colors" href="/category/finance">
+                      Finance
+                    </Link>
+                    <Link className="text-sm text-text-main/60 dark:text-white/60 hover:text-primary transition-colors" href="/category/business">
+                      Business
+                    </Link>
+                    <Link className="text-sm text-text-main/60 dark:text-white/60 hover:text-primary transition-colors whitespace-nowrap" href="/categories">
+                      View all
+                    </Link>
+                  </div>
+                </div>
+
+                <div className="min-w-0">
+                  <div className="text-sm text-text-main/80 dark:text-white/80 font-semibold transition-colors duration-300 ease-in-out">
+                    <div className="flex flex-wrap items-center gap-2">
+                      <span>Learn</span>
+                      <span className="whitespace-nowrap rounded-full bg-primary/10 px-2 py-0.5 text-[10px] font-mono uppercase tracking-wider text-primary">
+                        Topics
+                      </span>
+                    </div>
+                  </div>
+                  <div className="mt-2 flex flex-col gap-2 pl-3 border-l border-primary/20 transition-colors duration-300 ease-in-out">
+                    {learnFooterItems.map((c) => (
+                      <Link
+                        key={c._id}
+                        className="text-sm text-text-main/60 dark:text-white/60 hover:text-primary transition-colors whitespace-nowrap overflow-hidden text-ellipsis"
+                        href={`/learn/${c.slug}`}
+                        title={c.title}
+                      >
+                        {getLearnFooterLabel(c)}
+                      </Link>
+                    ))}
+                    <Link className="text-sm text-text-main/60 dark:text-white/60 hover:text-primary transition-colors whitespace-nowrap" href="/learn">
+                      View all
+                    </Link>
+                  </div>
+                </div>
               </div>
             </div>
           </div>

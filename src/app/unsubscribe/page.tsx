@@ -1,6 +1,6 @@
 'use client'
 
-import {useEffect, useRef, useState} from 'react'
+import {Suspense, useEffect, useRef, useState} from 'react'
 
 import {useSearchParams} from 'next/navigation'
 
@@ -10,7 +10,7 @@ type UnsubscribeErrorResponse = {
   error?: string
 }
 
-export default function UnsubscribePage() {
+function UnsubscribeInner() {
   const searchParams = useSearchParams()
   const emailParam = searchParams.get('email')
 
@@ -72,5 +72,13 @@ export default function UnsubscribePage() {
         ) : null}
       </div>
     </div>
+  )
+}
+
+export default function UnsubscribePage() {
+  return (
+    <Suspense>
+      <UnsubscribeInner />
+    </Suspense>
   )
 }

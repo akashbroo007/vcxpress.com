@@ -152,6 +152,10 @@ export default function GlobalNavbar() {
               News
               <ChevronDownIcon className="h-3.5 w-3.5 opacity-70" />
             </Link>
+            <Link className="inline-flex items-center gap-1 text-text-main/80 hover:text-text-main dark:text-white/90 dark:hover:text-white transition-colors" href="/learn">
+              Learn
+              <ChevronDownIcon className="h-3.5 w-3.5 opacity-70" />
+            </Link>
             <Link className="inline-flex items-center gap-1 text-text-main/80 hover:text-text-main dark:text-white/90 dark:hover:text-white transition-colors" href="/category/business">
               Business
               <ChevronDownIcon className="h-3.5 w-3.5 opacity-70" />
@@ -227,6 +231,9 @@ export default function GlobalNavbar() {
               <nav className="flex flex-col gap-2 text-sm font-semibold tracking-wide">
                 <Link className="text-text-main/80 hover:text-text-main dark:text-white/90 dark:hover:text-white transition-colors py-2" href="/news" onClick={() => setOpen(false)}>
                   News
+                </Link>
+                <Link className="text-text-main/80 hover:text-text-main dark:text-white/90 dark:hover:text-white transition-colors py-2" href="/learn" onClick={() => setOpen(false)}>
+                  Learn
                 </Link>
                 <Link className="text-text-main/80 hover:text-text-main dark:text-white/90 dark:hover:text-white transition-colors py-2" href="/category/business" onClick={() => setOpen(false)}>
                   Business

@@ -1,15 +1,12 @@
 import {BookIcon} from '@sanity/icons'
 import {defineField, defineType} from 'sanity'
 
-// General Articles are evergreen educational/explanatory posts (guides, explainers, glossary).
-// They are intentionally separate from time-sensitive news Articles.
-export const generalArticle = defineType({
-  name: 'generalArticle',
-  title: 'General Articles',
+export const learnArticle = defineType({
+  name: 'learnArticle',
+  title: 'Learn Articles',
   type: 'document',
   icon: BookIcon,
-  description:
-    'Use this for evergreen educational content only. Do not use for funding news or announcements.',
+  description: 'Evergreen educational content for the Learn section (separate from News).',
   fields: [
     defineField({
       name: 'title',
@@ -48,35 +45,24 @@ export const generalArticle = defineType({
       options: {hotspot: true},
     }),
     defineField({
-      name: 'generalCategory',
-      title: 'General Category',
-      type: 'reference',
-      to: [{type: 'generalCategory'}],
-      hidden: true,
-    }),
-    defineField({
-      name: 'generalCategories',
-      title: 'General Categories',
-      type: 'array',
-      of: [{type: 'reference', to: [{type: 'generalCategory'}]}],
-    }),
-    defineField({
-      name: 'author',
-      title: 'Author',
-      type: 'reference',
-      to: [{type: 'author'}],
-    }),
-    defineField({
       name: 'tags',
       title: 'Tags',
       type: 'array',
       of: [{type: 'string'}],
     }),
     defineField({
-      name: 'publishedAt',
-      title: 'Published At',
-      type: 'datetime',
-      initialValue: () => new Date().toISOString(),
+      name: 'learnCategory',
+      title: 'Learn Category',
+      type: 'reference',
+      to: [{type: 'generalCategory'}],
+      hidden: true,
+    }),
+    defineField({
+      name: 'learnCategories',
+      title: 'Learn Categories',
+      type: 'array',
+      of: [{type: 'reference', to: [{type: 'generalCategory'}]}],
+      validation: (rule) => rule.required().min(1),
     }),
     defineField({
       name: 'seo',
@@ -96,5 +82,18 @@ export const generalArticle = defineType({
         }),
       ],
     }),
+    defineField({
+      name: 'author',
+      title: 'Author',
+      type: 'reference',
+      to: [{type: 'author'}],
+      description: 'Defaults to VCXpress if left empty.',
+    }),
   ],
+  preview: {
+    select: {
+      title: 'title',
+      subtitle: 'learnCategories.0.title',
+    },
+  },
 })
