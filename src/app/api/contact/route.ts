@@ -1,4 +1,4 @@
-import {NextResponse} from 'next/server'
+import {apiJson, hasOnlyAllowedKeys, isPlainObject, rateLimit, readJsonBody} from '@/lib/apiSecurity'
 
 type Body = {
   fullName?: string
@@ -37,35 +37,6 @@ const parseBoolEnv = (value: string | undefined) => {
   return v === '1' || v === 'true' || v === 'yes' || v === 'on'
 }
 
-const getClientIp = (req: Request) => {
-  const forwarded = req.headers.get('x-forwarded-for')
-  if (forwarded) {
-    const first = forwarded.split(',')[0]?.trim()
-    if (first) return first
-  }
-
-  const realIp = req.headers.get('x-real-ip')
-  if (realIp) return realIp.trim()
-
-  return 'unknown'
-}
-
-type RateLimitEntry = {
-  count: number
-  windowStart: number
-}
-
-const RATE_LIMIT_WINDOW_MS = 60 * 60 * 1000
-const RATE_LIMIT_MAX = 2
-
-const globalForRateLimit = globalThis as unknown as {
-  __vcxpress_contact_rate_limit__?: Map<string, RateLimitEntry>
-}
-
-const rateLimitStore =
-  globalForRateLimit.__vcxpress_contact_rate_limit__ ??
-  (globalForRateLimit.__vcxpress_contact_rate_limit__ = new Map<string, RateLimitEntry>())
-
 const subjectLabel = (value: string) => {
   switch (value) {
     case 'tip':
@@ -84,39 +55,38 @@ const subjectLabel = (value: string) => {
 export async function POST(req: Request) {
   const debug = process.env.NODE_ENV !== 'production'
   const autoReplyEnabled = parseBoolEnv(process.env.CONTACT_AUTOREPLY_ENABLED)
-  let body: Body = {}
-  try {
-    body = (await req.json()) as Body
-  } catch {
-    body = {}
+
+  const limited = rateLimit(req, {id: 'contact', limit: 20, windowMs: 60_000, burst: 40, skipIfBot: false})
+  if (limited) return limited
+
+  const parsed = await readJsonBody(req, {maxBytes: 20_000})
+  if (!parsed.ok) return parsed.response
+
+  if (!isPlainObject(parsed.value)) {
+    return apiJson({ok: false, error: 'Invalid request'}, {status: 400})
   }
+
+  if (!hasOnlyAllowedKeys(parsed.value, ['fullName', 'email', 'subject', 'message'])) {
+    return apiJson({ok: false, error: 'Invalid request'}, {status: 400})
+  }
+
+  const body = parsed.value as Body
 
   const fullName = typeof body.fullName === 'string' ? body.fullName.trim() : ''
   const email = typeof body.email === 'string' ? body.email.trim().toLowerCase() : ''
   const subject = typeof body.subject === 'string' ? body.subject.trim() : ''
   const message = typeof body.message === 'string' ? body.message.trim() : ''
 
-  const ip = getClientIp(req)
-  const now = Date.now()
-  const entry = rateLimitStore.get(ip)
-  if (!entry || now - entry.windowStart >= RATE_LIMIT_WINDOW_MS) {
-    rateLimitStore.set(ip, {count: 1, windowStart: now})
-  } else {
-    if (entry.count >= RATE_LIMIT_MAX) {
-      const retryAfterSeconds = Math.max(1, Math.ceil((entry.windowStart + RATE_LIMIT_WINDOW_MS - now) / 1000))
-      return NextResponse.json(
-        {ok: false, error: 'Too many requests. Please wait and try again.'},
-        {status: 429, headers: {'Retry-After': String(retryAfterSeconds)}},
-      )
-    }
-    entry.count += 1
-    rateLimitStore.set(ip, entry)
+  if (!fullName) return apiJson({ok: false, error: 'Full name is required'}, {status: 400})
+  if (fullName.length > 120) return apiJson({ok: false, error: 'Full name is required'}, {status: 400})
+  if (!email || !isValidEmail(email)) return apiJson({ok: false, error: 'Enter a valid email address'}, {status: 400})
+  if (email.length > 254) return apiJson({ok: false, error: 'Enter a valid email address'}, {status: 400})
+  if (!subject) return apiJson({ok: false, error: 'Select a subject'}, {status: 400})
+  if (!['tip', 'correction', 'press', 'general'].includes(subject)) {
+    return apiJson({ok: false, error: 'Select a subject'}, {status: 400})
   }
-
-  if (!fullName) return NextResponse.json({ok: false, error: 'Full name is required'}, {status: 400})
-  if (!email || !isValidEmail(email)) return NextResponse.json({ok: false, error: 'Enter a valid email address'}, {status: 400})
-  if (!subject) return NextResponse.json({ok: false, error: 'Select a subject'}, {status: 400})
-  if (!message) return NextResponse.json({ok: false, error: 'Message is required'}, {status: 400})
+  if (!message) return apiJson({ok: false, error: 'Message is required'}, {status: 400})
+  if (message.length > 5000) return apiJson({ok: false, error: 'Message is required'}, {status: 400})
 
   const resendKey = process.env.RESEND_API_KEY
   const to = process.env.CONTACT_TO_EMAIL
@@ -125,7 +95,7 @@ export async function POST(req: Request) {
   const normalizedTo = typeof to === 'string' ? normalizeEnvEmail(to) : ''
 
   if (!resendKey || !normalizedTo || !from) {
-    return NextResponse.json(
+    return apiJson(
       {
         ok: false,
         error: 'Contact delivery is not configured',
@@ -144,7 +114,7 @@ export async function POST(req: Request) {
   }
 
   if (!isValidFromField(from)) {
-    return NextResponse.json(
+    return apiJson(
       {
         ok: false,
         error: 'Contact delivery is not configured',
@@ -174,7 +144,7 @@ export async function POST(req: Request) {
       }),
     })
   } catch {
-    return NextResponse.json({ok: false, error: 'Failed to send message'}, {status: 502})
+    return apiJson({ok: false, error: 'Failed to send message'}, {status: 502})
   }
 
   if (!res.ok) {
@@ -187,7 +157,7 @@ export async function POST(req: Request) {
       providerBody = null
     }
 
-    return NextResponse.json(
+    return apiJson(
       {
         ok: false,
         error: 'Failed to send message',
@@ -248,5 +218,5 @@ export async function POST(req: Request) {
     }
   }
 
-  return NextResponse.json(debug ? {ok: true, autoReply} : {ok: true})
+  return apiJson(debug ? {ok: true, autoReply} : {ok: true})
 }

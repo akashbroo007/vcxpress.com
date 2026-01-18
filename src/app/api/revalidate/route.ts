@@ -1,7 +1,8 @@
-import {NextResponse} from 'next/server'
 import {revalidatePath, revalidateTag} from 'next/cache'
 
-const secret = process.env.REVALIDATE_SECRET
+import {apiJson, isPlainObject, rateLimit, readJsonBody, readRequiredEnv} from '@/lib/apiSecurity'
+
+const secret = readRequiredEnv('REVALIDATE_SECRET')
 
 type WebhookDoc = {
   _type?: string
@@ -21,8 +22,11 @@ const extractSlug = (value: unknown): string | undefined => {
 }
 
 export async function POST(req: Request) {
+  const limited = rateLimit(req, {id: 'revalidate', limit: 30, windowMs: 60_000, burst: 60, skipIfBot: true})
+  if (limited) return limited
+
   if (!secret) {
-    return NextResponse.json({ok: false, error: 'Missing REVALIDATE_SECRET'}, {status: 500})
+    return apiJson({ok: false, error: 'Not configured'}, {status: 500})
   }
 
   const headerSecret = req.headers.get('x-revalidate-secret')
@@ -31,15 +35,17 @@ export async function POST(req: Request) {
   const provided = headerSecret ?? querySecret
 
   if (provided !== secret) {
-    return NextResponse.json({ok: false, error: 'Unauthorized'}, {status: 401})
+    return apiJson({ok: false, error: 'Unauthorized'}, {status: 401})
   }
 
-  let payload: WebhookDoc = {}
-  try {
-    payload = (await req.json()) as WebhookDoc
-  } catch {
-    payload = {}
+  const parsed = await readJsonBody(req, {maxBytes: 50_000})
+  if (!parsed.ok) return parsed.response
+
+  if (!isPlainObject(parsed.value)) {
+    return apiJson({ok: false, error: 'Invalid request'}, {status: 400})
   }
+
+  const payload = parsed.value as WebhookDoc
 
   const docType = payload._type
   const slug = extractSlug(payload.slug)
@@ -83,5 +89,5 @@ export async function POST(req: Request) {
     revalidatePath(`/categories/${cs}`, 'page')
   }
 
-  return NextResponse.json({ok: true, type: docType ?? null, slug: slug ?? null, categories: Array.from(categorySlugs)})
+  return apiJson({ok: true, type: docType ?? null, slug: slug ?? null, categories: Array.from(categorySlugs)})
 }
