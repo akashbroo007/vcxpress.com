@@ -1,6 +1,7 @@
 import type {ReactNode} from 'react'
 
 import Link from 'next/link'
+import Image from 'next/image'
 
 import {sanityFetch} from '@/lib/sanity.client'
 import {LEARN_CATEGORIES_LIST_QUERY} from '@/lib/sanity.queries'
@@ -72,7 +73,8 @@ export default async function GlobalFooter() {
         <div className="md:hidden mb-12">
           <div className="mb-8">
             <div className="flex items-center gap-2 mb-4">
-              <span className="font-serif text-xl font-black uppercase text-text-main dark:text-white transition-colors duration-300 ease-in-out">VCXPRESS</span>
+              <Image alt="" aria-hidden="true" className="h-8 w-8" height={32} src="/brand/icons/vcx-icon-32.png" width={32} />
+              <span className="font-serif text-xl font-medium tracking-wide text-text-main dark:text-white transition-colors duration-300 ease-in-out">VCXpress</span>
             </div>
             <p className="text-sm text-text-main/60 dark:text-white/60 mb-6 leading-relaxed transition-colors duration-300 ease-in-out">
               The premier source for global business, finance, and technology news. We provide the intelligence professionals need to make smarter decisions.
@@ -185,7 +187,8 @@ export default async function GlobalFooter() {
         <div className="hidden md:block lg:hidden mb-12">
           <div className="mb-8">
             <div className="flex items-center gap-2 mb-4">
-              <span className="font-serif text-xl font-black uppercase text-text-main dark:text-white transition-colors duration-300 ease-in-out">VCXPRESS</span>
+              <Image alt="" aria-hidden="true" className="h-8 w-8" height={32} src="/brand/icons/vcx-icon-32.png" width={32} />
+              <span className="font-serif text-xl font-medium tracking-wide text-text-main dark:text-white transition-colors duration-300 ease-in-out">VCXpress</span>
             </div>
             <p className="text-sm text-text-main/60 dark:text-white/60 mb-6 leading-relaxed transition-colors duration-300 ease-in-out">
               The premier source for global business, finance, and technology news. We provide the intelligence professionals need to make smarter decisions.
@@ -294,7 +297,8 @@ export default async function GlobalFooter() {
         <div className="hidden lg:grid grid-cols-12 gap-8 mb-12">
           <div className="col-span-4">
             <div className="flex items-center gap-2 mb-4">
-              <span className="font-serif text-xl font-black uppercase text-text-main dark:text-white transition-colors duration-300 ease-in-out">VCXPRESS</span>
+              <Image alt="" aria-hidden="true" className="h-8 w-8" height={32} src="/brand/icons/vcx-icon-32.png" width={32} />
+              <span className="font-serif text-xl font-medium tracking-wide text-text-main dark:text-white transition-colors duration-300 ease-in-out">VCXpress</span>
             </div>
             <p className="text-sm text-text-main/60 dark:text-white/60 mb-6 leading-relaxed transition-colors duration-300 ease-in-out">
               The premier source for global business, finance, and technology news. We provide the intelligence professionals need to make smarter decisions.
@@ -400,7 +404,6 @@ export default async function GlobalFooter() {
 
         <div className="border-t border-black/10 dark:border-white/10 pt-8 flex flex-col md:flex-row justify-between items-center gap-4 transition-colors duration-300 ease-in-out">
           <p className="text-xs text-text-main/50 dark:text-white/50 font-mono transition-colors duration-300 ease-in-out"> 2026 VCXPRESS. All rights reserved.</p>
-          <p className="text-xs text-text-main/50 dark:text-white/50 font-mono transition-colors duration-300 ease-in-out">© 2026 VCXPRESS. All rights reserved.</p>
           <div className="flex gap-6">
             <Link className="text-xs text-text-main/50 dark:text-white/50 hover:text-primary font-mono uppercase transition-colors" href="/privacy">
               Privacy

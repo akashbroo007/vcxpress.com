@@ -126,7 +126,7 @@ export default function GlobalNavbar() {
             </div>
 
             <Link
-              className="font-serif text-xl sm:text-2xl font-black tracking-tight uppercase text-text-main dark:text-white shrink-0 leading-none transition-colors duration-300 ease-in-out"
+              className="font-serif text-2xl sm:text-3xl font-black tracking-tight text-text-main dark:text-white shrink-0 leading-none transition-colors duration-300 ease-in-out"
               href="/"
             >
               VCXPRESS

@@ -15,6 +15,10 @@ export const metadata: Metadata = {
   title: 'VCXPRESS',
   description: 'Fast, clean, and easy-to-understand VC funding news.',
   metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000'),
+  icons: {
+    icon: [{url: '/brand/icons/favicon.ico', type: 'image/x-icon'}],
+    apple: [{url: '/brand/icons/vcx-icon-192.png'}],
+  },
 }
 
 export default function RootLayout({
