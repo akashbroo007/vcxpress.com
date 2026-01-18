@@ -14,6 +14,7 @@ const workSans = Work_Sans({subsets: ['latin'], weight: ['300', '400', '500', '6
 export const metadata: Metadata = {
   title: 'VCXPRESS',
   description: 'Fast, clean, and easy-to-understand VC funding news.',
+  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000'),
 }
 
 export default function RootLayout({

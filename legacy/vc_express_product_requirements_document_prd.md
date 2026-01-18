@@ -287,7 +287,40 @@ No developer involvement required.
 
 ## 15. Launch Checklist
 
--
+- [ ] Vercel project connected and deploying from `main`
+- [ ] Custom domain connected (canonical domain decided)
+- [ ] HTTPS enabled on production domain
+
+- [ ] Environment variables verified in production:
+  - [ ] `NEXT_PUBLIC_SITE_URL` set (canonical URL)
+  - [ ] `NEXT_PUBLIC_SANITY_PROJECT_ID` set
+  - [ ] `NEXT_PUBLIC_SANITY_DATASET` set (production dataset)
+
+- [ ] Sitemap + Robots verified:
+  - [ ] `/sitemap.xml` loads as valid XML (`application/xml`)
+  - [ ] `/robots.txt` allows indexing and references `/sitemap.xml`
+  - [ ] Sitemap submitted in Google Search Console
+  - [ ] GSC shows no sitemap fetch/parse errors
+
+- [ ] SEO validation:
+  - [ ] Canonical URLs correct across core pages
+  - [ ] OpenGraph previews validated (Facebook debugger)
+  - [ ] X/Twitter card previews validated
+  - [ ] No accidental `noindex` present
+
+- [ ] Performance:
+  - [ ] Lighthouse run on production (Home + Article)
+  - [ ] Core Web Vitals acceptable
+
+- [ ] Sanity ops:
+  - [ ] `/studio` access verified
+  - [ ] Publishing workflow verified (draft → published)
+  - [ ] Dataset permissions reviewed
+
+- [ ] Backup/recovery:
+  - [ ] Sanity export plan documented (frequency + owner)
+
+See: `LAUNCH_CHECKLIST.md`
 
 ---
 

@@ -49,6 +49,18 @@ export const ARTICLES_LIST_QUERY = /* groq */ `
   }
 `
 
+export const PUBLISHED_ARTICLE_SLUGS_QUERY = /* groq */ `
+  *[_type == "article" && status == "published" && defined(slug.current)][]{
+    "slug": slug.current
+  }
+`
+
+export const CATEGORY_SLUGS_QUERY = /* groq */ `
+  *[_type == "category" && defined(slug.current)][]{
+    "slug": slug.current
+  }
+`
+
 export const NEWS_RECOMMENDED_NEXT_QUERY = /* groq */ `
   *[
     _type == "article" &&
