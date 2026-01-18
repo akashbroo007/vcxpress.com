@@ -4,7 +4,7 @@ import Link from 'next/link'
 import Image from 'next/image'
 import {useEffect, useMemo, useRef, useState} from 'react'
 
-import {urlFor} from '@/lib/sanity/image'
+import {safeSanityImageUrl} from '@/lib/sanity/image'
 
 type ArticleListItem = {
   _id: string
@@ -111,15 +111,15 @@ export default function LiveArticlesList({initialArticles}: {initialArticles: Ar
 
             <div className="sm:w-40 shrink-0">
               <div className="relative aspect-[4/3] w-full rounded overflow-hidden bg-gray-200 dark:bg-gray-700 shadow-sm">
-                {a.featuredImage ? (
-                  <Image
-                    alt={a.title}
-                    className="object-cover"
-                    fill
-                    sizes="160px"
-                    src={urlFor(a.featuredImage).width(640).height(480).fit('crop').auto('format').url()}
-                  />
-                ) : null}
+                {(() => {
+                  const imageUrl = safeSanityImageUrl(a.featuredImage, {width: 640, height: 480})
+
+                  return imageUrl ? (
+                    <Image alt={a.title} className="object-cover" fill sizes="160px" src={imageUrl} />
+                  ) : (
+                    <div className="absolute inset-0" />
+                  )
+                })()}
               </div>
             </div>
           </article>

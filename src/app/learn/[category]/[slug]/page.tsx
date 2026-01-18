@@ -8,7 +8,7 @@ import type {PortableTextBlock} from '@portabletext/types'
 
 import {sanityFetch} from '@/lib/sanity.client'
 import {LEARN_ARTICLE_BY_CATEGORY_AND_SLUG_QUERY, LEARN_READ_NEXT_QUERY} from '@/lib/sanity.queries'
-import {urlFor} from '@/lib/sanity/image'
+import {safeSanityImageUrl} from '@/lib/sanity/image'
 import ArticleActionButtons from '@/components/ArticleActionButtons'
 
 const portableTextComponents: PortableTextComponents = {
@@ -87,7 +87,7 @@ export async function generateMetadata({params}: PageProps): Promise<Metadata> {
 
   const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000'
   const canonicalUrl = new URL(`/learn/${category}/${article.slug}`, siteUrl)
-  const ogImage = article.coverImage ? urlFor(article.coverImage).width(1200).height(630).fit('crop').url() : undefined
+  const ogImage = safeSanityImageUrl(article.coverImage, {width: 1200, height: 630}) ?? undefined
 
   return {
     title: article.seo?.metaTitle || article.title,
@@ -209,14 +209,15 @@ export default async function LearnArticlePage({params}: PageProps) {
           {article.coverImage ? (
             <figure className="mb-12">
               <div className="relative w-full aspect-video rounded-lg overflow-hidden bg-slate-100 dark:bg-slate-800">
-                <Image
-                  alt={article.title}
-                  className="object-cover"
-                  fill
-                  priority
-                  sizes="(max-width: 960px) 100vw, 960px"
-                  src={urlFor(article.coverImage).width(1200).height(675).fit('crop').auto('format').url()}
-                />
+                {(() => {
+                  const imageUrl = safeSanityImageUrl(article.coverImage, {width: 1200, height: 675})
+
+                  return imageUrl ? (
+                    <Image alt={article.title} className="object-cover" fill priority sizes="(max-width: 960px) 100vw, 960px" src={imageUrl} />
+                  ) : (
+                    <div className="absolute inset-0" />
+                  )
+                })()}
               </div>
               <figcaption className="mt-3 text-sm text-slate-500 dark:text-slate-400 text-center italic">
                 {article.category?.title || 'Learn'}
@@ -273,15 +274,15 @@ export default async function LearnArticlePage({params}: PageProps) {
                     >
                       <div className="flex gap-4">
                         <div className="relative w-24 h-20 rounded-md overflow-hidden bg-slate-100 dark:bg-slate-800 flex-shrink-0">
-                          {a.coverImage ? (
-                            <Image
-                              alt={a.title}
-                              className="object-cover"
-                              fill
-                              sizes="96px"
-                              src={urlFor(a.coverImage).width(320).height(240).fit('crop').auto('format').url()}
-                            />
-                          ) : null}
+                          {(() => {
+                            const imageUrl = safeSanityImageUrl(a.coverImage, {width: 320, height: 240})
+
+                            return imageUrl ? (
+                              <Image alt={a.title} className="object-cover" fill sizes="96px" src={imageUrl} />
+                            ) : (
+                              <div className="absolute inset-0" />
+                            )
+                          })()}
                         </div>
                         <div className="flex flex-col gap-1">
                           <div className="text-xs font-mono text-slate-500 dark:text-slate-400 uppercase tracking-widest">

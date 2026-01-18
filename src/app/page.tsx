@@ -3,7 +3,7 @@ import Image from 'next/image'
 
 import {sanityFetch} from '@/lib/sanity.client'
 import {LATEST_FEATURED_ARTICLE_QUERY, LATEST_NEWS_EXCLUDING_FEATURED_QUERY} from '@/lib/sanity.queries'
-import {urlFor} from '@/lib/sanity/image'
+import {safeSanityImageUrl} from '@/lib/sanity/image'
 import NewsletterForm from '@/components/NewsletterForm'
 
 type ArticleListItem = {
@@ -42,16 +42,22 @@ export default async function Home() {
               {featured?.slug ? (
                 <Link className="lg:col-span-8 group block" href={`/news/${featured.slug}`}>
                   <div className="relative w-full aspect-[16/9] overflow-hidden bg-gray-100 dark:bg-gray-800 mb-6">
-                    {featured.featuredImage ? (
-                      <Image
-                        alt={featured.title}
-                        className="object-cover transform group-hover:scale-105 transition-transform duration-700"
-                        fill
-                        priority
-                        sizes="(max-width: 1024px) 100vw, 66vw"
-                        src={urlFor(featured.featuredImage).width(1200).height(675).fit('crop').auto('format').url()}
-                      />
-                    ) : null}
+                    {(() => {
+                      const imageUrl = safeSanityImageUrl(featured.featuredImage, {width: 1200, height: 675})
+
+                      return imageUrl ? (
+                        <Image
+                          alt={featured.title}
+                          className="object-cover transform group-hover:scale-105 transition-transform duration-700"
+                          fill
+                          priority
+                          sizes="(max-width: 1024px) 100vw, 66vw"
+                          src={imageUrl}
+                        />
+                      ) : (
+                        <div className="absolute inset-0" />
+                      )
+                    })()}
                   </div>
                   <div className="flex flex-col gap-3">
                     <div className="x-line"></div>
@@ -137,15 +143,21 @@ export default async function Home() {
                   <Link className="block group" href={`/news/${a.slug}`}>
                     <article className="flex flex-col sm:flex-row gap-6">
                       <div className="relative w-full sm:w-64 aspect-[4/3] sm:aspect-video bg-gray-100 rounded-sm overflow-hidden flex-shrink-0">
-                        {a.featuredImage ? (
-                          <Image
-                            alt={a.title}
-                            className="object-cover transform group-hover:scale-105 transition-transform duration-500"
-                            fill
-                            sizes="(max-width: 640px) 100vw, 256px"
-                            src={urlFor(a.featuredImage).width(800).height(600).fit('crop').auto('format').url()}
-                          />
-                        ) : null}
+                        {(() => {
+                          const imageUrl = safeSanityImageUrl(a.featuredImage, {width: 800, height: 600})
+
+                          return imageUrl ? (
+                            <Image
+                              alt={a.title}
+                              className="object-cover transform group-hover:scale-105 transition-transform duration-500"
+                              fill
+                              sizes="(max-width: 640px) 100vw, 256px"
+                              src={imageUrl}
+                            />
+                          ) : (
+                            <div className="absolute inset-0" />
+                          )
+                        })()}
                       </div>
                       <div className="flex flex-col justify-center gap-2">
                         <div className="flex items-center gap-3">
@@ -156,16 +168,6 @@ export default async function Home() {
                           {a.title}
                         </h4>
                         <p className="text-text-subtle dark:text-gray-400 text-sm leading-relaxed line-clamp-2">{a.summary}</p>
-                        <div className="flex items-center gap-2 mt-2">
-                          <Image
-                            alt=""
-                            className="size-6 rounded-full object-cover grayscale"
-                            height={24}
-                            width={24}
-                            src="data:image/gif;base64,R0lGODlhAQABAAAAACw="
-                          />
-                          <span className="text-xs font-bold text-text-main dark:text-gray-300 font-mono uppercase"></span>
-                        </div>
                       </div>
                     </article>
                   </Link>
