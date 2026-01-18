@@ -1,6 +1,58 @@
 import Link from 'next/link'
 
-export default function SitemapPage() {
+import {sanityFetch} from '@/lib/sanity.client'
+import {ARTICLES_LIST_QUERY, AUTHORS_LIST_QUERY, CATEGORIES_LIST_QUERY, LEARN_CATEGORIES_LIST_QUERY, LEARN_LATEST_ARTICLES_QUERY} from '@/lib/sanity.queries'
+
+type CategoryListItem = {
+  _id: string
+  name: string
+  slug: string
+}
+
+type AuthorListItem = {
+  _id: string
+  name: string
+  slug: string
+}
+
+type NewsListItem = {
+  _id: string
+  title: string
+  slug: string
+}
+
+type LearnCategoryItem = {
+  _id: string
+  title: string
+  slug: string
+}
+
+type LearnListItem = {
+  _id: string
+  title: string
+  slug: string
+  category?: {
+    _id: string
+    title: string
+    slug: string
+  } | null
+}
+
+export default async function SitemapPage() {
+  const [categories, learnCategories, authors, latestNews, latestLearn] = await Promise.all([
+    sanityFetch<CategoryListItem[]>(CATEGORIES_LIST_QUERY, {}, {revalidate: 3600, useCdn: false, tags: ['categories']}),
+    sanityFetch<LearnCategoryItem[]>(LEARN_CATEGORIES_LIST_QUERY, {}, {revalidate: 3600, useCdn: false, tags: ['learn']}),
+    sanityFetch<AuthorListItem[]>(AUTHORS_LIST_QUERY, {}, {revalidate: 3600, useCdn: false, tags: ['authors']}),
+    sanityFetch<NewsListItem[]>(ARTICLES_LIST_QUERY, {}, {revalidate: 3600, useCdn: false, tags: ['articles']}),
+    sanityFetch<LearnListItem[]>(LEARN_LATEST_ARTICLES_QUERY, {}, {revalidate: 3600, useCdn: false, tags: ['learn']}),
+  ])
+
+  const categoryItems = categories.slice(0, 12)
+  const learnCategoryItems = learnCategories.slice(0, 12)
+  const authorItems = authors.slice(0, 12)
+  const latestNewsItems = latestNews.slice(0, 12)
+  const latestLearnItems = latestLearn.slice(0, 12)
+
   return (
     <main className="bg-background-light dark:bg-background-dark text-text-main dark:text-white">
       <div className="max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-14">
@@ -26,6 +78,18 @@ export default function SitemapPage() {
                 <Link className="text-sm font-semibold hover:text-primary transition-colors" href="/news">
                   News
                 </Link>
+                <Link className="text-sm font-semibold hover:text-primary transition-colors" href="/learn">
+                  Learn
+                </Link>
+                <Link className="text-sm font-semibold hover:text-primary transition-colors" href="/categories">
+                  Categories
+                </Link>
+                <Link className="text-sm font-semibold hover:text-primary transition-colors" href="/authors">
+                  Authors
+                </Link>
+                <Link className="text-sm font-semibold hover:text-primary transition-colors" href="/search">
+                  Search
+                </Link>
               </div>
             </div>
 
@@ -47,8 +111,17 @@ export default function SitemapPage() {
                 <Link className="text-sm font-semibold hover:text-primary transition-colors" href="/help-center">
                   Help Center
                 </Link>
+                <Link className="text-sm font-semibold hover:text-primary transition-colors" href="/contact">
+                  Contact
+                </Link>
                 <Link className="text-sm font-semibold hover:text-primary transition-colors" href="/sitemap">
                   Sitemap
+                </Link>
+                <Link className="text-sm font-semibold hover:text-primary transition-colors" href="/sitemap.xml">
+                  Sitemap XML
+                </Link>
+                <Link className="text-sm font-semibold hover:text-primary transition-colors" href="/robots.txt">
+                  Robots
                 </Link>
               </div>
             </div>
@@ -64,6 +137,80 @@ export default function SitemapPage() {
                 </Link>
                 <Link className="text-sm font-semibold hover:text-primary transition-colors" href="/cookies">
                   Cookies
+                </Link>
+              </div>
+            </div>
+
+            <div className="rounded-xl border border-[#e7ebf3] dark:border-gray-800 bg-surface-light dark:bg-surface-dark p-6">
+              <h2 className="text-xs font-bold uppercase tracking-widest font-mono text-text-subtle dark:text-gray-400">News Categories</h2>
+              <div className="mt-4 grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-3">
+                {categoryItems.map((c) => (
+                  <Link key={c._id} className="text-sm font-semibold hover:text-primary transition-colors" href={`/category/${c.slug}`}>
+                    {c.name}
+                  </Link>
+                ))}
+                <Link className="text-sm font-semibold hover:text-primary transition-colors" href="/categories">
+                  View all
+                </Link>
+              </div>
+            </div>
+
+            <div className="rounded-xl border border-[#e7ebf3] dark:border-gray-800 bg-surface-light dark:bg-surface-dark p-6">
+              <h2 className="text-xs font-bold uppercase tracking-widest font-mono text-text-subtle dark:text-gray-400">Learn Topics</h2>
+              <div className="mt-4 grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-3">
+                {learnCategoryItems.map((c) => (
+                  <Link key={c._id} className="text-sm font-semibold hover:text-primary transition-colors" href={`/learn/${c.slug}`}>
+                    {c.title}
+                  </Link>
+                ))}
+                <Link className="text-sm font-semibold hover:text-primary transition-colors" href="/learn">
+                  View all
+                </Link>
+              </div>
+            </div>
+
+            <div className="rounded-xl border border-[#e7ebf3] dark:border-gray-800 bg-surface-light dark:bg-surface-dark p-6">
+              <h2 className="text-xs font-bold uppercase tracking-widest font-mono text-text-subtle dark:text-gray-400">Latest News</h2>
+              <div className="mt-4 flex flex-col gap-3">
+                {latestNewsItems.map((a) => (
+                  <Link key={a._id} className="text-sm font-semibold hover:text-primary transition-colors" href={`/news/${a.slug}`}>
+                    {a.title}
+                  </Link>
+                ))}
+                <Link className="text-sm font-semibold hover:text-primary transition-colors" href="/news">
+                  View all
+                </Link>
+              </div>
+            </div>
+
+            <div className="rounded-xl border border-[#e7ebf3] dark:border-gray-800 bg-surface-light dark:bg-surface-dark p-6">
+              <h2 className="text-xs font-bold uppercase tracking-widest font-mono text-text-subtle dark:text-gray-400">Latest Learn</h2>
+              <div className="mt-4 flex flex-col gap-3">
+                {latestLearnItems.map((a) => (
+                  <Link
+                    key={a._id}
+                    className="text-sm font-semibold hover:text-primary transition-colors"
+                    href={a.category?.slug ? `/learn/${a.category.slug}/${a.slug}` : '/learn'}
+                  >
+                    {a.title}
+                  </Link>
+                ))}
+                <Link className="text-sm font-semibold hover:text-primary transition-colors" href="/learn">
+                  View all
+                </Link>
+              </div>
+            </div>
+
+            <div className="rounded-xl border border-[#e7ebf3] dark:border-gray-800 bg-surface-light dark:bg-surface-dark p-6">
+              <h2 className="text-xs font-bold uppercase tracking-widest font-mono text-text-subtle dark:text-gray-400">Authors</h2>
+              <div className="mt-4 grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-3">
+                {authorItems.map((a) => (
+                  <Link key={a._id} className="text-sm font-semibold hover:text-primary transition-colors" href={`/authors/${a.slug}`}>
+                    {a.name}
+                  </Link>
+                ))}
+                <Link className="text-sm font-semibold hover:text-primary transition-colors" href="/authors">
+                  View all
                 </Link>
               </div>
             </div>
