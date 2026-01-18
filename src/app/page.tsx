@@ -105,7 +105,9 @@ export default async function Home() {
                             {a?.title ?? ''}
                           </h3>
                           <span className="text-xs text-text-subtle mt-1 font-mono uppercase">
-                            {a?.publishedDate ? new Date(a.publishedDate).toLocaleDateString(undefined, {month: 'short', day: 'numeric'}) : ''}
+                            {a?.publishedDate
+                              ? new Date(a.publishedDate).toLocaleDateString(undefined, {month: 'short', day: 'numeric', year: 'numeric'})
+                              : ''}
                           </span>
                         </Link>
                       ) : (
@@ -114,7 +116,9 @@ export default async function Home() {
                           <span className="text-xs font-bold text-primary uppercase tracking-widest font-mono">{a?.category?.name ?? ''}</span>
                           <h3 className="font-serif text-xl font-bold text-text-main dark:text-white leading-snug transition-colors">{a?.title ?? ''}</h3>
                           <span className="text-xs text-text-subtle mt-1 font-mono uppercase">
-                            {a?.publishedDate ? new Date(a.publishedDate).toLocaleDateString(undefined, {month: 'short', day: 'numeric'}) : ''}
+                            {a?.publishedDate
+                              ? new Date(a.publishedDate).toLocaleDateString(undefined, {month: 'short', day: 'numeric', year: 'numeric'})
+                              : ''}
                           </span>
                         </div>
                       )}
@@ -196,7 +200,9 @@ export default async function Home() {
                       ></div>
                       <div className="flex flex-col gap-1">
                         <span className="text-xs font-bold text-text-subtle font-mono">
-                          {a.publishedDate ? new Date(a.publishedDate).toLocaleDateString(undefined, {month: 'short', day: 'numeric'}) : ''}
+                          {a.publishedDate
+                            ? new Date(a.publishedDate).toLocaleDateString(undefined, {month: 'short', day: 'numeric', year: 'numeric'})
+                            : ''}
                         </span>
                         <Link
                           className={

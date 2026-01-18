@@ -10,6 +10,7 @@ import {sanityFetch} from '@/lib/sanity.client'
 import {LEARN_ARTICLE_BY_CATEGORY_AND_SLUG_QUERY, LEARN_READ_NEXT_QUERY} from '@/lib/sanity.queries'
 import {safeSanityImageUrl} from '@/lib/sanity/image'
 import ArticleActionButtons from '@/components/ArticleActionButtons'
+import ScrollProgressBar from '@/components/ScrollProgressBar'
 
 const portableTextComponents: PortableTextComponents = {
   marks: {
@@ -133,12 +134,12 @@ export default async function LearnArticlePage({params}: PageProps) {
 
   return (
     <div className="theme-detail bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-slate-100 antialiased overflow-x-hidden">
-      <div className="w-full h-1 bg-slate-200 dark:bg-slate-800">
-        <div className="h-full bg-primary w-[35%] transition-all duration-300"></div>
+      <div className="fixed top-0 left-0 right-0 z-[70] h-1 bg-slate-200/90 dark:bg-slate-800/90">
+        <ScrollProgressBar className="h-full bg-primary" targetId="learn-article-content" />
       </div>
 
       <main className="w-full flex justify-center pb-20">
-        <article className="max-w-[960px] w-full px-4 sm:px-6 md:px-8 pt-8 md:pt-12 flex flex-col">
+        <article className="max-w-[960px] w-full px-4 sm:px-6 md:px-8 pt-8 md:pt-12 flex flex-col" id="learn-article-content">
           <div className="flex items-center gap-2 mb-6 text-sm text-slate-500 dark:text-slate-400">
             <Link className="hover:text-primary transition-colors" href="/">
               Home

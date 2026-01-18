@@ -18,6 +18,7 @@ export default function TermsPage() {
         {id: 'content', label: 'Content & IP'},
         {id: 'acceptable-use', label: 'Acceptable Use'},
         {id: 'third-party', label: 'Third-Party Links'},
+        {id: 'ai-disclosure', label: 'AI Editing Disclosure'},
         {id: 'disclaimers', label: 'Disclaimers'},
         {id: 'liability', label: 'Limitation of Liability'},
         {id: 'termination', label: 'Termination'},
@@ -70,36 +71,46 @@ export default function TermsPage() {
         </p>
       </section>
 
+      <section className="scroll-mt-28 mb-5 rounded-lg border border-gray-200 dark:border-gray-800 bg-white dark:bg-surface-dark p-5" id="ai-disclosure">
+        <h2 className="text-2xl text-gray-900 dark:text-white mb-3">6. AI Editing Disclosure</h2>
+        <p className="text-gray-600 dark:text-gray-300 leading-7 mb-3">
+          We used AI tools only to check grammar, spelling, and clarity of this content. The ideas and decisions are still made by people.
+        </p>
+        <p className="text-gray-600 dark:text-gray-300 leading-7">
+          AI was not used to make decisions, collect personal data, or influence users. No personal user data was shared with any AI tools.
+        </p>
+      </section>
+
       <section className="scroll-mt-28 mb-5 rounded-lg border border-gray-200 dark:border-gray-800 bg-white dark:bg-surface-dark p-5" id="disclaimers">
-        <h2 className="text-2xl text-gray-900 dark:text-white mb-3">6. Disclaimers</h2>
+        <h2 className="text-2xl text-gray-900 dark:text-white mb-3">7. Disclaimers</h2>
         <p className="text-gray-600 dark:text-gray-300 leading-7">
           VCXPRESS content is provided for informational purposes only and does not constitute investment, legal, accounting, or professional advice. The Service is provided “as is” and “as available”.
         </p>
       </section>
 
       <section className="scroll-mt-28 mb-5 rounded-lg border border-gray-200 dark:border-gray-800 bg-white dark:bg-surface-dark p-5" id="liability">
-        <h2 className="text-2xl text-gray-900 dark:text-white mb-3">7. Limitation of Liability</h2>
+        <h2 className="text-2xl text-gray-900 dark:text-white mb-3">8. Limitation of Liability</h2>
         <p className="text-gray-600 dark:text-gray-300 leading-7">
           To the maximum extent permitted by law, VCXPRESS will not be liable for indirect, incidental, special, consequential, or punitive damages, or any loss of profits, revenues, data, or goodwill.
         </p>
       </section>
 
       <section className="scroll-mt-28 mb-5 rounded-lg border border-gray-200 dark:border-gray-800 bg-white dark:bg-surface-dark p-5" id="termination">
-        <h2 className="text-2xl text-gray-900 dark:text-white mb-3">8. Termination</h2>
+        <h2 className="text-2xl text-gray-900 dark:text-white mb-3">9. Termination</h2>
         <p className="text-gray-600 dark:text-gray-300 leading-7">
           We may suspend or terminate access to the Service if we reasonably believe you have violated these Terms or are using the Service in a way that could create risk or legal exposure.
         </p>
       </section>
 
       <section className="scroll-mt-28 mb-5 rounded-lg border border-gray-200 dark:border-gray-800 bg-white dark:bg-surface-dark p-5" id="governing-law">
-        <h2 className="text-2xl text-gray-900 dark:text-white mb-3">9. Governing Law</h2>
+        <h2 className="text-2xl text-gray-900 dark:text-white mb-3">10. Governing Law</h2>
         <p className="text-gray-600 dark:text-gray-300 leading-7">
           These Terms are governed by applicable laws in your jurisdiction, without regard to conflict of law principles.
         </p>
       </section>
 
       <section className="scroll-mt-28 rounded-lg border border-gray-200 dark:border-gray-800 bg-white dark:bg-surface-dark p-5" id="contact">
-        <h2 className="text-2xl text-gray-900 dark:text-white mb-3">10. Contact</h2>
+        <h2 className="text-2xl text-gray-900 dark:text-white mb-3">11. Contact</h2>
         <p className="text-gray-600 dark:text-gray-300 leading-7">
           For questions about these Terms, contact <a href="mailto:contact@vcxpress.com">contact@vcxpress.com</a> or use our{' '}
           <Link href="/contact">Contact</Link> page.

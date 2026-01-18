@@ -18,6 +18,7 @@ export default function PrivacyPage() {
         {id: 'data-usage', label: 'How We Use Data'},
         {id: 'cookies', label: 'Cookies & Tracking'},
         {id: 'sharing', label: 'Sharing & Disclosures'},
+        {id: 'ai-disclosure', label: 'AI Editing Disclosure'},
         {id: 'rights', label: 'Your Rights & Choices'},
         {id: 'contact', label: 'Contact'},
       ]}
@@ -75,8 +76,18 @@ export default function PrivacyPage() {
         </ul>
       </section>
 
+      <section className="scroll-mt-28 mb-5 rounded-lg border border-gray-200 dark:border-gray-800 bg-white dark:bg-surface-dark p-5" id="ai-disclosure">
+        <h2 className="text-2xl text-gray-900 dark:text-white mb-3">6. AI Editing Disclosure</h2>
+        <p className="text-gray-600 dark:text-gray-300 leading-7 mb-3">
+          We used AI tools only to check grammar, spelling, and clarity of this content. The ideas and decisions are still made by people.
+        </p>
+        <p className="text-gray-600 dark:text-gray-300 leading-7">
+          AI was not used to collect personal data, make decisions, or influence users. No personal user data was shared with any AI tools.
+        </p>
+      </section>
+
       <section className="scroll-mt-28 mb-5 rounded-lg border border-gray-200 dark:border-gray-800 bg-white dark:bg-surface-dark p-5" id="rights">
-        <h2 className="text-2xl text-gray-900 dark:text-white mb-3">6. Your Rights &amp; Choices</h2>
+        <h2 className="text-2xl text-gray-900 dark:text-white mb-3">7. Your Rights &amp; Choices</h2>
         <p className="text-gray-600 dark:text-gray-300 leading-7 mb-3">
           Depending on your location, you may have rights to access, correct, delete, or restrict processing of your personal information.
         </p>
@@ -88,7 +99,7 @@ export default function PrivacyPage() {
       </section>
 
       <section className="scroll-mt-28 rounded-lg border border-gray-200 dark:border-gray-800 bg-white dark:bg-surface-dark p-5" id="contact">
-        <h2 className="text-2xl text-gray-900 dark:text-white mb-3">7. Contact</h2>
+        <h2 className="text-2xl text-gray-900 dark:text-white mb-3">8. Contact</h2>
         <p className="text-gray-600 dark:text-gray-300 leading-7">
           For privacy questions or requests, contact <a href="mailto:contact@vcxpress.com">contact@vcxpress.com</a> or use our{' '}
           <Link href="/contact">Contact</Link> page.

@@ -156,8 +156,8 @@ export default function GlobalNavbar() {
               Learn
               <ChevronDownIcon className="h-3.5 w-3.5 opacity-70" />
             </Link>
-            <Link className="inline-flex items-center gap-1 text-text-main/80 hover:text-text-main dark:text-white/90 dark:hover:text-white transition-colors" href="/category/business">
-              Business
+            <Link className="inline-flex items-center gap-1 text-text-main/80 hover:text-text-main dark:text-white/90 dark:hover:text-white transition-colors" href="/category/ai">
+              AI
               <ChevronDownIcon className="h-3.5 w-3.5 opacity-70" />
             </Link>
             <Link className="inline-flex items-center gap-1 text-text-main/80 hover:text-text-main dark:text-white/90 dark:hover:text-white transition-colors" href="/category/startups">
@@ -168,8 +168,8 @@ export default function GlobalNavbar() {
               Tech
               <ChevronDownIcon className="h-3.5 w-3.5 opacity-70" />
             </Link>
-            <Link className="inline-flex items-center gap-1 text-text-main/80 hover:text-text-main dark:text-white/90 dark:hover:text-white transition-colors" href="/category/finance">
-              Finance
+            <Link className="inline-flex items-center gap-1 text-text-main/80 hover:text-text-main dark:text-white/90 dark:hover:text-white transition-colors" href="/category/fintech">
+              Fintech
               <ChevronDownIcon className="h-3.5 w-3.5 opacity-70" />
             </Link>
             <Link className="inline-flex items-center gap-1 text-text-main/80 hover:text-text-main dark:text-white/90 dark:hover:text-white transition-colors" href="/about">
@@ -235,8 +235,8 @@ export default function GlobalNavbar() {
                 <Link className="text-text-main/80 hover:text-text-main dark:text-white/90 dark:hover:text-white transition-colors py-2" href="/learn" onClick={() => setOpen(false)}>
                   Learn
                 </Link>
-                <Link className="text-text-main/80 hover:text-text-main dark:text-white/90 dark:hover:text-white transition-colors py-2" href="/category/business" onClick={() => setOpen(false)}>
-                  Business
+                <Link className="text-text-main/80 hover:text-text-main dark:text-white/90 dark:hover:text-white transition-colors py-2" href="/category/ai" onClick={() => setOpen(false)}>
+                  AI
                 </Link>
                 <Link className="text-text-main/80 hover:text-text-main dark:text-white/90 dark:hover:text-white transition-colors py-2" href="/category/startups" onClick={() => setOpen(false)}>
                   Startups
@@ -244,8 +244,8 @@ export default function GlobalNavbar() {
                 <Link className="text-text-main/80 hover:text-text-main dark:text-white/90 dark:hover:text-white transition-colors py-2" href="/category/tech" onClick={() => setOpen(false)}>
                   Tech
                 </Link>
-                <Link className="text-text-main/80 hover:text-text-main dark:text-white/90 dark:hover:text-white transition-colors py-2" href="/category/finance" onClick={() => setOpen(false)}>
-                  Finance
+                <Link className="text-text-main/80 hover:text-text-main dark:text-white/90 dark:hover:text-white transition-colors py-2" href="/category/fintech" onClick={() => setOpen(false)}>
+                  Fintech
                 </Link>
                 <Link className="text-text-main/80 hover:text-text-main dark:text-white/90 dark:hover:text-white transition-colors py-2" href="/about" onClick={() => setOpen(false)}>
                   About

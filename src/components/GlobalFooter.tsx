@@ -160,23 +160,6 @@ export default async function GlobalFooter() {
 
                 <div className="min-w-0">
                   <div className="text-xs font-mono uppercase tracking-wider text-text-main/70 dark:text-white/70 font-semibold mb-3">
-                    Sections
-                  </div>
-                  <div className="flex flex-col gap-2">
-                    <Link className="text-sm text-text-main/60 dark:text-white/60 hover:text-primary transition-colors" href="/category/startups">
-                      Startups
-                    </Link>
-                    <Link className="text-sm text-text-main/60 dark:text-white/60 hover:text-primary transition-colors" href="/articles">
-                      Funding
-                    </Link>
-                    <Link className="text-sm text-text-main/60 dark:text-white/60 hover:text-primary transition-colors" href="/category/venture-capital">
-                      Venture Capital
-                    </Link>
-                  </div>
-                </div>
-
-                <div className="min-w-0">
-                  <div className="text-xs font-mono uppercase tracking-wider text-text-main/70 dark:text-white/70 font-semibold mb-3">
                     Support
                   </div>
                   <div className="flex flex-col gap-2">
@@ -284,23 +267,6 @@ export default async function GlobalFooter() {
                   </Link>
                 </div>
               </div>
-
-              <div className="min-w-0">
-                <div className="text-xs font-mono uppercase tracking-wider text-text-main/70 dark:text-white/70 font-semibold mb-3">
-                  Sections
-                </div>
-                <div className="flex flex-col gap-2">
-                  <Link className="text-sm text-text-main/60 dark:text-white/60 hover:text-primary transition-colors" href="/category/startups">
-                    Startups
-                  </Link>
-                  <Link className="text-sm text-text-main/60 dark:text-white/60 hover:text-primary transition-colors" href="/articles">
-                    Funding
-                  </Link>
-                  <Link className="text-sm text-text-main/60 dark:text-white/60 hover:text-primary transition-colors" href="/category/venture-capital">
-                    Venture Capital
-                  </Link>
-                </div>
-              </div>
             </div>
 
             <div className="mt-8">
@@ -351,19 +317,6 @@ export default async function GlobalFooter() {
                   <path d="M17.75 6.25a.75.75 0 110 1.5.75.75 0 010-1.5z" />
                 </svg>
               </SocialIconLink>
-            </div>
-
-            <div className="mt-10 flex flex-col gap-3">
-              <h5 className="font-bold text-text-main dark:text-white mb-2 uppercase font-mono text-xs tracking-wider transition-colors duration-300 ease-in-out">Sections</h5>
-              <Link className="text-sm text-text-main/60 dark:text-white/60 hover:text-primary transition-colors" href="/category/startups">
-                Startups
-              </Link>
-              <Link className="text-sm text-text-main/60 dark:text-white/60 hover:text-primary transition-colors" href="/articles">
-                Funding
-              </Link>
-              <Link className="text-sm text-text-main/60 dark:text-white/60 hover:text-primary transition-colors" href="/category/venture-capital">
-                Venture Capital
-              </Link>
             </div>
           </div>
 
@@ -446,6 +399,7 @@ export default async function GlobalFooter() {
         </div>
 
         <div className="border-t border-black/10 dark:border-white/10 pt-8 flex flex-col md:flex-row justify-between items-center gap-4 transition-colors duration-300 ease-in-out">
+          <p className="text-xs text-text-main/50 dark:text-white/50 font-mono transition-colors duration-300 ease-in-out"> 2026 VCXPRESS. All rights reserved.</p>
           <p className="text-xs text-text-main/50 dark:text-white/50 font-mono transition-colors duration-300 ease-in-out">© 2026 VCXPRESS. All rights reserved.</p>
           <div className="flex gap-6">
             <Link className="text-xs text-text-main/50 dark:text-white/50 hover:text-primary font-mono uppercase transition-colors" href="/privacy">
