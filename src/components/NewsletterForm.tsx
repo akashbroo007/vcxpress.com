@@ -2,6 +2,8 @@
 
 import {useState} from 'react'
 
+import TurnstileWidget from '@/components/TurnstileWidget'
+
 type Props = {
   className?: string
   inputClassName?: string
@@ -25,6 +27,7 @@ export default function NewsletterForm({
   const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle')
   const [error, setError] = useState<string>('')
   const [successMessage, setSuccessMessage] = useState<string>('You are subscribed.')
+  const [captchaToken, setCaptchaToken] = useState<string>('')
 
   type SubscribeErrorResponse = {
     error?: string
@@ -36,9 +39,16 @@ export default function NewsletterForm({
 
   const submit = async () => {
     const trimmed = email.trim().toLowerCase()
+    const captchaTrimmed = captchaToken.trim()
     if (!trimmed || !isValidEmail(trimmed)) {
       setStatus('error')
       setError('Enter a valid email address')
+      return
+    }
+
+    if (!captchaTrimmed) {
+      setStatus('error')
+      setError('Please verify you are human.')
       return
     }
 
@@ -49,7 +59,7 @@ export default function NewsletterForm({
       const res = await fetch('/api/subscribe', {
         method: 'POST',
         headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify({email: trimmed, source}),
+        body: JSON.stringify({email: trimmed, source, captchaToken: captchaTrimmed}),
       })
 
       if (!res.ok) {
@@ -69,6 +79,7 @@ export default function NewsletterForm({
 
       setStatus('success')
       setEmail('')
+      setCaptchaToken('')
       onSuccess?.()
     } catch {
       setStatus('error')
@@ -100,6 +111,30 @@ export default function NewsletterForm({
           <p className="text-xs text-green-700 dark:text-green-400 font-mono">{successMessage}</p>
         ) : null}
       </div>
+
+      {(() => {
+        const siteKey = process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY
+        if (!siteKey) return null
+
+        return (
+          <div className="mt-3">
+            <TurnstileWidget
+              siteKey={siteKey}
+              action="subscribe"
+              onToken={(token) => {
+                setCaptchaToken(token)
+                if (status !== 'idle') setStatus('idle')
+              }}
+              onExpire={() => {
+                setCaptchaToken('')
+              }}
+              onError={() => {
+                setCaptchaToken('')
+              }}
+            />
+          </div>
+        )
+      })()}
     </div>
   )
 }

@@ -1,10 +1,14 @@
-import {apiJson, hasOnlyAllowedKeys, isPlainObject, rateLimit, readJsonBody} from '@/lib/apiSecurity'
+import {apiJson, getClientIp, hasOnlyAllowedKeys, isPlainObject, rateLimit, readJsonBody} from '@/lib/apiSecurity'
+
+import {verifyTurnstile} from '@/lib/turnstile'
 
 type Body = {
   fullName?: string
   email?: string
   subject?: string
   message?: string
+  company_website?: string
+  captchaToken?: string
 }
 
 const isValidEmail = (value: string) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)
@@ -37,6 +41,22 @@ const parseBoolEnv = (value: string | undefined) => {
   return v === '1' || v === 'true' || v === 'yes' || v === 'on'
 }
 
+const looksLikeRandomString = (value: string) => {
+  const s = value.trim()
+  if (!s) return false
+  if (!/\s/.test(s)) return true
+
+  const letters = s.replace(/[^a-z]/gi, '')
+  if (letters.length >= 12 && !/[aeiou]/i.test(letters)) return true
+  return false
+}
+
+const logBlocked = (req: Request, reason: string, meta?: Record<string, unknown>) => {
+  const ip = getClientIp(req)
+  const ua = (req.headers.get('user-agent') ?? '').slice(0, 180)
+  console.warn('[contact] blocked', {reason, ip, ua, ...meta})
+}
+
 const subjectLabel = (value: string) => {
   switch (value) {
     case 'tip':
@@ -56,8 +76,19 @@ export async function POST(req: Request) {
   const debug = process.env.NODE_ENV !== 'production'
   const autoReplyEnabled = parseBoolEnv(process.env.CONTACT_AUTOREPLY_ENABLED)
 
-  const limited = rateLimit(req, {id: 'contact', limit: 20, windowMs: 60_000, burst: 40, skipIfBot: false})
-  if (limited) return limited
+  // Rate limiting reduces automated abuse while keeping the form usable for humans.
+  const limited = rateLimit(req, {
+    id: 'contact',
+    limit: 3,
+    windowMs: 60 * 60_000,
+    burst: 3,
+    skipIfBot: false,
+    errorMessage: 'Too many messages. Please try again in about an hour.',
+  })
+  if (limited) {
+    logBlocked(req, 'rate_limited')
+    return limited
+  }
 
   const parsed = await readJsonBody(req, {maxBytes: 20_000})
   if (!parsed.ok) return parsed.response
@@ -66,7 +97,7 @@ export async function POST(req: Request) {
     return apiJson({ok: false, error: 'Invalid request'}, {status: 400})
   }
 
-  if (!hasOnlyAllowedKeys(parsed.value, ['fullName', 'email', 'subject', 'message'])) {
+  if (!hasOnlyAllowedKeys(parsed.value, ['fullName', 'email', 'subject', 'message', 'company_website', 'captchaToken'])) {
     return apiJson({ok: false, error: 'Invalid request'}, {status: 400})
   }
 
@@ -76,8 +107,29 @@ export async function POST(req: Request) {
   const email = typeof body.email === 'string' ? body.email.trim().toLowerCase() : ''
   const subject = typeof body.subject === 'string' ? body.subject.trim() : ''
   const message = typeof body.message === 'string' ? body.message.trim() : ''
+  const honeypot = typeof body.company_website === 'string' ? body.company_website.trim() : ''
+  const captchaToken = typeof body.captchaToken === 'string' ? body.captchaToken.trim() : ''
+
+  // Honeypot: if filled, silently accept but do not send email.
+  if (honeypot) {
+    logBlocked(req, 'honeypot_triggered')
+    return apiJson({ok: true})
+  }
+
+  // Captcha: reject low-score/missing tokens to reduce automated submissions.
+  if (!captchaToken) {
+    logBlocked(req, 'captcha_failed', {missingToken: true})
+    return apiJson({ok: false, error: 'We could not verify your submission. Please try again.'}, {status: 400})
+  }
+
+  const captcha = await verifyTurnstile(req, captchaToken)
+  if (!captcha.ok) {
+    logBlocked(req, 'captcha_failed')
+    return apiJson({ok: false, error: captcha.error}, {status: 400})
+  }
 
   if (!fullName) return apiJson({ok: false, error: 'Full name is required'}, {status: 400})
+  if (fullName.length < 2) return apiJson({ok: false, error: 'Full name is required'}, {status: 400})
   if (fullName.length > 120) return apiJson({ok: false, error: 'Full name is required'}, {status: 400})
   if (!email || !isValidEmail(email)) return apiJson({ok: false, error: 'Enter a valid email address'}, {status: 400})
   if (email.length > 254) return apiJson({ok: false, error: 'Enter a valid email address'}, {status: 400})
@@ -86,6 +138,13 @@ export async function POST(req: Request) {
     return apiJson({ok: false, error: 'Select a subject'}, {status: 400})
   }
   if (!message) return apiJson({ok: false, error: 'Message is required'}, {status: 400})
+  if (message.length < 30) return apiJson({ok: false, error: 'Please provide a more detailed message (at least 30 characters).'}, {status: 400})
+  if (!/\s/.test(message)) return apiJson({ok: false, error: 'Please include a few words so we can understand your message.'}, {status: 400})
+  if (looksLikeRandomString(message)) {
+    // Simple spam heuristic: rejects random strings without spaces or without vowels.
+    logBlocked(req, 'spam_pattern')
+    return apiJson({ok: false, error: 'Please rewrite your message with more detail.'}, {status: 400})
+  }
   if (message.length > 5000) return apiJson({ok: false, error: 'Message is required'}, {status: 400})
 
   const resendKey = process.env.RESEND_API_KEY

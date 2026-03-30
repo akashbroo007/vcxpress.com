@@ -13,6 +13,7 @@ type RateLimitOptions = {
   windowMs: number
   burst?: number
   skipIfBot?: boolean
+  errorMessage?: string
 }
 
 const BOT_UA_RE =
@@ -113,7 +114,7 @@ export function rateLimit(req: Request, options: RateLimitOptions): NextResponse
     rateLimitStore.set(key, {tokens: refilled, last: now})
 
     return apiJson(
-      {ok: false, error: 'Too many requests'},
+      {ok: false, error: options.errorMessage || 'Too many requests'},
       {
         status: 429,
         headers: {

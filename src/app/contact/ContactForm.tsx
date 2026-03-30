@@ -2,13 +2,27 @@
 
 import {useState} from 'react'
 
+import TurnstileWidget from '@/components/TurnstileWidget'
+
 const isValidEmail = (value: string) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)
+
+const looksLikeRandomString = (value: string) => {
+  const s = value.trim()
+  if (!s) return false
+  if (!/\s/.test(s)) return true
+
+  const letters = s.replace(/[^a-z]/gi, '')
+  if (letters.length >= 12 && !/[aeiou]/i.test(letters)) return true
+  return false
+}
 
 export default function ContactForm() {
   const [fullName, setFullName] = useState('')
   const [email, setEmail] = useState('')
   const [subject, setSubject] = useState('')
   const [message, setMessage] = useState('')
+  const [companyWebsite, setCompanyWebsite] = useState('')
+  const [captchaToken, setCaptchaToken] = useState('')
   const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle')
   const [error, setError] = useState('')
 
@@ -17,8 +31,10 @@ export default function ContactForm() {
     const emailTrimmed = email.trim().toLowerCase()
     const subjectTrimmed = subject.trim()
     const messageTrimmed = message.trim()
+    const honeypot = companyWebsite.trim()
+    const captchaTrimmed = captchaToken.trim()
 
-    if (!nameTrimmed) {
+    if (!nameTrimmed || nameTrimmed.length < 2) {
       setStatus('error')
       setError('Full name is required')
       return
@@ -42,10 +58,41 @@ export default function ContactForm() {
       return
     }
 
+    if (messageTrimmed.length < 30) {
+      setStatus('error')
+      setError('Please provide a more detailed message (at least 30 characters).')
+      return
+    }
+
+    if (!/\s/.test(messageTrimmed)) {
+      setStatus('error')
+      setError('Please include a few words so we can understand your message.')
+      return
+    }
+
+    if (looksLikeRandomString(messageTrimmed)) {
+      setStatus('error')
+      setError('Please rewrite your message with more detail.')
+      return
+    }
+
+    if (!captchaTrimmed) {
+      setStatus('error')
+      setError('Please verify you are human.')
+      return
+    }
+
     setStatus('loading')
     setError('')
 
     try {
+      const siteKey = process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY
+      if (!siteKey) {
+        setStatus('error')
+        setError('Contact form is temporarily unavailable. Please try again later.')
+        return
+      }
+
       const res = await fetch('/api/contact', {
         method: 'POST',
         headers: {'Content-Type': 'application/json'},
@@ -54,6 +101,9 @@ export default function ContactForm() {
           email: emailTrimmed,
           subject: subjectTrimmed,
           message: messageTrimmed,
+          // Honeypot field: real users never fill this. Bots often do.
+          company_website: honeypot,
+          captchaToken: captchaTrimmed,
         }),
       })
 
@@ -86,6 +136,8 @@ export default function ContactForm() {
       setEmail('')
       setSubject('')
       setMessage('')
+      setCompanyWebsite('')
+      setCaptchaToken('')
     } catch {
       setStatus('error')
       setError('Failed to send message')
@@ -130,6 +182,21 @@ export default function ContactForm() {
           />
         </label>
       </div>
+
+      <div className="hidden" aria-hidden="true">
+        <label>
+          <span>Company website</span>
+          <input
+            autoComplete="off"
+            tabIndex={-1}
+            type="text"
+            value={companyWebsite}
+            onChange={(e) => {
+              setCompanyWebsite(e.target.value)
+            }}
+          />
+        </label>
+      </div>
       <label className="flex flex-col flex-1">
         <span className="text-[#0d121b] dark:text-gray-200 text-sm font-bold leading-normal pb-2">Subject</span>
         <div className="relative">
@@ -165,6 +232,28 @@ export default function ContactForm() {
           }}
         ></textarea>
       </label>
+
+      {(() => {
+        const siteKey = process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY
+        if (!siteKey) return null
+
+        return (
+          <TurnstileWidget
+            siteKey={siteKey}
+            action="contact"
+            onToken={(token) => {
+              setCaptchaToken(token)
+              if (status !== 'idle') setStatus('idle')
+            }}
+            onExpire={() => {
+              setCaptchaToken('')
+            }}
+            onError={() => {
+              setCaptchaToken('')
+            }}
+          />
+        )
+      })()}
 
       {status === 'error' ? (
         <div className="rounded border border-red-500/30 bg-red-500/10 p-3 text-sm text-red-200">{error}</div>

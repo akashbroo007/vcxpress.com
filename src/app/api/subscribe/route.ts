@@ -1,5 +1,7 @@
 import {apiJson, hasOnlyAllowedKeys, isPlainObject, rateLimit, readJsonBody} from '@/lib/apiSecurity'
 
+import {verifyTurnstile} from '@/lib/turnstile'
+
 import {createClient} from '@supabase/supabase-js'
 
 const isValidEmail = (value: string) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)
@@ -7,6 +9,7 @@ const isValidEmail = (value: string) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)
 type Body = {
   email?: string
   source?: string
+  captchaToken?: string
 }
 
 type SubscribeOkResponse = {
@@ -35,7 +38,7 @@ export async function POST(req: Request) {
     return apiJson({ok: false, error: 'Invalid request'}, {status: 400})
   }
 
-  if (!hasOnlyAllowedKeys(parsed.value, ['email', 'source'])) {
+  if (!hasOnlyAllowedKeys(parsed.value, ['email', 'source', 'captchaToken'])) {
     return apiJson({ok: false, error: 'Invalid request'}, {status: 400})
   }
 
@@ -43,6 +46,7 @@ export async function POST(req: Request) {
 
   const email = typeof body.email === 'string' ? body.email.trim().toLowerCase() : ''
   const source = typeof body.source === 'string' ? body.source.trim() : null
+  const captchaToken = typeof body.captchaToken === 'string' ? body.captchaToken.trim() : ''
 
   if (source && source.length > 120) {
     return apiJson({ok: false, error: 'Subscription failed'}, {status: 400})
@@ -54,6 +58,15 @@ export async function POST(req: Request) {
 
   if (email.length > 254) {
     return apiJson({ok: false, error: 'Enter a valid email address'}, {status: 400})
+  }
+
+  if (!captchaToken) {
+    return apiJson({ok: false, error: 'We could not verify your submission. Please try again.'}, {status: 400})
+  }
+
+  const captcha = await verifyTurnstile(req, captchaToken)
+  if (!captcha.ok) {
+    return apiJson({ok: false, error: captcha.error}, {status: 400})
   }
 
   const {data: existing, error: existingError} = await supabase
