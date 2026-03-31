@@ -1,6 +1,6 @@
 import {apiJson, hasOnlyAllowedKeys, isPlainObject, rateLimit, readJsonBody} from '@/lib/apiSecurity'
 
-import {createClient} from '@supabase/supabase-js'
+import {getAdminFirestore} from '@/lib/firebaseAdmin'
 
 const isValidEmail = (value: string) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)
 
@@ -8,16 +8,7 @@ type Body = {
   email?: string
 }
 
-const supabaseUrl = process.env.SUPABASE_URL
-const supabaseServiceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY
-
-const supabase = supabaseUrl && supabaseServiceRoleKey ? createClient(supabaseUrl, supabaseServiceRoleKey) : null
-
 export async function POST(req: Request) {
-  if (!supabase) {
-    return apiJson({ok: false, error: 'Unsubscribe failed'}, {status: 500})
-  }
-
   const limited = rateLimit(req, {id: 'unsubscribe', limit: 20, windowMs: 60_000, burst: 40, skipIfBot: false})
   if (limited) return limited
 
@@ -43,17 +34,15 @@ export async function POST(req: Request) {
     return apiJson({ok: false, error: 'Email required'}, {status: 400})
   }
 
-  const {error} = await supabase
-    .from('subscribers')
-    .update({
+  const db = getAdminFirestore()
+  const ref = db.collection('subscribers').doc(email)
+  await ref.set(
+    {
       is_active: false,
       unsubscribed_at: new Date().toISOString(),
-    })
-    .eq('email', email)
-
-  if (error) {
-    return apiJson({ok: false, error: 'Unsubscribe failed'}, {status: 500})
-  }
+    },
+    {merge: true},
+  )
 
   return apiJson({ok: true})
 }
