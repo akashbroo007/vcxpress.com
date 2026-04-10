@@ -271,10 +271,10 @@ export default async function Home({searchParams}: {searchParams?: Promise<{page
                     </div>
                   ))}
                 </div>
-                <div className="mt-10 p-5 pb-0 bg-gray-50 rounded-sm border border-gray-200">
+                <div className="mt-10 p-5 pb-0 bg-gray-50 dark:bg-white/5 rounded-sm border border-gray-200 dark:border-white/10">
                   <div className="flex items-center gap-2 mb-3">
-                    <span className="material-symbols-outlined text-gray-600">mail</span>
-                    <h4 className="font-serif font-semibold text-lg text-gray-800 uppercase tracking-wide">Daily Briefing</h4>
+                    <span className="material-symbols-outlined text-gray-600 dark:text-gray-300">mail</span>
+                    <h4 className="font-serif font-semibold text-lg text-gray-800 dark:text-white uppercase tracking-wide">Daily Briefing</h4>
                   </div>
                   <p className="text-sm text-text-main dark:text-gray-300 mb-4 leading-relaxed font-medium">
                     Get the intelligence you need. Delivered every morning.

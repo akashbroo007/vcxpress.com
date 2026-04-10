@@ -16,37 +16,6 @@ function ChevronDownIcon({className}: {className?: string}) {
   )
 }
 
-function SunIcon({className}: {className?: string}) {
-  return (
-    <svg className={className} fill="none" viewBox="0 0 24 24" aria-hidden="true">
-      <path
-        d="M12 18a6 6 0 1 0 0-12 6 6 0 0 0 0 12Z"
-        stroke="currentColor"
-        strokeWidth="1.7"
-      />
-      <path
-        d="M12 2.75v2.5M12 18.75v2.5M4.22 4.22l1.77 1.77M18.01 18.01l1.77 1.77M2.75 12h2.5M18.75 12h2.5M4.22 19.78l1.77-1.77M18.01 5.99l1.77-1.77"
-        stroke="currentColor"
-        strokeLinecap="round"
-        strokeWidth="1.7"
-      />
-    </svg>
-  )
-}
-
-function MoonIcon({className}: {className?: string}) {
-  return (
-    <svg className={className} fill="none" viewBox="0 0 24 24" aria-hidden="true">
-      <path
-        d="M21 14.6A7.8 7.8 0 0 1 9.4 3a6.9 6.9 0 1 0 11.6 11.6Z"
-        stroke="currentColor"
-        strokeLinejoin="round"
-        strokeWidth="1.7"
-      />
-    </svg>
-  )
-}
-
 function FacebookIcon({className}: {className?: string}) {
   return (
     <svg className={className} viewBox="0 0 24 24" fill="currentColor">
@@ -204,30 +173,23 @@ export default function GlobalNavbar() {
               </button>
 
               {/* Theme toggle */}
-              <button
+              <label
+                className="ui-switch hidden sm:inline-flex items-center justify-center h-10 px-1 rounded-md hover:bg-gray-100 dark:hover:bg-white/10 transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
                 aria-label="Toggle theme"
-                className="hidden sm:inline-flex items-center justify-center h-10 w-10 rounded-md text-gray-600 dark:text-gray-300 hover:text-primary dark:hover:text-white hover:bg-gray-100 dark:hover:bg-white/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/30 transition-colors duration-300 ease-in-out disabled:opacity-50 disabled:cursor-not-allowed"
-                type="button"
-                onClick={toggleTheme}
-                disabled={!mounted}
               >
-                {!mounted ? (
-                  <span className="block h-5 w-5" />
-                ) : (
-                  <span className="relative block h-5 w-5">
-                    <SunIcon
-                      className={`absolute inset-0 h-5 w-5 transition-all duration-300 ease-in-out ${
-                        theme === 'dark' ? 'opacity-100 rotate-0 scale-100' : 'opacity-0 -rotate-90 scale-90'
-                      }`}
-                    />
-                    <MoonIcon
-                      className={`absolute inset-0 h-5 w-5 transition-all duration-300 ease-in-out ${
-                        theme === 'dark' ? 'opacity-0 rotate-90 scale-90' : 'opacity-100 rotate-0 scale-100'
-                      }`}
-                    />
-                  </span>
-                )}
-              </button>
+                <input
+                  type="checkbox"
+                  checked={mounted && theme === 'dark'}
+                  onChange={() => {
+                    if (!mounted) return
+                    toggleTheme()
+                  }}
+                  disabled={!mounted}
+                />
+                <span className="slider" aria-hidden="true">
+                  <span className="circle" />
+                </span>
+              </label>
 
               {/* Subscribe button */}
               <button
