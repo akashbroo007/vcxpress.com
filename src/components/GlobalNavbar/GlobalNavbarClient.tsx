@@ -130,9 +130,9 @@ export default function GlobalNavbar() {
               </button>
             </div>
 
-            {/* Center: Logo */}
+            {/* Center: Logo - smaller on mobile */}
             <Link
-              className="absolute left-1/2 -translate-x-1/2 font-serif text-2xl sm:text-3xl md:text-4xl font-semibold tracking-[0.05em] text-gray-800 dark:text-white shrink-0 leading-none transition-colors duration-300 ease-in-out"
+              className="absolute left-1/2 -translate-x-1/2 font-serif text-xl sm:text-3xl md:text-4xl font-semibold tracking-[0.05em] text-gray-800 dark:text-white shrink-0 leading-none transition-colors duration-300 ease-in-out"
               href="/"
             >
               VCXPRESS
@@ -172,9 +172,9 @@ export default function GlobalNavbar() {
                 </svg>
               </button>
 
-              {/* Theme toggle - desktop only */}
+              {/* Theme toggle - desktop only (hidden on mobile and tablet) */}
               <label
-                className="ui-switch hidden sm:inline-flex items-center justify-center h-10 px-1 rounded-md hover:bg-gray-100 dark:hover:bg-white/10 transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+                className="ui-switch hidden md:inline-flex items-center justify-center h-10 px-1 rounded-md hover:bg-gray-100 dark:hover:bg-white/10 transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
                 aria-label="Toggle theme"
               >
                 <input
@@ -191,9 +191,9 @@ export default function GlobalNavbar() {
                 </span>
               </label>
 
-              {/* Subscribe button */}
+              {/* Subscribe button - smaller on mobile */}
               <button
-                className="bg-[#1a1a2e] hover:bg-[#252542] text-white text-xs sm:text-sm font-semibold px-3 sm:px-5 py-2 sm:py-2.5 rounded-md transition-all duration-200 uppercase tracking-wide hover:shadow-lg hover:shadow-black/20 hover:-translate-y-0.5"
+                className="bg-[#1a1a2e] hover:bg-[#252542] text-white text-[10px] sm:text-sm font-semibold px-2 sm:px-5 py-1.5 sm:py-2.5 rounded-md transition-all duration-200 uppercase tracking-wide hover:shadow-lg hover:shadow-black/20 hover:-translate-y-0.5"
                 type="button"
                 onClick={() => {
                   setSubscribeOpen(true)
@@ -201,7 +201,8 @@ export default function GlobalNavbar() {
                   setSearchOpen(false)
                 }}
               >
-                Subscribe
+                <span className="sm:hidden">Join</span>
+                <span className="hidden sm:inline">Subscribe</span>
               </button>
             </div>
           </div>
