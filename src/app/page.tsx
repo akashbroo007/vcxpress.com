@@ -6,6 +6,7 @@ import {LATEST_FEATURED_ARTICLE_QUERY, LATEST_NEWS_EXCLUDING_FEATURED_QUERY} fro
 import {safeSanityImageUrl} from '@/lib/sanity/image'
 import NewsletterForm from '@/components/NewsletterForm'
 import Pagination from '@/components/Pagination'
+import LiveWireTimeline from '@/components/LiveWireTimeline'
 
 type ArticleListItem = {
   _id: string
@@ -203,42 +204,12 @@ export default async function Home({searchParams}: {searchParams?: Promise<{page
               )}
             </div>
             <div className="lg:col-span-4 pl-0 lg:pl-6 lg:border-l border-gray-200 dark:border-gray-800">
-              <div className="sticky top-24">
+              <div className="lg:sticky lg:top-24">
                 <div className="flex items-center gap-2 mb-6 pb-2 border-b-2 border-gray-300 w-fit">
                   <span className="material-symbols-outlined text-gray-500">flash_on</span>
                   <h3 className="font-serif text-lg font-semibold text-gray-800 dark:text-white uppercase tracking-wider">Live Wire</h3>
                 </div>
-                <div className="flex flex-col gap-6 relative">
-                  <div className="absolute left-[5px] top-2 bottom-2 w-px bg-gray-200 dark:bg-gray-800"></div>
-                  {latest.slice(0, liveWireCount).map((a, idx) => (
-                    <div key={a._id} className="flex gap-4 relative">
-                      <div
-                        className={
-                          idx === 0
-                            ? 'w-2.5 h-2.5 rounded-full bg-gray-400 mt-1.5 flex-shrink-0 relative z-10 ring-4 ring-white dark:ring-background-dark'
-                            : 'w-2.5 h-2.5 rounded-full bg-gray-200 mt-1.5 flex-shrink-0 relative z-10 ring-4 ring-white dark:ring-background-dark'
-                        }
-                      ></div>
-                      <div className="flex flex-col gap-1">
-                        <span className="text-xs font-bold text-text-subtle font-mono">
-                          {a.publishedDate
-                            ? new Date(a.publishedDate).toLocaleDateString(undefined, {month: 'short', day: 'numeric', year: 'numeric'})
-                            : ''}
-                        </span>
-                        <Link
-                          className={
-                            idx === 0
-                              ? 'font-bold text-text-main dark:text-white hover:text-primary leading-snug font-serif'
-                              : 'font-medium text-text-main dark:text-white hover:text-primary leading-snug font-serif'
-                          }
-                          href={`/news/${a.slug}`}
-                        >
-                          {a.title}
-                        </Link>
-                      </div>
-                    </div>
-                  ))}
-                </div>
+                <LiveWireTimeline articles={latest} count={liveWireCount} />
                 <div className="mt-10 p-5 pb-0 bg-gray-50 dark:bg-white/5 rounded-sm border border-gray-200 dark:border-white/10">
                   <div className="flex items-center gap-2 mb-3">
                     <span className="material-symbols-outlined text-gray-600 dark:text-gray-300">mail</span>
