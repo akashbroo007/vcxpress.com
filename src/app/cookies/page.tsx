@@ -106,9 +106,9 @@ export default function CookiesPage() {
             </article>
 
             <aside className="lg:col-span-4">
-              <div className="rounded-xl border border-gray-200 bg-gray-50 p-6">
+              <div className="rounded-xl border border-gray-200 dark:border-gray-800 bg-gray-50 dark:bg-white/5 p-6">
                 <div className="flex items-center gap-2">
-                  <span className="material-symbols-outlined text-gray-500">shield</span>
+                  <span className="material-symbols-outlined text-gray-500 dark:text-gray-400">shield</span>
                   <h3 className="font-bold text-text-main dark:text-white">Cookie choices</h3>
                 </div>
                 <p className="mt-3 text-sm text-text-subtle dark:text-gray-300 leading-relaxed">
@@ -122,11 +122,11 @@ export default function CookiesPage() {
               </div>
 
               <div className="mt-6 rounded-xl border border-gray-200 dark:border-gray-800 bg-surface-light dark:bg-surface-dark p-6">
-                <h3 className="font-bold">Questions?</h3>
+                <h3 className="font-bold text-text-main dark:text-white">Questions?</h3>
                 <p className="mt-2 text-sm text-text-subtle dark:text-gray-300 leading-relaxed">
                   Contact us for privacy-related questions or requests.
                 </p>
-                <a className="mt-4 inline-flex items-center gap-2 text-sm font-semibold text-gray-700 hover:text-gray-900 hover:underline" href="/contact">
+                <a className="mt-4 inline-flex items-center gap-2 text-sm font-semibold text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white hover:underline" href="/contact">
                   Contact
                   <span className="material-symbols-outlined text-[18px]">arrow_forward</span>
                 </a>

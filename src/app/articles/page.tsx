@@ -140,10 +140,10 @@ export default async function ArticlesPage({searchParams}: {searchParams?: Promi
 
           <aside className="hidden lg:block lg:col-span-4 pl-8 border-l border-gray-200 dark:border-gray-800">
             <div className="sticky top-24 flex flex-col gap-10">
-              <div className="p-6 bg-gray-50 rounded-sm border border-gray-200">
+              <div className="p-6 bg-gray-50 dark:bg-white/5 rounded-sm border border-gray-200 dark:border-gray-800">
                 <div className="flex items-center gap-2 mb-3">
-                  <span className="material-symbols-outlined text-gray-600">mail</span>
-                  <h4 className="font-serif font-semibold text-lg text-gray-800 uppercase tracking-wide">Daily Briefing</h4>
+                  <span className="material-symbols-outlined text-gray-600 dark:text-gray-400">mail</span>
+                  <h4 className="font-serif font-semibold text-lg text-gray-800 dark:text-white uppercase tracking-wide">Daily Briefing</h4>
                 </div>
                 <p className="text-sm text-text-main dark:text-gray-300 mb-4 leading-relaxed font-medium">
                   Get the most important stories delivered to your inbox every morning.

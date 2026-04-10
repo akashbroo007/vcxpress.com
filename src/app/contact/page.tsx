@@ -36,7 +36,7 @@ export default function ContactPage() {
                   For immediate assistance or general questions about our coverage, email us directly.
                 </p>
                 <a
-                  className="text-gray-700 hover:text-gray-900 font-medium text-base break-all flex items-center gap-1 group"
+                  className="text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white font-medium text-base break-all flex items-center gap-1 group"
                   href="mailto:contact@vcxpress.com"
                 >
                   contact@vcxpress.com

@@ -215,9 +215,9 @@ export default async function SitemapPage() {
               </div>
             </div>
 
-            <div className="rounded-xl border border-gray-200 bg-gray-50 p-6 md:col-span-2 lg:col-span-2">
+            <div className="rounded-xl border border-gray-200 dark:border-gray-800 bg-gray-50 dark:bg-white/5 p-6 md:col-span-2 lg:col-span-2">
               <div className="flex items-center gap-2">
-                <span className="material-symbols-outlined text-gray-500">link</span>
+                <span className="material-symbols-outlined text-gray-500 dark:text-gray-400">link</span>
                 <h2 className="font-bold text-text-main dark:text-white">Looking for something specific?</h2>
               </div>
               <p className="mt-3 text-sm text-text-subtle dark:text-gray-300 leading-relaxed">
@@ -228,7 +228,7 @@ export default async function SitemapPage() {
                   Contact
                   <span className="material-symbols-outlined text-[18px]">arrow_forward</span>
                 </Link>
-                <Link className="inline-flex items-center gap-2 rounded border border-gray-300 text-gray-700 text-xs font-semibold uppercase tracking-widest px-4 py-2 hover:bg-gray-100 transition-colors" href="/news">
+                <Link className="inline-flex items-center gap-2 rounded border border-gray-300 dark:border-gray-700 text-gray-700 dark:text-gray-300 text-xs font-semibold uppercase tracking-widest px-4 py-2 hover:bg-gray-100 dark:hover:bg-white/5 transition-colors" href="/news">
                   Browse News
                   <span className="material-symbols-outlined text-[18px]">arrow_forward</span>
                 </Link>

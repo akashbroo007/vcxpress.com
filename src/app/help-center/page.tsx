@@ -109,16 +109,16 @@ export default function HelpCenterPage() {
                 </div>
               </div>
 
-              <div className="mt-6 rounded-xl border border-gray-200 bg-gray-50 p-6">
+              <div className="mt-6 rounded-xl border border-gray-200 dark:border-gray-800 bg-gray-50 dark:bg-white/5 p-6">
                 <div className="flex items-center gap-2">
-                  <span className="material-symbols-outlined text-gray-500">mail</span>
+                  <span className="material-symbols-outlined text-gray-500 dark:text-gray-400">mail</span>
                   <h3 className="font-bold text-text-main dark:text-white">Need help now?</h3>
                 </div>
                 <p className="mt-3 text-sm text-text-subtle dark:text-gray-300 leading-relaxed">
                   For support requests, include a clear subject and the page URL.
                 </p>
                 <a
-                  className="mt-4 inline-flex items-center gap-2 text-sm font-semibold text-gray-700 hover:text-gray-900 hover:underline"
+                  className="mt-4 inline-flex items-center gap-2 text-sm font-semibold text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white hover:underline"
                   href="mailto:contact@vcxpress.com"
                 >
                   Email contact@vcxpress.com
