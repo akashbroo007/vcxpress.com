@@ -1,7 +1,7 @@
  'use client'
 
 import Link from 'next/link'
-import type {ReactNode} from 'react'
+import {useEffect, useRef, useState, type ReactNode} from 'react'
 
 type ContentsItem = {
   id: string
@@ -27,6 +27,68 @@ export default function LegalShell({
   contactLabel,
   children,
 }: Props) {
+  const [activeId, setActiveId] = useState<string>(contents[0]?.id ?? '')
+  const observerRef = useRef<IntersectionObserver | null>(null)
+  const sectionRefs = useRef<Map<string, IntersectionObserverEntry>>(new Map())
+
+  useEffect(() => {
+    const handleIntersection = (entries: IntersectionObserverEntry[]) => {
+      entries.forEach((entry) => {
+        sectionRefs.current.set(entry.target.id, entry)
+      })
+
+      // Find the most visible section
+      let maxRatio = 0
+      let activeSectionId = ''
+
+      sectionRefs.current.forEach((entry) => {
+        if (entry.intersectionRatio > maxRatio) {
+          maxRatio = entry.intersectionRatio
+          activeSectionId = entry.target.id
+        }
+      })
+
+      if (activeSectionId && activeSectionId !== activeId) {
+        setActiveId(activeSectionId)
+      }
+    }
+
+    observerRef.current = new IntersectionObserver(handleIntersection, {
+      root: null,
+      rootMargin: '-20% 0px -60% 0px',
+      threshold: [0, 0.25, 0.5, 0.75, 1],
+    })
+
+    // Observe all sections
+    contents.forEach((item) => {
+      const element = document.getElementById(item.id)
+      if (element && observerRef.current) {
+        observerRef.current.observe(element)
+      }
+    })
+
+    return () => {
+      if (observerRef.current) {
+        observerRef.current.disconnect()
+      }
+    }
+  }, [contents, activeId])
+
+  const handleClick = (e: React.MouseEvent<HTMLAnchorElement>, id: string) => {
+    e.preventDefault()
+    const element = document.getElementById(id)
+    if (element) {
+      const offset = 100 // Account for sticky header
+      const elementPosition = element.getBoundingClientRect().top
+      const offsetPosition = elementPosition + window.scrollY - offset
+      window.scrollTo({
+        top: offsetPosition,
+        behavior: 'smooth',
+      })
+      setActiveId(id)
+    }
+  }
+
   return (
     <main className="bg-background-light dark:bg-background-dark text-gray-900 dark:text-gray-100 flex flex-col min-h-screen">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-12 w-full">
@@ -35,19 +97,23 @@ export default function LegalShell({
             <div className="sticky top-24">
               <h3 className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-4">Contents</h3>
               <nav aria-label="Sidebar" className="space-y-1">
-                {contents.map((item, idx) => (
-                  <a
-                    key={item.id}
-                    className={
-                      idx === 0
-                        ? 'group flex items-center border-l-2 border-primary py-2 pl-3 text-sm font-medium text-primary bg-primary/5 rounded-r'
-                        : 'group flex items-center border-l-2 border-transparent py-2 pl-3 text-sm font-medium text-gray-600 dark:text-gray-400 hover:border-gray-300 dark:hover:border-gray-600 hover:text-gray-900 dark:hover:white'
-                    }
-                    href={`#${item.id}`}
-                  >
-                    {idx + 1}. {item.label}
-                  </a>
-                ))}
+                {contents.map((item, idx) => {
+                  const isActive = activeId === item.id
+                  return (
+                    <a
+                      key={item.id}
+                      className={
+                        isActive
+                          ? 'group flex items-center border-l-2 border-primary py-2 pl-3 text-sm font-medium text-primary bg-primary/5 rounded-r transition-colors'
+                          : 'group flex items-center border-l-2 border-transparent py-2 pl-3 text-sm font-medium text-gray-600 dark:text-gray-400 hover:border-gray-300 dark:hover:border-gray-600 hover:text-gray-900 dark:hover:text-white transition-colors'
+                      }
+                      href={`#${item.id}`}
+                      onClick={(e) => handleClick(e, item.id)}
+                    >
+                      {idx + 1}. {item.label}
+                    </a>
+                  )
+                })}
               </nav>
 
               <div className="mt-8 p-4 bg-primary/5 rounded-lg border border-primary/10">

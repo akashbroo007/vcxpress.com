@@ -120,9 +120,6 @@ export default async function SitemapPage() {
                 <Link className="text-sm font-semibold hover:text-gray-700 transition-colors" href="/sitemap.xml">
                   Sitemap XML
                 </Link>
-                <Link className="text-sm font-semibold hover:text-gray-700 transition-colors" href="/robots.txt">
-                  Robots
-                </Link>
               </div>
             </div>
 
