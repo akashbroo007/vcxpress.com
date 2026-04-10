@@ -3,6 +3,7 @@ import {notFound} from 'next/navigation'
 
 import {sanityFetch} from '@/lib/sanity.client'
 import {CATEGORY_BY_SLUG_WITH_ARTICLES_QUERY} from '@/lib/sanity.queries'
+import Pagination from '@/components/Pagination'
 
 type CategoryDetail = {
   _id: string
@@ -107,36 +108,13 @@ export default async function CategoryDetailPage({params, searchParams}: PagePro
               )}
 
               {totalPages > 1 && (
-                <div className="flex items-center justify-center gap-2 mt-6 pt-6 border-t border-black/10 dark:border-white/10">
-                  {safePage > 1 && (
-                    <Link
-                      href={`/categories/${encodeURIComponent(category.slug)}?page=${safePage - 1}`}
-                      className="px-3 py-1.5 text-sm font-mono text-text-main hover:text-gray-700 dark:text-white dark:hover:text-gray-300 transition-colors"
-                    >
-                      Previous
-                    </Link>
-                  )}
-                  {Array.from({length: totalPages}, (_, i) => i + 1).map((pageNum) => (
-                    <Link
-                      key={pageNum}
-                      href={`/categories/${encodeURIComponent(category.slug)}?page=${pageNum}`}
-                      className={`px-3 py-1.5 text-sm font-mono transition-colors ${
-                        pageNum === safePage
-                          ? 'bg-[#1a1a2e] text-white rounded-sm'
-                          : 'text-text-main hover:text-gray-700 dark:text-white dark:hover:text-gray-300'
-                      }`}
-                    >
-                      {pageNum}
-                    </Link>
-                  ))}
-                  {safePage < totalPages && (
-                    <Link
-                      href={`/categories/${encodeURIComponent(category.slug)}?page=${safePage + 1}`}
-                      className="px-3 py-1.5 text-sm font-mono text-text-main hover:text-gray-700 dark:text-white dark:hover:text-gray-300 transition-colors"
-                    >
-                      Next
-                    </Link>
-                  )}
+                <div className="mt-6 pt-6 border-t border-black/10 dark:border-white/10">
+                  <Pagination
+                    currentPage={safePage}
+                    totalPages={totalPages}
+                    basePath={`/categories/${encodeURIComponent(category.slug)}`}
+                    maxVisible={5}
+                  />
                 </div>
               )}
             </section>

@@ -5,6 +5,7 @@ import {sanityFetch} from '@/lib/sanity.client'
 import {LATEST_FEATURED_ARTICLE_QUERY, LATEST_NEWS_EXCLUDING_FEATURED_QUERY} from '@/lib/sanity.queries'
 import {safeSanityImageUrl} from '@/lib/sanity/image'
 import NewsletterForm from '@/components/NewsletterForm'
+import Pagination from '@/components/Pagination'
 
 type ArticleListItem = {
   _id: string
@@ -191,46 +192,13 @@ export default async function Home({searchParams}: {searchParams?: Promise<{page
               ))}
 
               {totalPages > 1 && (
-                <div className="flex items-center justify-center gap-2 mt-4 pt-4 border-t border-gray-200 dark:border-gray-800">
-                  {currentPage > 1 && (
-                    <Link
-                      href={`/?page=${currentPage - 1}`}
-                      className="px-3 py-1.5 text-sm font-mono text-text-main hover:text-gray-700 dark:text-white dark:hover:text-gray-300 transition-colors"
-                    >
-                      Previous
-                    </Link>
-                  )}
-                  {(() => {
-                    const pages = []
-                    const maxVisible = 5
-                    for (let i = 1; i <= Math.min(maxVisible, totalPages); i++) {
-                      pages.push(i)
-                    }
-                    return pages.map((pageNum) => (
-                      <Link
-                        key={pageNum}
-                        href={`/?page=${pageNum}`}
-                        className={`px-3 py-1.5 text-sm font-mono transition-colors ${
-                          pageNum === currentPage
-                            ? 'bg-[#1a1a2e] text-white rounded-sm'
-                            : 'text-text-main hover:text-gray-700 dark:text-white dark:hover:text-gray-300'
-                        }`}
-                      >
-                        {pageNum}
-                      </Link>
-                    ))
-                  })()}
-                  {totalPages > 5 && (
-                    <span className="px-1 text-text-subtle dark:text-gray-400 font-mono">...</span>
-                  )}
-                  {currentPage < totalPages && (
-                    <Link
-                      href={`/?page=${currentPage + 1}`}
-                      className="px-3 py-1.5 text-sm font-mono text-text-main hover:text-gray-700 dark:text-white dark:hover:text-gray-300 transition-colors"
-                    >
-                      Next
-                    </Link>
-                  )}
+                <div className="mt-8 pt-6 border-t border-gray-200 dark:border-gray-800">
+                  <Pagination
+                    currentPage={currentPage}
+                    totalPages={totalPages}
+                    basePath="/"
+                    maxVisible={5}
+                  />
                 </div>
               )}
             </div>

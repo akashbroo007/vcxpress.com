@@ -2,6 +2,7 @@ import Link from 'next/link'
 
 import {sanityFetch} from '@/lib/sanity.client'
 import {CATEGORIES_PAGED_QUERY} from '@/lib/sanity.queries'
+import Pagination from '@/components/Pagination'
 
 type CategoryListItem = {
   _id: string
@@ -17,25 +18,6 @@ type PagedCategories = {
 
 type PageProps = {
   searchParams: Promise<{page?: string}>
-}
-
-const getCompactPages = (current: number, totalPages: number) => {
-  const set = new Set<number>()
-
-  set.add(1)
-  set.add(totalPages)
-
-  for (let i = current - 2; i <= current + 2; i += 1) {
-    if (i >= 1 && i <= totalPages) set.add(i)
-  }
-
-  // Keep first/last neighborhoods visible
-  for (let i = 1; i <= 2; i += 1) {
-    set.add(i)
-    set.add(totalPages - (i - 1))
-  }
-
-  return Array.from(set).sort((a, b) => a - b)
 }
 
 export default async function CategoriesPage({searchParams}: PageProps) {
@@ -55,9 +37,6 @@ export default async function CategoriesPage({searchParams}: PageProps) {
   const total = typeof data?.total === 'number' ? data.total : 0
   const totalPages = Math.max(1, Math.ceil(total / pageSize))
   const safePage = Math.min(currentPage, totalPages)
-  const prevPage = safePage > 1 ? safePage - 1 : null
-  const nextPage = safePage < totalPages ? safePage + 1 : null
-  const compactPages = getCompactPages(safePage, totalPages)
 
   return (
     <main className="theme-home bg-background-light dark:bg-background-dark text-text-main font-display antialiased min-h-screen">
@@ -112,53 +91,12 @@ export default async function CategoriesPage({searchParams}: PageProps) {
                 <div className="text-xs font-mono uppercase tracking-wide text-text-subtle dark:text-gray-400">
                   Page {safePage} of {totalPages}
                 </div>
-
-                <div className="flex items-center gap-2">
-                  <Link
-                    className={`px-3 py-2 rounded border border-gray-200 dark:border-gray-700 text-sm font-mono transition-colors ${
-                      prevPage
-                        ? 'bg-surface-light dark:bg-surface-dark hover:border-gray-400'
-                        : 'opacity-40 pointer-events-none'
-                    }`}
-                    href={prevPage ? `/categories?page=${prevPage}` : '/categories'}
-                  >
-                    Prev
-                  </Link>
-
-                  {compactPages.map((p, idx) => {
-                    const prev = idx > 0 ? compactPages[idx - 1] : null
-                    const active = p === safePage
-
-                    return (
-                      <div key={p} className="flex items-center gap-2">
-                        {prev !== null && p - prev > 1 ? (
-                          <span className="px-1 text-text-subtle dark:text-gray-400 font-mono">…</span>
-                        ) : null}
-                        <Link
-                          className={`h-10 w-10 inline-flex items-center justify-center rounded border text-sm font-mono transition-colors ${
-                            active
-                              ? 'border-[#1a1a2e] bg-[#1a1a2e] text-white'
-                              : 'border-gray-200 dark:border-gray-700 bg-surface-light dark:bg-surface-dark hover:border-gray-400'
-                          }`}
-                          href={`/categories?page=${p}`}
-                        >
-                          {p}
-                        </Link>
-                      </div>
-                    )
-                  })}
-
-                  <Link
-                    className={`px-3 py-2 rounded border border-gray-200 dark:border-gray-700 text-sm font-mono transition-colors ${
-                      nextPage
-                        ? 'bg-surface-light dark:bg-surface-dark hover:border-gray-400'
-                        : 'opacity-40 pointer-events-none'
-                    }`}
-                    href={nextPage ? `/categories?page=${nextPage}` : '/categories'}
-                  >
-                    Next
-                  </Link>
-                </div>
+                <Pagination
+                  currentPage={safePage}
+                  totalPages={totalPages}
+                  basePath="/categories"
+                  maxVisible={5}
+                />
               </div>
             ) : null}
           </div>

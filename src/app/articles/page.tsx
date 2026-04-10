@@ -4,6 +4,7 @@ import Image from 'next/image'
 import {sanityFetch} from '@/lib/sanity.client'
 import {ARTICLES_LIST_QUERY} from '@/lib/sanity.queries'
 import NewsletterForm from '@/components/NewsletterForm'
+import Pagination from '@/components/Pagination'
 
 import {safeSanityImageUrl} from '@/lib/sanity/image'
 
@@ -102,36 +103,13 @@ export default async function ArticlesPage({searchParams}: {searchParams?: Promi
               )}
 
               {totalPages > 1 && (
-                <div className="flex items-center justify-center gap-2 mt-6 pt-6 border-t border-gray-200 dark:border-gray-800">
-                  {safePage > 1 && (
-                    <Link
-                      href={`/news?page=${safePage - 1}`}
-                      className="px-3 py-1.5 text-sm font-mono text-gray-900 hover:text-gray-700 dark:text-white dark:hover:text-gray-300 transition-colors"
-                    >
-                      Previous
-                    </Link>
-                  )}
-                  {Array.from({length: totalPages}, (_, i) => i + 1).map((pageNum) => (
-                    <Link
-                      key={pageNum}
-                      href={`/news?page=${pageNum}`}
-                      className={`px-3 py-1.5 text-sm font-mono transition-colors ${
-                        pageNum === safePage
-                          ? 'bg-[#1a1a2e] text-white rounded-sm'
-                          : 'text-gray-900 hover:text-gray-700 dark:text-white dark:hover:text-gray-300'
-                      }`}
-                    >
-                      {pageNum}
-                    </Link>
-                  ))}
-                  {safePage < totalPages && (
-                    <Link
-                      href={`/news?page=${safePage + 1}`}
-                      className="px-3 py-1.5 text-sm font-mono text-gray-900 hover:text-gray-700 dark:text-white dark:hover:text-gray-300 transition-colors"
-                    >
-                      Next
-                    </Link>
-                  )}
+                <div className="mt-8 pt-6 border-t border-gray-200 dark:border-gray-800">
+                  <Pagination
+                    currentPage={safePage}
+                    totalPages={totalPages}
+                    basePath="/news"
+                    maxVisible={5}
+                  />
                 </div>
               )}
             </div>
