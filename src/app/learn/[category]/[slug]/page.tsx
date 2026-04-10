@@ -12,11 +12,21 @@ import {safeSanityImageUrl} from '@/lib/sanity/image'
 import ArticleActionButtons from '@/components/ArticleActionButtons'
 import ScrollProgressBar from '@/components/ScrollProgressBar'
 
+const isValidHttpUrl = (value: string | undefined): boolean => {
+  if (!value) return false
+  try {
+    const url = new URL(value)
+    return url.protocol === 'http:' || url.protocol === 'https:'
+  } catch {
+    return false
+  }
+}
+
 const portableTextComponents: PortableTextComponents = {
   marks: {
     link: ({children, value}) => {
       const href = typeof value?.href === 'string' ? value.href : undefined
-      if (!href) return <>{children}</>
+      if (!href || !isValidHttpUrl(href)) return <>{children}</>
 
       return (
         <a className="text-primary underline hover:opacity-80" href={href} target="_blank" rel="noopener noreferrer">
@@ -134,28 +144,28 @@ export default async function LearnArticlePage({params}: PageProps) {
 
   return (
     <div className="theme-detail bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-slate-100 antialiased overflow-x-hidden">
-      <div className="fixed top-0 left-0 right-0 z-[70] h-1 bg-slate-200/90 dark:bg-slate-800/90">
-        <ScrollProgressBar className="h-full bg-primary" targetId="learn-article-content" />
+      <div className="fixed top-0 left-0 right-0 z-[70] h-[2px] bg-gray-200 dark:bg-gray-800">
+        <ScrollProgressBar className="h-full bg-gray-600" targetId="learn-article-content" />
       </div>
 
       <main className="w-full flex justify-center pb-20">
         <article className="max-w-[960px] w-full px-4 sm:px-6 md:px-8 pt-8 md:pt-12 flex flex-col" id="learn-article-content">
-          <div className="flex items-center gap-2 mb-6 text-sm text-slate-500 dark:text-slate-400">
-            <Link className="hover:text-primary transition-colors" href="/">
+          <div className="flex items-center gap-2 mb-6 text-sm text-gray-500 dark:text-gray-400">
+            <Link className="hover:text-gray-700 transition-colors" href="/">
               Home
             </Link>
             <span className="material-symbols-outlined text-base">chevron_right</span>
-            <Link className="hover:text-primary transition-colors" href="/learn">
+            <Link className="hover:text-gray-700 transition-colors" href="/learn">
               Learn
             </Link>
             <span className="material-symbols-outlined text-base">chevron_right</span>
-            <Link className="hover:text-primary transition-colors" href={`/learn/${category}`}>
+            <Link className="hover:text-gray-700 transition-colors" href={`/learn/${category}`}>
               {article.category?.title || category.replace('-', ' ')}
             </Link>
           </div>
 
           <div className="flex gap-2 mb-6">
-            <span className="inline-flex items-center px-3 py-1 rounded bg-primary/10 text-primary text-xs font-bold uppercase tracking-wider">
+            <span className="inline-flex items-center px-3 py-1 rounded bg-gray-100 text-gray-700 text-xs font-semibold uppercase tracking-wider">
               Learn
             </span>
             <span className="inline-flex items-center px-3 py-1 rounded bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 text-xs font-bold uppercase tracking-wider">
@@ -185,18 +195,18 @@ export default async function LearnArticlePage({params}: PageProps) {
             <ArticleActionButtons className="mb-10 pb-6 border-b border-slate-200 dark:border-slate-800" title={article.title} />
           </div>
 
-          <div className="mb-12 p-6 md:p-8 bg-blue-50 dark:bg-slate-900 border-l-4 border-primary rounded-r-lg shadow-sm">
-            <h3 className="text-primary font-bold uppercase tracking-wider text-xs mb-3 flex items-center gap-2">
-              <span className="material-symbols-outlined text-base">bolt</span> Executive Summary
+          <div className="mb-12 p-6 md:p-8 bg-gray-50 dark:bg-gray-900 border-l-2 border-gray-300 dark:border-gray-700 rounded-r-lg">
+            <h3 className="text-gray-700 dark:text-gray-300 font-semibold uppercase tracking-wider text-xs mb-3 flex items-center gap-2">
+              <span className="material-symbols-outlined text-base text-gray-500">bolt</span> Executive Summary
             </h3>
-            <ul className="space-y-3 text-slate-800 dark:text-slate-200 text-base md:text-lg leading-relaxed font-serif">
+            <ul className="space-y-3 text-gray-800 dark:text-gray-200 text-base md:text-lg leading-relaxed font-serif">
               <li className="flex items-start gap-3">
-                <span className="mt-1.5 w-1.5 h-1.5 rounded-full bg-primary flex-shrink-0"></span>
+                <span className="mt-1.5 w-1 h-1 rounded-full bg-gray-400 flex-shrink-0"></span>
                 <span>{article.summary}</span>
               </li>
               {article.category?.slug ? (
                 <li className="flex items-start gap-3">
-                  <span className="mt-1.5 w-1.5 h-1.5 rounded-full bg-primary flex-shrink-0"></span>
+                  <span className="mt-1.5 w-1 h-1 rounded-full bg-gray-400 flex-shrink-0"></span>
                   <span>
                     <Link className="hover:underline" href={`/learn/${article.category.slug}`}>
                       Explore more in {article.category.title}
@@ -227,7 +237,7 @@ export default async function LearnArticlePage({params}: PageProps) {
           ) : null}
 
           <div className="w-full max-w-[720px] mx-auto">
-            <div className="prose prose-lg md:prose-xl dark:prose-invert prose-slate prose-headings:font-display prose-headings:font-bold prose-a:text-primary hover:prose-a:text-primary/80 prose-img:rounded-lg prose-p:leading-8">
+            <div className="prose prose-lg md:prose-xl dark:prose-invert prose-slate prose-headings:font-display prose-headings:font-bold prose-a:text-gray-700 hover:prose-a:text-gray-900 prose-img:rounded-lg prose-p:leading-8">
               <p className="drop-cap text-lg md:text-xl leading-8 text-slate-700 dark:text-slate-300 mb-8">{article.summary}</p>
               <h2 className="text-2xl md:text-3xl font-bold text-slate-900 dark:text-white mt-12 mb-8">Full Guide</h2>
               <PortableText value={article.content} components={portableTextComponents} />

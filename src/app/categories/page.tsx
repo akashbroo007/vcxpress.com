@@ -63,8 +63,8 @@ export default async function CategoriesPage({searchParams}: PageProps) {
     <main className="theme-home bg-background-light dark:bg-background-dark text-text-main font-display antialiased min-h-screen">
       <div className="max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-8 py-10 md:py-14">
         <div className="flex flex-col gap-2 mb-10">
-          <div className="w-10 h-[3px] bg-primary"></div>
-          <h1 className="font-serif text-3xl md:text-4xl font-bold text-text-main dark:text-white">Categories</h1>
+          <div className="w-10 h-[2px] bg-gray-300"></div>
+          <h1 className="font-serif text-3xl md:text-4xl font-semibold text-text-main dark:text-white">Categories</h1>
           <p className="text-text-subtle dark:text-gray-400 max-w-2xl">
             Browse all topics. Any category you create in Studio will automatically appear here.
           </p>
@@ -80,19 +80,19 @@ export default async function CategoriesPage({searchParams}: PageProps) {
               {categories.map((c) => (
                 <Link
                   key={c._id}
-                  className="group rounded-xl border border-black/10 dark:border-white/10 bg-surface-light dark:bg-surface-dark p-6 hover:border-primary/40 dark:hover:border-primary/40 hover:shadow-sm transition-all"
+                  className="group rounded-xl border border-gray-200 dark:border-gray-700 bg-surface-light dark:bg-surface-dark p-6 hover:border-primary/30 dark:hover:border-primary/30 hover:shadow-sm transition-all"
                   href={`/categories/${c.slug}`}
                 >
                   <div className="flex items-start justify-between gap-4">
                     <div className="min-w-0">
-                      <div className="text-xs font-bold text-primary uppercase tracking-widest font-mono">
+                      <div className="text-xs font-semibold text-gray-500 uppercase tracking-widest font-mono">
                         {c.slug}
                       </div>
-                      <h2 className="mt-2 font-serif text-xl font-bold text-text-main dark:text-white group-hover:text-primary transition-colors">
+                      <h2 className="mt-2 font-serif text-xl font-semibold text-text-main dark:text-white group-hover:text-primary transition-colors">
                         {c.name}
                       </h2>
                     </div>
-                    <span className="material-symbols-outlined text-text-main/40 dark:text-white/40 group-hover:text-primary transition-colors">
+                    <span className="material-symbols-outlined text-gray-400 dark:text-gray-500 group-hover:text-primary transition-colors">
                       arrow_forward
                     </span>
                   </div>
@@ -115,9 +115,9 @@ export default async function CategoriesPage({searchParams}: PageProps) {
 
                 <div className="flex items-center gap-2">
                   <Link
-                    className={`px-3 py-2 rounded border border-black/10 dark:border-white/10 text-sm font-mono transition-colors ${
+                    className={`px-3 py-2 rounded border border-gray-200 dark:border-gray-700 text-sm font-mono transition-colors ${
                       prevPage
-                        ? 'bg-surface-light dark:bg-surface-dark hover:border-primary/40'
+                        ? 'bg-surface-light dark:bg-surface-dark hover:border-gray-400'
                         : 'opacity-40 pointer-events-none'
                     }`}
                     href={prevPage ? `/categories?page=${prevPage}` : '/categories'}
@@ -137,8 +137,8 @@ export default async function CategoriesPage({searchParams}: PageProps) {
                         <Link
                           className={`h-10 w-10 inline-flex items-center justify-center rounded border text-sm font-mono transition-colors ${
                             active
-                              ? 'border-primary bg-primary/10 text-primary'
-                              : 'border-black/10 dark:border-white/10 bg-surface-light dark:bg-surface-dark hover:border-primary/40'
+                              ? 'border-[#1a1a2e] bg-[#1a1a2e] text-white'
+                              : 'border-gray-200 dark:border-gray-700 bg-surface-light dark:bg-surface-dark hover:border-gray-400'
                           }`}
                           href={`/categories?page=${p}`}
                         >
@@ -149,9 +149,9 @@ export default async function CategoriesPage({searchParams}: PageProps) {
                   })}
 
                   <Link
-                    className={`px-3 py-2 rounded border border-black/10 dark:border-white/10 text-sm font-mono transition-colors ${
+                    className={`px-3 py-2 rounded border border-gray-200 dark:border-gray-700 text-sm font-mono transition-colors ${
                       nextPage
-                        ? 'bg-surface-light dark:bg-surface-dark hover:border-primary/40'
+                        ? 'bg-surface-light dark:bg-surface-dark hover:border-gray-400'
                         : 'opacity-40 pointer-events-none'
                     }`}
                     href={nextPage ? `/categories?page=${nextPage}` : '/categories'}

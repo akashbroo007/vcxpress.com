@@ -22,6 +22,12 @@ const extractSlug = (value: unknown): string | undefined => {
 }
 
 export async function POST(req: Request) {
+  // CSRF protection: Only accept JSON requests with proper Content-Type
+  const contentType = req.headers.get('content-type') || ''
+  if (!contentType.includes('application/json')) {
+    return apiJson({ok: false, error: 'Invalid Content-Type'}, {status: 415})
+  }
+
   const limited = rateLimit(req, {id: 'revalidate', limit: 30, windowMs: 60_000, burst: 60, skipIfBot: true})
   if (limited) return limited
 

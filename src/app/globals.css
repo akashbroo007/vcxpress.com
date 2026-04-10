@@ -3,13 +3,13 @@
 @custom-variant dark (&:where(.dark, .dark *));
 
 @theme inline {
-  --color-primary: #0047bb;
+  --color-primary: #1E40AF;
   --color-background-light: #ffffff;
   --color-background-dark: #101622;
   --color-surface-light: #ffffff;
   --color-surface-dark: #1a2233;
   --color-text-main: #0d121b;
-  --color-text-subtle: #4c669a;
+  --color-text-subtle: #6B7280;
   --color-text-dark: #1a1a1a;
   --color-text-light: #ffffff;
 
@@ -19,15 +19,15 @@
 }
 
 .theme-home {
-  --color-primary: #0047bb;
+  --color-primary: #1E40AF;
   --color-background-light: #ffffff;
   --color-background-dark: #101622;
   --color-text-main: #0d121b;
-  --color-text-subtle: #4c669a;
+  --color-text-subtle: #6B7280;
 }
 
 .theme-feed {
-  --color-primary: #135bec;
+  --color-primary: #1E40AF;
   --color-background-light: #f6f6f8;
   --color-background-dark: #101622;
   --color-surface-light: #ffffff;
@@ -37,7 +37,7 @@
 }
 
 .theme-detail {
-  --color-primary: #0047bb;
+  --color-primary: #1E40AF;
   --color-background-light: #f6f6f8;
   --color-background-dark: #101622;
 }
@@ -56,8 +56,8 @@
 
 .x-line {
   width: 3rem;
-  height: 3px;
-  background-color: rgb(0 71 187);
+  height: 2px;
+  background-color: #9CA3AF;
   margin-bottom: 1rem;
 }
 
@@ -65,9 +65,9 @@
   float: left;
   font-size: 3.5rem;
   line-height: 0.85;
-  font-weight: 700;
+  font-weight: 600;
   margin-right: 0.75rem;
-  color: #0047bb;
+  color: #1E40AF;
 }
 
 .no-scrollbar::-webkit-scrollbar {
@@ -87,11 +87,14 @@
    font-family: var(--font-display);
  }
 
- /* Responsive safeguards */
- html,
+ /* Responsive safeguards - use clip instead of hidden to preserve sticky positioning */
+ html {
+   max-width: 100%;
+   overflow-x: clip;
+ }
  body {
    max-width: 100%;
-   overflow-x: hidden;
+   overflow-x: visible;
  }
 
  img,

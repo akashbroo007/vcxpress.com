@@ -54,9 +54,10 @@ type Props = {
   className?: string
   action?: string
   cData?: string
+  scale?: number
 }
 
-export default function TurnstileWidget({siteKey, onToken, onError, onExpire, className, action, cData}: Props) {
+export default function TurnstileWidget({siteKey, onToken, onError, onExpire, className, action, cData, scale = 1}: Props) {
   const containerRef = useRef<HTMLDivElement | null>(null)
   const widgetIdRef = useRef<string | null>(null)
   const onTokenRef = useRef(onToken)
@@ -84,7 +85,10 @@ export default function TurnstileWidget({siteKey, onToken, onError, onExpire, cl
 
         if (widgetIdRef.current) return
 
-        container.innerHTML = ''
+        // Clear container safely without innerHTML
+        while (container.firstChild) {
+          container.removeChild(container.firstChild)
+        }
 
         if (process.env.NODE_ENV !== 'production') {
           console.info('[turnstile] render', {action, hostname: window.location.hostname})
@@ -137,8 +141,12 @@ export default function TurnstileWidget({siteKey, onToken, onError, onExpire, cl
   }, [action, cData, siteKey])
 
   return (
-    <div className={className}>
-      <div ref={containerRef} />
+    <div className={`max-w-full overflow-hidden ${className || ''}`} style={{width: 300 * scale}}>
+      <div
+        style={{transform: `scale(${scale})`, transformOrigin: 'top left'}}
+      >
+        <div ref={containerRef} className="w-[300px]" style={{minHeight: '65px'}} />
+      </div>
     </div>
   )
 }

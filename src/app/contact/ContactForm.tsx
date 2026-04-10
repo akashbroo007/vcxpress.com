@@ -46,6 +46,12 @@ export default function ContactForm() {
       return
     }
 
+    if (emailTrimmed.length > 254) {
+      setStatus('error')
+      setError('Email address is too long')
+      return
+    }
+
     if (!subjectTrimmed) {
       setStatus('error')
       setError('Select a subject')
@@ -264,12 +270,12 @@ export default function ContactForm() {
       ) : null}
 
       <div className="flex flex-col sm:flex-row items-center justify-between gap-4 pt-2">
-        <div className="flex items-start gap-2 text-[#4c669a] dark:text-gray-400 bg-blue-50 dark:bg-blue-900/10 p-3 rounded text-sm max-w-md">
-          <span className="material-symbols-outlined text-primary text-[20px] shrink-0">lock</span>
+        <div className="flex items-start gap-2 text-gray-600 dark:text-gray-400 bg-gray-100 dark:bg-gray-800/50 p-3 rounded text-sm max-w-md">
+          <span className="material-symbols-outlined text-gray-500 text-[20px] shrink-0">lock</span>
           <p>We respect your privacy. All communications regarding news tips are kept strictly confidential.</p>
         </div>
         <button
-          className="w-full sm:w-auto min-w-[160px] h-12 rounded bg-primary hover:bg-blue-700 transition-colors text-white text-base font-bold shadow-sm flex items-center justify-center gap-2"
+          className="w-full sm:w-auto min-w-[160px] h-12 rounded bg-[#1a1a2e] hover:bg-[#252542] transition-colors text-white text-base font-semibold shadow-sm flex items-center justify-center gap-2"
           type="submit"
           disabled={status === 'loading'}
         >

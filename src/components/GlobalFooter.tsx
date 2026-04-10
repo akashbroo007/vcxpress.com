@@ -328,12 +328,12 @@ export default async function GlobalFooter() {
             <div className="text-sm text-text-main/80 dark:text-white/80 font-semibold transition-colors duration-300 ease-in-out">
               <div className="flex flex-wrap items-center gap-2">
                 <span>News</span>
-                <span className="whitespace-nowrap rounded-full bg-slate-900/5 dark:bg-white/10 px-2 py-0.5 text-[10px] font-mono uppercase tracking-wider text-text-main/70 dark:text-white/70">
+                <span className="whitespace-nowrap rounded-full bg-gray-100 dark:bg-white/10 px-2 py-0.5 text-[10px] font-mono uppercase tracking-wider text-gray-500 dark:text-white/70">
                   Categories
                 </span>
               </div>
             </div>
-            <div className="mt-4 flex flex-col gap-2 pl-3 border-l border-black/10 dark:border-white/10 transition-colors duration-300 ease-in-out">
+            <div className="mt-4 flex flex-col gap-2 pl-3 border-l border-gray-200 dark:border-white/10 transition-colors duration-300 ease-in-out">
               <Link className="text-sm text-text-main/60 dark:text-white/60 hover:text-primary transition-colors" href="/category/tech">
                 Tech
               </Link>
@@ -353,12 +353,12 @@ export default async function GlobalFooter() {
             <div className="text-sm text-text-main/80 dark:text-white/80 font-semibold transition-colors duration-300 ease-in-out">
               <div className="flex flex-wrap items-center gap-2">
                 <span>Learn</span>
-                <span className="whitespace-nowrap rounded-full bg-primary/10 px-2 py-0.5 text-[10px] font-mono uppercase tracking-wider text-primary">
+                <span className="whitespace-nowrap rounded-full bg-gray-100 dark:bg-white/10 px-2 py-0.5 text-[10px] font-mono uppercase tracking-wider text-gray-500 dark:text-white/70">
                   Topics
                 </span>
               </div>
             </div>
-            <div className="mt-4 flex flex-col gap-2 pl-3 border-l border-primary/20 transition-colors duration-300 ease-in-out">
+            <div className="mt-4 flex flex-col gap-2 pl-3 border-l border-gray-200 dark:border-white/10 transition-colors duration-300 ease-in-out">
               {learnFooterItems.map((c) => (
                 <Link
                   key={c._id}

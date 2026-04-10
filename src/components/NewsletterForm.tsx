@@ -11,6 +11,7 @@ type Props = {
   placeholder?: string
   source?: string
   onSuccess?: () => void
+  turnstileScale?: number
 }
 
 const isValidEmail = (value: string) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)
@@ -22,6 +23,7 @@ export default function NewsletterForm({
   placeholder = 'EMAIL ADDRESS',
   source,
   onSuccess,
+  turnstileScale,
 }: Props) {
   const [email, setEmail] = useState('')
   const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle')
@@ -120,6 +122,7 @@ export default function NewsletterForm({
           <div className="mt-3">
             <TurnstileWidget
               siteKey={siteKey}
+              scale={turnstileScale}
               action="subscribe"
               onToken={(token) => {
                 setCaptchaToken(token)

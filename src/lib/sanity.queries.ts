@@ -61,6 +61,14 @@ export const CATEGORY_SLUGS_QUERY = /* groq */ `
   }
 `
 
+export const NAVBAR_CATEGORIES_QUERY = /* groq */ `
+  *[_type == "category" && defined(slug.current) && showInNav != false]|order(order asc, name asc){
+    _id,
+    "name": coalesce(name, title),
+    "slug": slug.current
+  }
+`
+
 export const NEWS_RECOMMENDED_NEXT_QUERY = /* groq */ `
   *[
     _type == "article" &&
@@ -272,6 +280,55 @@ export const ARTICLE_BY_SLUG_QUERY = /* groq */ `
       }],
       []
     ),
+    "category": select(
+      defined(categories[0]) => categories[0]->{
+        _id,
+        "name": coalesce(name, title),
+        "slug": slug.current
+      },
+      defined(category) => category->{
+        _id,
+        "name": coalesce(name, title),
+        "slug": slug.current
+      },
+      null
+    )
+  }
+`
+
+export const NEWS_CONTINUOUS_FEED_ITEMS_QUERY = /* groq */ `
+  *[
+    _type == "article" &&
+    status == "published" &&
+    _id != $currentId &&
+    select(
+      defined($categoryId) => (
+        (defined(categories) && $categoryId in categories[]._ref) ||
+        (defined(category) && category._ref == $categoryId)
+      ),
+      true
+    )
+  ]|order(coalesce(publishedDate, publishedAt, _createdAt) desc)[0...$limit]{
+    _id,
+    title,
+    "slug": slug.current,
+    summary,
+    body,
+    tags,
+    companyName,
+    fundingAmount,
+    fundingRound,
+    "publishedDate": coalesce(publishedDate, publishedAt, _createdAt),
+    sourceURL,
+    featuredImage{
+      crop,
+      hotspot,
+      asset->{
+        _id,
+        url,
+        metadata{dimensions{width,height}}
+      }
+    },
     "category": select(
       defined(categories[0]) => categories[0]->{
         _id,

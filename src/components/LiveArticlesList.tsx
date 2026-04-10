@@ -90,18 +90,18 @@ export default function LiveArticlesList({initialArticles}: {initialArticles: Ar
           <article className="flex flex-col sm:flex-row gap-6 py-8 border-b border-gray-200 dark:border-gray-800 hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors -mx-4 px-4 rounded-lg">
             <div className="sm:w-28 shrink-0 flex flex-row sm:flex-col items-center sm:items-end justify-between sm:justify-start gap-2 pt-1">
               <time className="text-gray-900 dark:text-white font-medium text-lg leading-none">{formatTime(a.publishedDate)}</time>
-              <span className="text-primary text-[11px] font-bold tracking-wider uppercase bg-blue-50 dark:bg-blue-900/30 px-2 py-0.5 rounded">
+              <span className="text-gray-600 text-[11px] font-semibold tracking-wider uppercase bg-gray-100 dark:bg-gray-800 px-2 py-0.5 rounded">
                 {a.category?.name ?? 'Funding'}
               </span>
             </div>
 
             <div className="flex-1 flex flex-col gap-3">
-              <h3 className="font-serif text-2xl font-bold text-gray-900 dark:text-gray-100 leading-tight group-hover:text-primary transition-colors">
+              <h3 className="font-serif text-2xl font-bold text-gray-900 dark:text-gray-100 leading-tight group-hover:text-gray-700 dark:group-hover:text-gray-300 transition-colors">
                 {a.title}
               </h3>
               <p className="text-gray-600 dark:text-gray-400 leading-relaxed line-clamp-2">{a.summary}</p>
               <div className="flex items-center gap-4 mt-1">
-                <span className="text-xs font-semibold text-gray-500 group-hover:text-primary flex items-center gap-1">
+                <span className="text-xs font-semibold text-gray-500 group-hover:text-gray-700 flex items-center gap-1">
                   Read Analysis <span className="material-symbols-outlined text-[14px]">arrow_forward</span>
                 </span>
                 <span className="text-xs text-gray-400">•</span>
