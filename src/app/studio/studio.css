@@ -55,51 +55,50 @@
 }
 
 /* ============================================
-   ARTICLE LIST SCROLLING - Fix virtual list rendering
+   ARTICLE LIST SCROLLING - Enable scroll with virtual list working
    ============================================ */
 
-/* Let PaneContent be the scroll container - this is key for virtualization */
+/* PaneContent is the scroll container */
 .sanity-studio-scope [data-ui="PaneContent"] {
   overflow-y: auto !important;
   overscroll-behavior-y: auto !important;
   height: 100% !important;
-  max-height: 100vh !important;
 }
 
-/* The list pane itself should fill available space */
+/* The list pane fills space but doesn't scroll itself */
 .sanity-studio-scope [data-testid="document-list-pane"],
 .sanity-studio-scope [data-testid="list-pane"] {
   display: flex !important;
   flex-direction: column !important;
   height: 100% !important;
-  max-height: 100vh !important;
 }
 
-/* Document list - CRITICAL: Don't set max-height here, it breaks virtualization!
-   The virtual list calculates visible items based on container height */
+/* Document list - needs to be scrollable for virtual rendering */
 .sanity-studio-scope [data-testid="document-list"],
 .sanity-studio-scope [data-ui="DocumentList"] {
   flex: 1 !important;
-  min-height: 0 !important; /* Important for flex child to shrink */
-  overflow: visible !important; /* Let PaneContent handle scrolling */
+  overflow-y: auto !important;
+  min-height: 0 !important;
 }
 
-/* Ensure virtual list inner container has proper height */
+/* Virtual list needs to calculate total height correctly */
 .sanity-studio-scope [data-testid="document-list"] > div,
 .sanity-studio-scope [data-ui="DocumentList"] > div {
-  min-height: 100% !important;
+  min-height: fit-content !important;
 }
 
-/* List items should be visible */
-.sanity-studio-scope [data-testid="document-list"] [role="listitem"],
-.sanity-studio-scope [data-testid="document-list"] [data-ui="Card"] {
-  contain: none !important; /* Remove containment that can clip items */
+/* Ensure list items render properly */
+.sanity-studio-scope [data-testid="document-list"] [role="listitem"] {
+  contain: layout style paint !important;
 }
 
-/* Remove any overflow hidden from list containers */
-.sanity-studio-scope [data-testid="document-list-pane"] [data-ui="Box"],
-.sanity-studio-scope [data-testid="document-list-pane"] [data-ui="Stack"] {
+/* Remove overflow hidden from containers that trap the list */
+.sanity-studio-scope [data-testid="document-list-pane"] > [data-ui="Box"],
+.sanity-studio-scope [data-testid="document-list-pane"] > [data-ui="Stack"] {
   overflow: visible !important;
+  display: flex !important;
+  flex-direction: column !important;
+  flex: 1 !important;
 }
 
 /* Ensure Studio wrapper is tall */
