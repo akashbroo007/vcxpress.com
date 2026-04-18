@@ -55,49 +55,30 @@
 }
 
 /* ============================================
-   ARTICLE LIST SCROLLING - Enable scroll with virtual list working
+   ARTICLE LIST SCROLLING - Minimal fix for virtual list
    ============================================ */
 
-/* PaneContent is the scroll container */
+/* Let Sanity's default scrolling work, just ensure containers have proper layout */
+.sanity-studio-scope [data-ui="Pane"] {
+  display: flex !important;
+  flex-direction: column !important;
+}
+
+/* Ensure PaneContent can scroll naturally */
 .sanity-studio-scope [data-ui="PaneContent"] {
-  overflow-y: auto !important;
-  overscroll-behavior-y: auto !important;
-  height: 100% !important;
-}
-
-/* The list pane fills space but doesn't scroll itself */
-.sanity-studio-scope [data-testid="document-list-pane"],
-.sanity-studio-scope [data-testid="list-pane"] {
-  display: flex !important;
-  flex-direction: column !important;
-  height: 100% !important;
-}
-
-/* Document list - needs to be scrollable for virtual rendering */
-.sanity-studio-scope [data-testid="document-list"],
-.sanity-studio-scope [data-ui="DocumentList"] {
   flex: 1 !important;
-  overflow-y: auto !important;
   min-height: 0 !important;
+  overflow-y: auto !important;
 }
 
-/* Virtual list needs to calculate total height correctly */
-.sanity-studio-scope [data-testid="document-list"] > div,
-.sanity-studio-scope [data-ui="DocumentList"] > div {
-  min-height: fit-content !important;
-}
-
-/* Ensure list items render properly */
-.sanity-studio-scope [data-testid="document-list"] [role="listitem"] {
-  contain: layout style paint !important;
-}
-
-/* Remove overflow hidden from containers that trap the list */
-.sanity-studio-scope [data-testid="document-list-pane"] > [data-ui="Box"],
-.sanity-studio-scope [data-testid="document-list-pane"] > [data-ui="Stack"] {
-  overflow: visible !important;
+/* Document list needs proper flex behavior */
+.sanity-studio-scope [data-testid="document-list-pane"] {
   display: flex !important;
   flex-direction: column !important;
+}
+
+/* Allow the list to fill available space */
+.sanity-studio-scope [data-testid="document-list"] {
   flex: 1 !important;
 }
 
