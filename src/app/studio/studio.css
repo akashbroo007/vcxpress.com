@@ -22,6 +22,18 @@
   font-size: 14px;
 }
 
+ .sanity-studio-scope {
+   height: 100vh;
+   overflow: hidden;
+   display: flex;
+   flex-direction: column;
+ }
+
+ .sanity-studio-scope > * {
+   flex: 1;
+   min-height: 0;
+ }
+
 /* ============================================
    SCROLL CHAINING - Allow scroll to reach page
    ============================================ */
@@ -71,26 +83,7 @@
   overflow-y: auto !important;
 }
 
-/* Document list needs proper flex behavior */
-.sanity-studio-scope [data-testid="document-list-pane"] {
-  display: flex !important;
-  flex-direction: column !important;
-}
-
-/* Allow the list to fill available space */
-.sanity-studio-scope [data-testid="document-list"] {
-  flex: 1 !important;
-}
-
-/* Ensure Studio wrapper is tall */
-.sanity-studio-scope {
-  min-height: 100vh;
-}
-
-/* ============================================
-   PUBLISH BUTTON POSITION - Move after Status
-   ============================================ */
-
+/* Make form content tall so scrolling works */
 /* Target the document footer/actions panel */
 .sanity-studio-scope [data-ui="PaneFooter"],
 .sanity-studio-scope [data-testid="document-pane"] footer,
