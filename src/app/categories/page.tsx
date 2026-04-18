@@ -1,8 +1,4 @@
-import Link from 'next/link'
-
 import {sanityFetch} from '@/lib/sanity.client'
-import {CATEGORIES_PAGED_QUERY} from '@/lib/sanity.queries'
-import Pagination from '@/components/Pagination'
 import {CategoriesInteractive} from './CategoriesInteractive'
 
 type CategoryListItem = {
@@ -19,7 +15,7 @@ type PagedCategories = {
 }
 
 type PageProps = {
-  searchParams: Promise<{page?: string}>
+  _searchParams: Promise<{page?: string}>
 }
 
 // Query to fetch all categories (for client-side sorting/filtering)
@@ -37,7 +33,7 @@ const ALL_CATEGORIES_QUERY = /* groq */ `
   }
 `
 
-export default async function CategoriesPage({searchParams}: PageProps) {
+export default async function CategoriesPage({_searchParams}: PageProps) {
   const data = await sanityFetch<PagedCategories>(
     ALL_CATEGORIES_QUERY,
     {},
@@ -61,7 +57,7 @@ export default async function CategoriesPage({searchParams}: PageProps) {
         {/* Interactive search/sort with pagination (Client Component) */}
         <CategoriesInteractive 
           categories={categories} 
-          total={total}
+          _total={total}
         />
       </div>
     </main>
