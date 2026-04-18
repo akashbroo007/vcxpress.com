@@ -55,28 +55,50 @@
 }
 
 /* ============================================
-   ARTICLE LIST SCROLLING - Enable scroll on list panes
+   ARTICLE LIST SCROLLING - Fix virtual list rendering
    ============================================ */
 
-/* Ensure list panes can scroll */
-.sanity-studio-scope [data-testid="document-list-pane"],
-.sanity-studio-scope [data-testid="list-pane"],
-.sanity-studio-scope [data-ui="Pane"]:has([data-testid="document-list"]) {
+/* Let PaneContent be the scroll container - this is key for virtualization */
+.sanity-studio-scope [data-ui="PaneContent"] {
   overflow-y: auto !important;
   overscroll-behavior-y: auto !important;
+  height: 100% !important;
   max-height: 100vh !important;
 }
 
-/* Make the list itself scrollable */
+/* The list pane itself should fill available space */
+.sanity-studio-scope [data-testid="document-list-pane"],
+.sanity-studio-scope [data-testid="list-pane"] {
+  display: flex !important;
+  flex-direction: column !important;
+  height: 100% !important;
+  max-height: 100vh !important;
+}
+
+/* Document list - CRITICAL: Don't set max-height here, it breaks virtualization!
+   The virtual list calculates visible items based on container height */
 .sanity-studio-scope [data-testid="document-list"],
 .sanity-studio-scope [data-ui="DocumentList"] {
-  overflow-y: auto !important;
-  max-height: calc(100vh - 100px) !important;
+  flex: 1 !important;
+  min-height: 0 !important; /* Important for flex child to shrink */
+  overflow: visible !important; /* Let PaneContent handle scrolling */
+}
+
+/* Ensure virtual list inner container has proper height */
+.sanity-studio-scope [data-testid="document-list"] > div,
+.sanity-studio-scope [data-ui="DocumentList"] > div {
+  min-height: 100% !important;
+}
+
+/* List items should be visible */
+.sanity-studio-scope [data-testid="document-list"] [role="listitem"],
+.sanity-studio-scope [data-testid="document-list"] [data-ui="Card"] {
+  contain: none !important; /* Remove containment that can clip items */
 }
 
 /* Remove any overflow hidden from list containers */
-.sanity-studio-scope [data-ui="Pane"]:has([data-testid="document-list"]) [data-ui="Box"],
-.sanity-studio-scope [data-ui="Pane"]:has([data-testid="document-list"]) [data-ui="Stack"] {
+.sanity-studio-scope [data-testid="document-list-pane"] [data-ui="Box"],
+.sanity-studio-scope [data-testid="document-list-pane"] [data-ui="Stack"] {
   overflow: visible !important;
 }
 
