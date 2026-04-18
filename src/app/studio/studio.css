@@ -54,6 +54,32 @@
   max-height: none !important;
 }
 
+/* ============================================
+   ARTICLE LIST SCROLLING - Enable scroll on list panes
+   ============================================ */
+
+/* Ensure list panes can scroll */
+.sanity-studio-scope [data-testid="document-list-pane"],
+.sanity-studio-scope [data-testid="list-pane"],
+.sanity-studio-scope [data-ui="Pane"]:has([data-testid="document-list"]) {
+  overflow-y: auto !important;
+  overscroll-behavior-y: auto !important;
+  max-height: 100vh !important;
+}
+
+/* Make the list itself scrollable */
+.sanity-studio-scope [data-testid="document-list"],
+.sanity-studio-scope [data-ui="DocumentList"] {
+  overflow-y: auto !important;
+  max-height: calc(100vh - 100px) !important;
+}
+
+/* Remove any overflow hidden from list containers */
+.sanity-studio-scope [data-ui="Pane"]:has([data-testid="document-list"]) [data-ui="Box"],
+.sanity-studio-scope [data-ui="Pane"]:has([data-testid="document-list"]) [data-ui="Stack"] {
+  overflow: visible !important;
+}
+
 /* Ensure Studio wrapper is tall */
 .sanity-studio-scope {
   min-height: 100vh;

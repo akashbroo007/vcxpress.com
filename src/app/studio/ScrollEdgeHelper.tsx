@@ -14,9 +14,9 @@ export default function ScrollEdgeHelper() {
       const now = Date.now()
       if (now - lastScrollTime < scrollCooldown) return
 
-      // Find the scrollable element under the mouse
+      // Find the scrollable element under the mouse - support both document panes AND list panes
       const target = e.target as HTMLElement
-      const pane = target.closest('[data-ui="PaneContent"], [data-testid="document-pane"]') as HTMLElement | null
+      const pane = target.closest('[data-ui="PaneContent"], [data-testid="document-pane"], [data-ui="Pane"], [data-testid="list-pane"], [data-testid="document-list-pane"]') as HTMLElement | null
       if (!pane) return
 
       // Check if pane can actually scroll
