@@ -25,6 +25,9 @@ export const sanityClient = isSanityConfigured
     })
   : null
 
+// Simple request deduplication cache for client-side requests
+const pendingRequests = new Map<string, Promise<unknown>>()
+
 export async function sanityFetch<QueryResponse>(
   query: string,
   params: Record<string, unknown> = {},
@@ -39,11 +42,34 @@ export async function sanityFetch<QueryResponse>(
 
   const client = options.useCdn === false ? sanityClient.withConfig({useCdn: false}) : sanityClient
 
-  return client.fetch<QueryResponse>(query, params, {
+  // Skip deduplication for no-cache requests
+  const skipDedup = options.cache === 'no-store'
+
+  // Create a cache key from query + sorted params
+  const cacheKey = JSON.stringify({query, params: Object.entries(params).sort()})
+  
+  // Check if there's already a pending request for this exact query (unless no-cache)
+  if (!skipDedup && pendingRequests.has(cacheKey)) {
+    return pendingRequests.get(cacheKey) as Promise<QueryResponse>
+  }
+
+  const fetchPromise = client.fetch<QueryResponse>(query, params, {
     cache: options.cache,
     next: {
       revalidate: options.revalidate,
       tags: options.tags,
     },
+  }).finally(() => {
+    // Remove from pending after request completes (success or error)
+    if (!skipDedup) {
+      pendingRequests.delete(cacheKey)
+    }
   })
+
+  // Store the pending request (unless no-cache)
+  if (!skipDedup) {
+    pendingRequests.set(cacheKey, fetchPromise)
+  }
+
+  return fetchPromise
 }

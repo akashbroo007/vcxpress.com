@@ -12,17 +12,58 @@ import ArticleActionButtons from '@/components/ArticleActionButtons'
 import NewsletterForm from '@/components/NewsletterForm'
 
 const isValidHttpUrl = (value: string | undefined): boolean => {
-  if (!value) return false
-  try {
-    const url = new URL(value)
-    return url.protocol === 'http:' || url.protocol === 'https:'
-  } catch {
-    return false
+  if (!value || typeof value !== 'string') return false
+  const trimmed = value.trim()
+  if (!trimmed) return false
+  // Accept URLs with or without protocol
+  if (trimmed.startsWith('http://') || trimmed.startsWith('https://')) {
+    try {
+      const url = new URL(trimmed)
+      return url.protocol === 'http:' || url.protocol === 'https:'
+    } catch {
+      return false
+    }
   }
+  // If no protocol but looks like a URL, prepend https:// and check
+  if (trimmed.includes('.') && !trimmed.includes(' ')) {
+    try {
+      const url = new URL('https://' + trimmed)
+      return url.protocol === 'https:'
+    } catch {
+      return false
+    }
+  }
+  return false
+}
+
+const normalizeSourceUrl = (value: string | undefined): string | undefined => {
+  if (!value || typeof value !== 'string') return undefined
+  const trimmed = value.trim()
+  if (!trimmed) return undefined
+  // If no protocol, add https://
+  if (!trimmed.startsWith('http://') && !trimmed.startsWith('https://')) {
+    return 'https://' + trimmed
+  }
+  return trimmed
 }
 
 const portableTextComponents: PortableTextComponents = {
   block: {
+    normal: ({children}) => (
+      <p className="mb-6 leading-8 text-gray-800 dark:text-gray-200">
+        {children}
+      </p>
+    ),
+    h2: ({children}) => (
+      <h2 className="text-2xl font-bold mt-10 mb-4 text-gray-900 dark:text-white">
+        {children}
+      </h2>
+    ),
+    h3: ({children}) => (
+      <h3 className="text-xl font-semibold mt-8 mb-3 text-gray-900 dark:text-white">
+        {children}
+      </h3>
+    ),
     blockquote: ({children}) => (
       <blockquote className="my-8 border-l-2 border-gray-300 dark:border-gray-700 pl-6 text-gray-700 dark:text-gray-300 italic">
         {children}
@@ -177,6 +218,7 @@ export default function ContinuousArticleFeedClient({
   const ArticleBlock = ({item, showActions}: {item: ContinuousFeedArticle; showActions: boolean}) => {
     const imageUrl = safeSanityImageUrl(item.featuredImage, {width: 1400, height: 788})
     const publishedLabel = formatDate(item.publishedDate)
+    const sourceHref = normalizeSourceUrl(item.sourceURL)
 
     return (
       <article className="w-full" data-article-slug={item.slug} data-article-id={item._id}>
@@ -190,6 +232,12 @@ export default function ContinuousArticleFeedClient({
           )}
           {publishedLabel ? <span className="mx-2 text-gray-300 dark:text-gray-700">/</span> : null}
           {publishedLabel ? <span>{publishedLabel}</span> : null}
+          {sourceHref ? <span className="mx-2 text-gray-300 dark:text-gray-700">/</span> : null}
+          {sourceHref ? (
+            <a className="hover:text-gray-700 dark:hover:text-gray-300 transition-colors" href={sourceHref} target="_blank" rel="noopener noreferrer">
+              Source
+            </a>
+          ) : null}
         </div>
 
         <h1 className="mt-3 font-serif text-4xl md:text-5xl font-bold leading-[1.1] tracking-tight text-gray-900 dark:text-white">
@@ -220,9 +268,25 @@ export default function ContinuousArticleFeedClient({
 
         <div className="mt-10">
           {showActions ? <ArticleActionButtons className="mb-8" title={item.title} /> : null}
-          <div className="prose prose-lg md:prose-xl dark:prose-invert prose-slate prose-headings:font-display prose-headings:font-bold prose-a:text-primary hover:prose-a:text-primary/80 prose-img:rounded-lg prose-p:leading-8">
+          <div className="prose-slate max-w-none">
             <PortableText value={item.body as PortableTextBlock[]} components={portableTextComponents} />
           </div>
+
+          {sourceHref ? (
+            <div className="mt-8 pt-6 border-t border-gray-200 dark:border-gray-800">
+              <div className="text-sm">
+                <span className="text-gray-500 dark:text-gray-400">Source: </span>
+                <a
+                  href={sourceHref}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-primary hover:underline break-all"
+                >
+                  {sourceHref}
+                </a>
+              </div>
+            </div>
+          ) : null}
         </div>
 
         <div className="mt-14 border-t border-gray-200 dark:border-gray-800" />

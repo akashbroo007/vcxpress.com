@@ -361,7 +361,8 @@ export const CATEGORIES_PAGED_QUERY = /* groq */ `
       _id,
       "name": coalesce(name, title),
       "slug": slug.current,
-      description
+      description,
+      "articleCount": count(*[_type == "article" && status == "published" && (references(^._id) || category._ref == ^._id || ^._id in categories[]._ref)])
     }
   }
 `

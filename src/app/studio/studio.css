@@ -21,3 +21,93 @@
 .sanity-studio-scope [data-ui='Text'] {
   font-size: 14px;
 }
+
+/* ============================================
+   SCROLL CHAINING - Allow scroll to reach page
+   ============================================ */
+
+/* Remove any overscroll blocking from Sanity's default CSS */
+.sanity-studio-scope [data-ui="PaneContent"],
+.sanity-studio-scope [data-ui="Pane"] {
+  overscroll-behavior-y: auto !important;
+  overscroll-behavior: auto !important;
+}
+
+/* Ensure the document pane can scroll and chain */
+.sanity-studio-scope [data-testid="document-pane"] {
+  overflow-y: auto !important;
+  overscroll-behavior-y: auto !important;
+}
+
+/* Make form content tall so scrolling works */
+.sanity-studio-scope [data-testid="document-form"] {
+  min-height: 100%;
+  padding-bottom: 100px;
+}
+
+/* Remove overflow traps from inner containers */
+.sanity-studio-scope [data-ui="Card"],
+.sanity-studio-scope [data-ui="Stack"],
+.sanity-studio-scope [data-ui="Box"],
+.sanity-studio-scope [data-ui="Container"] {
+  overflow: visible !important;
+  max-height: none !important;
+}
+
+/* Ensure Studio wrapper is tall */
+.sanity-studio-scope {
+  min-height: 100vh;
+}
+
+/* ============================================
+   PUBLISH BUTTON POSITION - Move after Status
+   ============================================ */
+
+/* Target the document footer/actions panel */
+.sanity-studio-scope [data-ui="PaneFooter"],
+.sanity-studio-scope [data-testid="document-pane"] footer,
+.sanity-studio-scope [data-ui="DocumentPanelFooter"] {
+  position: sticky !important;
+  bottom: auto !important;
+  top: auto !important;
+  margin-top: 20px !important;
+  order: 1 !important;
+}
+
+/* Move publish actions up right after content */
+.sanity-studio-scope [data-ui="DocumentActionsContainer"],
+.sanity-studio-scope [data-ui="PaneFooter"] > div {
+  position: relative !important;
+  bottom: auto !important;
+}
+
+/* Reduce blank space before footer */
+.sanity-studio-scope [data-testid="document-form"] {
+  padding-bottom: 20px !important;
+}
+
+/* Make Status and Publish stick together */
+.sanity-studio-scope [data-ui="Field:status"],
+.sanity-studio-scope [data-ui="field-status"] {
+  margin-bottom: 0 !important;
+}
+
+/* Force Publish button to appear right after Status in the form flow */
+.sanity-studio-scope form > div:last-of-type,
+.sanity-studio-scope [data-testid="document-form"] > div:last-of-type {
+  display: flex !important;
+  flex-direction: column !important;
+}
+
+/* Move Publish actions to follow Status immediately */
+.sanity-studio-scope [data-ui="DocumentActionsContainer"],
+.sanity-studio-scope [class*="DocumentActionsContainer"] {
+  margin-top: 16px !important;
+  order: 999 !important;
+}
+
+/* Keep footer minimal */
+.sanity-studio-scope [data-ui="PaneFooter"] {
+  padding: 0 !important;
+  min-height: auto !important;
+}

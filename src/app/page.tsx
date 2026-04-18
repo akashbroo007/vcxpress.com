@@ -30,12 +30,12 @@ export default async function Home({searchParams}: {searchParams?: Promise<{page
   const currentPage = Math.max(1, parseInt(params?.page ?? '1', 10))
   const storiesPerPage = 10
 
-  const featured = await sanityFetch<ArticleListItem | null>(LATEST_FEATURED_ARTICLE_QUERY, {}, {revalidate: 60, useCdn: false, tags: ['articles']})
+  const featured = await sanityFetch<ArticleListItem | null>(LATEST_FEATURED_ARTICLE_QUERY, {}, {cache: 'no-store', useCdn: false, tags: ['articles']})
 
   const latest = await sanityFetch<ArticleListItem[]>(
     LATEST_NEWS_EXCLUDING_FEATURED_QUERY,
     {featuredId: featured?._id ?? '', limit: 100},
-    {revalidate: 60, useCdn: false, tags: ['articles']},
+    {cache: 'no-store', useCdn: false, tags: ['articles']},
   )
 
   const totalPages = Math.ceil(latest.length / storiesPerPage)

@@ -61,7 +61,7 @@ export async function generateMetadata({params}: PageProps): Promise<Metadata> {
   const article = await sanityFetch<ArticleDetail | null>(
     ARTICLE_BY_SLUG_QUERY,
     {slug},
-    {revalidate: 60, useCdn: false, tags: ['articles', `article:${slug}`]},
+    {cache: 'no-store', useCdn: false, tags: ['articles', `article:${slug}`]},
   )
 
   if (!article) return {}
@@ -99,7 +99,7 @@ export default async function ArticleDetailPage({params}: PageProps) {
   const article = await sanityFetch<ArticleDetail | null>(
     ARTICLE_BY_SLUG_QUERY,
     {slug},
-    {revalidate: 60, useCdn: false, tags: ['articles', `article:${slug}`]},
+    {cache: 'no-store', useCdn: false, tags: ['articles', `article:${slug}`]},
   )
 
   if (!article) notFound()
