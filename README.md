@@ -1,8 +1,8 @@
-# VCXpress
+# VCXPRESS
 
-Internal documentation for the **VCXpress** web application.
+Internal documentation for the **VCXPRESS** web application.
 
-VCXpress is a news + analysis site powered by **Next.js App Router** and **Sanity CMS**, with newsletter subscription and contact flows.
+VCXPRESS is a news + analysis site powered by **Next.js App Router** and **Sanity CMS**, with newsletter subscription and contact flows.
 
 ## Tech Stack
 
