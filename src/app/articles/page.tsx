@@ -38,7 +38,7 @@ export default async function ArticlesPage({searchParams}: {searchParams?: Promi
   const params = await searchParams
   const currentPage = Math.max(1, parseInt(params?.page ?? '1', 10))
   const articlesPerPage = 12
-  const articles = await sanityFetch<ArticleListItem[]>(ARTICLES_LIST_QUERY, {}, {cache: 'no-store', useCdn: false, tags: ['articles']})
+  const articles = await sanityFetch<ArticleListItem[]>(ARTICLES_LIST_QUERY, {}, {cache: 'no-store', tags: ['articles']})
 
   const totalPages = Math.max(1, Math.ceil(articles.length / articlesPerPage))
   const safePage = Math.min(currentPage, totalPages)

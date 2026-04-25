@@ -33,7 +33,7 @@ export default async function LearnCategoryPage({params}: PageProps) {
   const categories = await sanityFetch<LearnCategory[]>(
     LEARN_CATEGORIES_LIST_QUERY,
     {},
-    {revalidate: 300, useCdn: false, tags: ['learn']},
+    {revalidate: 300, tags: ['learn']},
   )
 
   const meta = categories.find((c) => c.slug === category)
@@ -42,7 +42,7 @@ export default async function LearnCategoryPage({params}: PageProps) {
   const items = await sanityFetch<LearnListItem[]>(
     LEARN_CATEGORY_ARTICLES_QUERY,
     {categorySlug: category},
-    {revalidate: 300, useCdn: false, tags: ['learn', `learn:${category}`]},
+    {revalidate: 300, tags: ['learn', `learn:${category}`]},
   )
 
   return (

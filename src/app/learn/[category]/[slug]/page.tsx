@@ -91,7 +91,7 @@ export async function generateMetadata({params}: PageProps): Promise<Metadata> {
   const article = await sanityFetch<LearnArticleDetail | null>(
     LEARN_ARTICLE_BY_CATEGORY_AND_SLUG_QUERY,
     {categorySlug: category, slug},
-    {revalidate: 300, useCdn: false, tags: ['learn', `learn:${category}`, `learn:${category}:${slug}`]},
+    {revalidate: 300, tags: ['learn', `learn:${category}`, `learn:${category}:${slug}`]},
   )
 
   if (!article) return {}
@@ -129,7 +129,7 @@ export default async function LearnArticlePage({params}: PageProps) {
   const article = await sanityFetch<LearnArticleDetail | null>(
     LEARN_ARTICLE_BY_CATEGORY_AND_SLUG_QUERY,
     {categorySlug: category, slug},
-    {revalidate: 300, useCdn: false, tags: ['learn', `learn:${category}`, `learn:${category}:${slug}`]},
+    {revalidate: 300, tags: ['learn', `learn:${category}`, `learn:${category}:${slug}`]},
   )
 
   if (!article) notFound()
@@ -138,7 +138,7 @@ export default async function LearnArticlePage({params}: PageProps) {
     ? await sanityFetch<LearnReadNextItem[]>(
         LEARN_READ_NEXT_QUERY,
         {categoryId: article.category._id, currentId: article._id},
-        {revalidate: 300, useCdn: false, tags: ['learn', `learn:${category}`]},
+        {revalidate: 300, tags: ['learn', `learn:${category}`]},
       )
     : []
 

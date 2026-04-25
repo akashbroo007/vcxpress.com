@@ -46,7 +46,7 @@ export default async function SearchPage({searchParams}: PageProps) {
   const term = (q ?? '').trim()
 
   const results = term
-    ? await sanityFetch<SearchResult[]>(SEARCH_QUERY, {q: `*${term}*`}, {revalidate: 30, useCdn: false, tags: ['articles']})
+    ? await sanityFetch<SearchResult[]>(SEARCH_QUERY, {q: `*${term}*`}, {revalidate: 30, tags: ['articles']})
     : []
 
   return (

@@ -6,7 +6,7 @@ export {default} from '../../categories/[slug]/page'
 type SlugRow = {slug: string}
 
 export async function generateStaticParams(): Promise<Array<{slug: string}>> {
-  const rows = await sanityFetch<SlugRow[]>(CATEGORY_SLUGS_QUERY, {}, {revalidate: 3600, useCdn: false, tags: ['categories']})
+  const rows = await sanityFetch<SlugRow[]>(CATEGORY_SLUGS_QUERY, {}, {revalidate: 3600, tags: ['categories']})
 
   return rows
     .map((r) => (typeof r.slug === 'string' ? r.slug.trim() : ''))

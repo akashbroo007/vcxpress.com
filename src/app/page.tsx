@@ -2,11 +2,15 @@ import Link from 'next/link'
 import Image from 'next/image'
 
 import {sanityFetch} from '@/lib/sanity.client'
-import {LATEST_FEATURED_ARTICLE_QUERY, LATEST_NEWS_EXCLUDING_FEATURED_QUERY} from '@/lib/sanity.queries'
+import {
+  LATEST_FEATURED_ARTICLE_QUERY,
+  LATEST_NEWS_EXCLUDING_FEATURED_QUERY,
+} from '@/lib/sanity.queries'
 import {safeSanityImageUrl} from '@/lib/sanity/image'
 import NewsletterForm from '@/components/NewsletterForm'
 import Pagination from '@/components/Pagination'
 import LiveWireTimeline from '@/components/LiveWireTimeline'
+import HomepageLiveFeed from '@/components/HomepageLiveFeed'
 
 type ArticleListItem = {
   _id: string
@@ -25,17 +29,37 @@ type ArticleListItem = {
   } | null
 }
 
+/**
+ * ISR Configuration
+ * - revalidate: 300 = 5 minutes (reduces API calls vs no-store)
+ * - Tags enable on-demand revalidation via webhooks
+ * - CDN is always enabled (configured in sanity.client.ts)
+ */
+export const revalidate = 300 // 5 minutes
+
 export default async function Home({searchParams}: {searchParams?: Promise<{page?: string}>}) {
   const params = await searchParams
   const currentPage = Math.max(1, parseInt(params?.page ?? '1', 10))
   const storiesPerPage = 10
 
-  const featured = await sanityFetch<ArticleListItem | null>(LATEST_FEATURED_ARTICLE_QUERY, {}, {cache: 'no-store', useCdn: false, tags: ['articles']})
+  // Fetch featured article (ISR + CDN)
+  const featured = await sanityFetch<ArticleListItem | null>(
+    LATEST_FEATURED_ARTICLE_QUERY,
+    {},
+    {
+      revalidate: 300, // 5 minutes
+      tags: ['articles', 'featured'],
+    },
+  )
 
+  // Fetch latest news (ISR + CDN)
   const latest = await sanityFetch<ArticleListItem[]>(
     LATEST_NEWS_EXCLUDING_FEATURED_QUERY,
     {featuredId: featured?._id ?? '', limit: 100},
-    {cache: 'no-store', useCdn: false, tags: ['articles']},
+    {
+      revalidate: 300, // 5 minutes
+      tags: ['articles'],
+    },
   )
 
   const totalPages = Math.ceil(latest.length / storiesPerPage)
@@ -44,111 +68,40 @@ export default async function Home({searchParams}: {searchParams?: Promise<{page
   const endIndex = startIndex + storiesPerPage
   const paginatedStories = latest.slice(startIndex, endIndex)
 
+  // Prepare data for client-side SWR (only the first 5 for sidebar)
+  const initialLatestForSWR = latest.slice(0, 5).map((a) => ({
+    _id: a._id,
+    title: a.title,
+    slug: a.slug,
+    publishedDate: a.publishedDate,
+    category: a.category,
+  }))
+
   return (
     <div className="theme-home bg-background-light dark:bg-background-dark text-text-main dark:text-white font-display antialiased min-h-screen flex flex-col">
       <main className="flex-grow">
         <div className="max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-12">
-          <section className="mb-16">
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-              {featured?.slug ? (
-                <Link className="lg:col-span-8 group block" href={`/news/${featured.slug}`}>
-                  <div className="relative w-full aspect-[16/9] overflow-hidden bg-gray-100 dark:bg-gray-800 mb-6">
-                    {(() => {
-                      const imageUrl = safeSanityImageUrl(featured.featuredImage, {width: 1200, height: 675})
+          {/* Live Feed with SWR - Client Component */}
+          <HomepageLiveFeed
+            initialFeatured={featured}
+            initialLatest={initialLatestForSWR}
+          />
 
-                      return imageUrl ? (
-                        <Image
-                          alt={featured.title}
-                          className="object-cover transform group-hover:scale-105 transition-transform duration-700"
-                          fill
-                          priority
-                          sizes="(max-width: 1024px) 100vw, 66vw"
-                          src={imageUrl}
-                        />
-                      ) : (
-                        <div className="absolute inset-0" />
-                      )
-                    })()}
-                  </div>
-                  <div className="flex flex-col gap-3">
-                    <div className="x-line"></div>
-                    <span className="text-gray-500 dark:text-gray-400 font-semibold text-xs font-mono tracking-widest uppercase mb-1">
-                      {featured?.category?.name ?? ''}
-                    </span>
-                    <h2 className="font-serif text-3xl md:text-4xl lg:text-5xl font-bold leading-tight text-text-main dark:text-white group-hover:text-primary group-hover:underline group-hover:decoration-[0.15em] group-hover:underline-offset-[0.12em] group-hover:decoration-primary transition-colors">
-                      {featured?.title ?? ''}
-                    </h2>
-                    <p className="text-lg md:text-xl text-text-subtle/80 dark:text-gray-300 max-w-3xl leading-relaxed mt-2 font-light">
-                      {featured?.summary ?? ''}
-                    </p>
-                    <div className="flex items-center gap-4 mt-3 text-xs text-text-subtle dark:text-gray-500 font-mono uppercase tracking-wide">
-                      <span className="text-text-main font-bold dark:text-gray-300">{featured?.companyName ? `By ${featured.companyName}` : ''}</span>
-                      <span className="text-gray-300 dark:text-gray-600">{featured?.companyName ? '|' : ''}</span>
-                      <span>
-                        {featured?.publishedDate ? new Date(featured.publishedDate).toLocaleDateString(undefined, {month: 'short', day: 'numeric', year: 'numeric'}) : ''}
-                      </span>
-                      <span className="text-gray-300 dark:text-gray-600">{featured?.publishedDate ? '|' : ''}</span>
-                      <span></span>
-                    </div>
-                  </div>
-                </Link>
-              ) : (
-                <div className="lg:col-span-8">
-                  <div className="relative w-full aspect-[16/9] overflow-hidden bg-gray-100 dark:bg-gray-800 mb-6"></div>
-                </div>
-              )}
-              <div className="lg:col-span-4 flex flex-col gap-6 lg:pl-8 lg:border-l border-gray-200 dark:border-gray-800">
-                <div className="flex flex-col gap-2">
-                  <div className="w-10 h-[2px] bg-gray-300 dark:bg-gray-600"></div>
-                  <h3 className="font-serif text-xl font-bold text-text-main dark:text-white">Latest News</h3>
-                </div>
-
-                {[0, 1, 2, 3, 4].map((idx) => {
-                  const a = latest[idx]
-
-                  return (
-                    <div key={a?._id ?? `hero-stack-${idx}`}>
-                      {a?.slug ? (
-                        <Link className="flex flex-col gap-2 group" href={`/news/${a.slug}`}>
-                          <div className="w-8 h-[1px] bg-gray-300 dark:bg-gray-600 mb-1"></div>
-                          <span className="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-widest font-mono">{a?.category?.name ?? ''}</span>
-                          <h3 className="font-serif text-xl font-bold text-text-main dark:text-white leading-snug group-hover:text-primary group-hover:underline group-hover:decoration-[0.15em] group-hover:underline-offset-[0.12em] group-hover:decoration-primary transition-colors">
-                            {a?.title ?? ''}
-                          </h3>
-                          <span className="text-xs text-text-subtle dark:text-gray-500 mt-1 font-mono uppercase">
-                            {a?.publishedDate
-                              ? new Date(a.publishedDate).toLocaleDateString(undefined, {month: 'short', day: 'numeric', year: 'numeric'})
-                              : ''}
-                          </span>
-                        </Link>
-                      ) : (
-                        <div className="flex flex-col gap-2">
-                          <div className="w-8 h-[1px] bg-gray-300 dark:bg-gray-600 mb-1"></div>
-                          <span className="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-widest font-mono">{a?.category?.name ?? ''}</span>
-                          <h3 className="font-serif text-xl font-bold text-text-main dark:text-white leading-snug transition-colors">{a?.title ?? ''}</h3>
-                          <span className="text-xs text-text-subtle dark:text-gray-500 mt-1 font-mono uppercase">
-                            {a?.publishedDate
-                              ? new Date(a.publishedDate).toLocaleDateString(undefined, {month: 'short', day: 'numeric', year: 'numeric'})
-                              : ''}
-                          </span>
-                        </div>
-                      )}
-                      {idx !== 4 ? <div className="w-full h-px bg-gray-200 dark:bg-gray-800"></div> : null}
-                    </div>
-                  )
-                })}
-              </div>
-            </div>
-          </section>
           <div className="w-full h-px bg-gray-200 dark:bg-gray-800 mb-12"></div>
+
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
             <div className="lg:col-span-8 flex flex-col gap-9">
               <div className="flex items-center justify-between pb-4 border-b border-black dark:border-white">
                 <div className="flex flex-col gap-1">
                   <div className="w-8 h-[2px] bg-gray-300 dark:bg-gray-600 mb-1"></div>
-                  <h3 className="font-serif text-2xl font-bold text-text-main dark:text-white">Featured Stories</h3>
+                  <h3 className="font-serif text-2xl font-bold text-text-main dark:text-white">
+                    Featured Stories
+                  </h3>
                 </div>
-                <Link className="text-xs font-semibold text-primary hover:underline uppercase tracking-widest font-mono" href="/news">
+                <Link
+                  className="text-xs font-semibold text-primary hover:underline uppercase tracking-widest font-mono"
+                  href="/news"
+                >
                   View All
                 </Link>
               </div>
@@ -159,7 +112,10 @@ export default async function Home({searchParams}: {searchParams?: Promise<{page
                     <article className="flex flex-col sm:flex-row gap-6">
                       <div className="relative w-full sm:w-64 aspect-[4/3] sm:aspect-video bg-gray-100 dark:bg-gray-800 rounded-sm overflow-hidden flex-shrink-0">
                         {(() => {
-                          const imageUrl = safeSanityImageUrl(a.featuredImage, {width: 800, height: 600})
+                          const imageUrl = safeSanityImageUrl(a.featuredImage, {
+                            width: 800,
+                            height: 600,
+                          })
 
                           return imageUrl ? (
                             <Image
@@ -176,13 +132,19 @@ export default async function Home({searchParams}: {searchParams?: Promise<{page
                       </div>
                       <div className="flex flex-col justify-center gap-2">
                         <div className="flex items-center gap-3">
-                          <span className="text-gray-500 dark:text-gray-400 text-xs font-semibold font-mono uppercase tracking-widest">{a.category?.name ?? ''}</span>
-                          <span className="text-xs text-text-subtle dark:text-gray-500 font-mono">{a.category?.name ? '| ' : ''}</span>
+                          <span className="text-gray-500 dark:text-gray-400 text-xs font-semibold font-mono uppercase tracking-widest">
+                            {a.category?.name ?? ''}
+                          </span>
+                          <span className="text-xs text-text-subtle dark:text-gray-500 font-mono">
+                            {a.category?.name ? '| ' : ''}
+                          </span>
                         </div>
                         <h4 className="font-serif text-xl font-bold text-text-main dark:text-white leading-tight group-hover:text-primary group-hover:underline group-hover:decoration-[0.15em] group-hover:underline-offset-[0.12em] group-hover:decoration-primary transition-colors">
                           {a.title}
                         </h4>
-                        <p className="text-text-subtle dark:text-gray-400 text-sm leading-relaxed line-clamp-2">{a.summary}</p>
+                        <p className="text-text-subtle dark:text-gray-400 text-sm leading-relaxed line-clamp-2">
+                          {a.summary}
+                        </p>
                       </div>
                     </article>
                   </Link>
@@ -203,17 +165,26 @@ export default async function Home({searchParams}: {searchParams?: Promise<{page
                 </div>
               )}
             </div>
+
             <div className="lg:col-span-4 pl-0 lg:pl-6 lg:border-l border-gray-200 dark:border-gray-800">
               <div className="lg:sticky lg:top-24">
                 <div className="flex items-center gap-2 mb-6 pb-2 border-b-2 border-gray-300 dark:border-gray-600 w-fit">
-                  <span className="material-symbols-outlined text-gray-500 dark:text-gray-400">flash_on</span>
-                  <h3 className="font-serif text-lg font-semibold text-gray-800 dark:text-white uppercase tracking-wider">Live Wire</h3>
+                  <span className="material-symbols-outlined text-gray-500 dark:text-gray-400">
+                    flash_on
+                  </span>
+                  <h3 className="font-serif text-lg font-semibold text-gray-800 dark:text-white uppercase tracking-wider">
+                    Live Wire
+                  </h3>
                 </div>
                 <LiveWireTimeline articles={latest} count={liveWireCount} />
                 <div className="mt-10 p-5 pb-0 bg-gray-50 dark:bg-white/5 rounded-sm border border-gray-200 dark:border-white/10">
                   <div className="flex items-center gap-2 mb-3">
-                    <span className="material-symbols-outlined text-gray-600 dark:text-gray-300">mail</span>
-                    <h4 className="font-serif font-semibold text-lg text-gray-800 dark:text-white uppercase tracking-wide">Daily Briefing</h4>
+                    <span className="material-symbols-outlined text-gray-600 dark:text-gray-300">
+                      mail
+                    </span>
+                    <h4 className="font-serif font-semibold text-lg text-gray-800 dark:text-white uppercase tracking-wide">
+                      Daily Briefing
+                    </h4>
                   </div>
                   <p className="text-sm text-text-main dark:text-gray-300 mb-4 leading-relaxed font-medium">
                     Get the intelligence you need. Delivered every morning.

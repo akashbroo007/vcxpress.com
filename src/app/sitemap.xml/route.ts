@@ -25,8 +25,8 @@ export async function GET(): Promise<Response> {
   const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000'
 
   const [articleRows, categoryRows] = await Promise.all([
-    sanityFetch<SlugRow[]>(PUBLISHED_ARTICLE_SLUGS_QUERY, {}, {revalidate: 3600, useCdn: false, tags: ['articles']}),
-    sanityFetch<SlugRow[]>(CATEGORY_SLUGS_QUERY, {}, {revalidate: 3600, useCdn: false, tags: ['categories']}),
+    sanityFetch<SlugRow[]>(PUBLISHED_ARTICLE_SLUGS_QUERY, {}, {revalidate: 3600, tags: ['articles']}),
+    sanityFetch<SlugRow[]>(CATEGORY_SLUGS_QUERY, {}, {revalidate: 3600, tags: ['categories']}),
   ])
 
   const staticPaths = ['/', '/about', '/contact', '/privacy', '/terms']

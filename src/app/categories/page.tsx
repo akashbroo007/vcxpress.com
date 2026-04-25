@@ -37,7 +37,7 @@ export default async function CategoriesPage({_searchParams}: PageProps) {
   const data = await sanityFetch<PagedCategories>(
     ALL_CATEGORIES_QUERY,
     {},
-    {cache: 'no-store', useCdn: false, tags: ['categories']},
+    {cache: 'no-store', tags: ['categories']},
   )
 
   const categories = Array.isArray(data?.items) ? data.items : []

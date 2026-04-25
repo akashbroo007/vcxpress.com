@@ -36,7 +36,7 @@ export default async function CategoryDetailPage({params, searchParams}: PagePro
   const category = await sanityFetch<CategoryDetail | null>(
     CATEGORY_BY_SLUG_WITH_ARTICLES_QUERY,
     {slug},
-    {cache: 'no-store', useCdn: false, tags: ['articles', 'categories', `category:${slug}`]},
+    {cache: 'no-store', tags: ['articles', 'categories', `category:${slug}`]},
   )
 
   if (!category) notFound()

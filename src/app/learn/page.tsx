@@ -25,8 +25,8 @@ type LearnListItem = {
 
 export default async function LearnHomePage() {
   const [categories, latest] = await Promise.all([
-    sanityFetch<LearnCategory[]>(LEARN_CATEGORIES_LIST_QUERY, {}, {revalidate: 300, useCdn: false, tags: ['learn']}),
-    sanityFetch<LearnListItem[]>(LEARN_LATEST_ARTICLES_QUERY, {}, {revalidate: 300, useCdn: false, tags: ['learn']}),
+    sanityFetch<LearnCategory[]>(LEARN_CATEGORIES_LIST_QUERY, {}, {revalidate: 300, tags: ['learn']}),
+    sanityFetch<LearnListItem[]>(LEARN_LATEST_ARTICLES_QUERY, {}, {revalidate: 300, tags: ['learn']}),
   ])
 
   return (

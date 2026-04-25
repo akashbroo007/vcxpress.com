@@ -9,7 +9,7 @@ export async function generateStaticParams(): Promise<Array<{slug: string}>> {
   const rows = await sanityFetch<SlugRow[]>(
     PUBLISHED_ARTICLE_SLUGS_QUERY,
     {},
-    {revalidate: 3600, useCdn: false, tags: ['articles']},
+    {revalidate: 3600, tags: ['articles']},
   )
 
   return rows

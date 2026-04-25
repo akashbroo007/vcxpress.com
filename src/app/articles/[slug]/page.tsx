@@ -61,7 +61,7 @@ export async function generateMetadata({params}: PageProps): Promise<Metadata> {
   const article = await sanityFetch<ArticleDetail | null>(
     ARTICLE_BY_SLUG_QUERY,
     {slug},
-    {cache: 'no-store', useCdn: false, tags: ['articles', `article:${slug}`]},
+    {cache: 'no-store', tags: ['articles', `article:${slug}`]},
   )
 
   if (!article) return {}
@@ -99,7 +99,7 @@ export default async function ArticleDetailPage({params}: PageProps) {
   const article = await sanityFetch<ArticleDetail | null>(
     ARTICLE_BY_SLUG_QUERY,
     {slug},
-    {cache: 'no-store', useCdn: false, tags: ['articles', `article:${slug}`]},
+    {cache: 'no-store', tags: ['articles', `article:${slug}`]},
   )
 
   if (!article) notFound()
@@ -111,7 +111,7 @@ export default async function ArticleDetailPage({params}: PageProps) {
     ? await sanityFetch<ArticleDetail[]>(
         NEWS_CONTINUOUS_FEED_ITEMS_QUERY,
         {categoryId, currentId: article._id, limit: maxAdditional},
-        {revalidate: 60, useCdn: false, tags: ['articles', `article:${slug}`, 'continuous-feed']},
+        {revalidate: 60, tags: ['articles', `article:${slug}`, 'continuous-feed']},
       )
     : []
 
@@ -120,7 +120,7 @@ export default async function ArticleDetailPage({params}: PageProps) {
     ? await sanityFetch<ArticleDetail[]>(
         NEWS_CONTINUOUS_FEED_ITEMS_QUERY,
         {categoryId: null, currentId: article._id, limit: 10},
-        {revalidate: 60, useCdn: false, tags: ['articles', `article:${slug}`, 'continuous-feed']},
+        {revalidate: 60, tags: ['articles', `article:${slug}`, 'continuous-feed']},
       )
     : []
 
@@ -134,7 +134,7 @@ export default async function ArticleDetailPage({params}: PageProps) {
   >(
     LATEST_NEWS_SIDEBAR_QUERY,
     {slug, limit: 5},
-    {revalidate: 60, useCdn: false, tags: ['articles', 'latest-news']},
+    {revalidate: 60, tags: ['articles', 'latest-news']},
   )
 
   const recommendedLimit = 4
@@ -142,12 +142,12 @@ export default async function ArticleDetailPage({params}: PageProps) {
     ? await sanityFetch<NewsRecommendedItem[]>(
         NEWS_RECOMMENDED_NEXT_QUERY,
         {categoryId: article.category._id, currentId: article._id, limit: recommendedLimit},
-        {revalidate: 60, useCdn: false, tags: ['articles', `article:${slug}`, 'recommended']},
+        {revalidate: 60, tags: ['articles', `article:${slug}`, 'recommended']},
       )
     : await sanityFetch<NewsRecommendedItem[]>(
         LATEST_NEWS_SIDEBAR_QUERY,
         {slug, limit: recommendedLimit},
-        {revalidate: 60, useCdn: false, tags: ['articles', `article:${slug}`, 'recommended']},
+        {revalidate: 60, tags: ['articles', `article:${slug}`, 'recommended']},
       )
 
   return (

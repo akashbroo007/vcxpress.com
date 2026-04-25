@@ -40,11 +40,11 @@ type LearnListItem = {
 
 export default async function SitemapPage() {
   const [categories, learnCategories, authors, latestNews, latestLearn] = await Promise.all([
-    sanityFetch<CategoryListItem[]>(CATEGORIES_LIST_QUERY, {}, {revalidate: 3600, useCdn: false, tags: ['categories']}),
-    sanityFetch<LearnCategoryItem[]>(LEARN_CATEGORIES_LIST_QUERY, {}, {revalidate: 3600, useCdn: false, tags: ['learn']}),
-    sanityFetch<AuthorListItem[]>(AUTHORS_LIST_QUERY, {}, {revalidate: 3600, useCdn: false, tags: ['authors']}),
-    sanityFetch<NewsListItem[]>(ARTICLES_LIST_QUERY, {}, {revalidate: 3600, useCdn: false, tags: ['articles']}),
-    sanityFetch<LearnListItem[]>(LEARN_LATEST_ARTICLES_QUERY, {}, {revalidate: 3600, useCdn: false, tags: ['learn']}),
+    sanityFetch<CategoryListItem[]>(CATEGORIES_LIST_QUERY, {}, {revalidate: 3600, tags: ['categories']}),
+    sanityFetch<LearnCategoryItem[]>(LEARN_CATEGORIES_LIST_QUERY, {}, {revalidate: 3600, tags: ['learn']}),
+    sanityFetch<AuthorListItem[]>(AUTHORS_LIST_QUERY, {}, {revalidate: 3600, tags: ['authors']}),
+    sanityFetch<NewsListItem[]>(ARTICLES_LIST_QUERY, {}, {revalidate: 3600, tags: ['articles']}),
+    sanityFetch<LearnListItem[]>(LEARN_LATEST_ARTICLES_QUERY, {}, {revalidate: 3600, tags: ['learn']}),
   ])
 
   const categoryItems = categories.slice(0, 12)

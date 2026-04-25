@@ -62,7 +62,7 @@ export default async function GlobalFooter() {
   const learnCategories = await sanityFetch<LearnCategory[]>(
     LEARN_CATEGORIES_LIST_QUERY,
     {},
-    {revalidate: 300, useCdn: false, tags: ['learn']},
+    {revalidate: 300, tags: ['learn']},
   )
 
   const learnFooterItems = learnCategories.slice(0, 3)
