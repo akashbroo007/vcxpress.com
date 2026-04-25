@@ -33,7 +33,7 @@ export async function GET(_req: Request, ctx: {params: Promise<{slug: string}>})
   const category = await sanityFetch<CategoryDetail | null>(
     CATEGORY_BY_SLUG_WITH_ARTICLES_QUERY,
     {slug},
-    {cache: 'no-store', useCdn: false},
+    {cache: 'no-store'},
   )
 
   return apiJson(category, {headers: {'Cache-Control': 'no-store, max-age=0'}})

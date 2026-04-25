@@ -42,7 +42,7 @@ export async function GET(req: Request) {
   // GROQ match expects wildcards for partial matching
   const q = `*${term}*`
 
-  const results = await sanityFetch(SEARCH_QUERY, {q}, {cache: 'no-store', useCdn: false})
+  const results = await sanityFetch(SEARCH_QUERY, {q}, {cache: 'no-store'})
 
   return apiJson(results, {headers: {'Cache-Control': 'no-store, max-age=0'}})
 }
