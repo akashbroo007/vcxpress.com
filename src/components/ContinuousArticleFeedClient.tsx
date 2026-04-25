@@ -11,46 +11,12 @@ import {safeSanityImageUrl} from '@/lib/sanity/image'
 import ArticleActionButtons from '@/components/ArticleActionButtons'
 import NewsletterForm from '@/components/NewsletterForm'
 
-const isValidHttpUrl = (value: string | undefined): boolean => {
-  if (!value || typeof value !== 'string') return false
-  const trimmed = value.trim()
-  if (!trimmed) return false
-  // Accept URLs with or without protocol
-  if (trimmed.startsWith('http://') || trimmed.startsWith('https://')) {
-    try {
-      const url = new URL(trimmed)
-      return url.protocol === 'http:' || url.protocol === 'https:'
-    } catch {
-      return false
-    }
-  }
-  // If no protocol but looks like a URL, prepend https:// and check
-  if (trimmed.includes('.') && !trimmed.includes(' ')) {
-    try {
-      const url = new URL('https://' + trimmed)
-      return url.protocol === 'https:'
-    } catch {
-      return false
-    }
-  }
-  return false
-}
-
-const normalizeSourceUrl = (value: string | undefined): string | undefined => {
-  if (!value || typeof value !== 'string') return undefined
-  const trimmed = value.trim()
-  if (!trimmed) return undefined
-  // If no protocol, add https://
-  if (!trimmed.startsWith('http://') && !trimmed.startsWith('https://')) {
-    return 'https://' + trimmed
-  }
-  return trimmed
-}
+import {getSourceHref, getSourceName} from '@/lib/source'
 
 const portableTextComponents: PortableTextComponents = {
   block: {
     normal: ({children}) => (
-      <p className="mb-6 leading-8 text-gray-800 dark:text-gray-200">
+      <p className="mb-6">
         {children}
       </p>
     ),
@@ -73,9 +39,10 @@ const portableTextComponents: PortableTextComponents = {
   marks: {
     link: ({children, value}) => {
       const href = typeof value?.href === 'string' ? value.href : undefined
-      if (!href || !isValidHttpUrl(href)) return <>{children}</>
+      const normalizedHref = href ? getSourceHref(href) : null
+      if (!normalizedHref) return <>{children}</>
       return (
-        <a className="text-primary underline hover:opacity-80" href={href} target="_blank" rel="noopener noreferrer">
+        <a className="vcx-highlight-link" href={normalizedHref} target="_blank" rel="noopener noreferrer">
           {children}
         </a>
       )
@@ -218,7 +185,8 @@ export default function ContinuousArticleFeedClient({
   const ArticleBlock = ({item, showActions}: {item: ContinuousFeedArticle; showActions: boolean}) => {
     const imageUrl = safeSanityImageUrl(item.featuredImage, {width: 1400, height: 788})
     const publishedLabel = formatDate(item.publishedDate)
-    const sourceHref = normalizeSourceUrl(item.sourceURL)
+    const sourceHref = getSourceHref(item.sourceURL)
+    const sourceName = sourceHref ? getSourceName(sourceHref) : null
 
     return (
       <article className="w-full" data-article-slug={item.slug} data-article-id={item._id}>
@@ -235,7 +203,7 @@ export default function ContinuousArticleFeedClient({
           {sourceHref ? <span className="mx-2 text-gray-300 dark:text-gray-700">/</span> : null}
           {sourceHref ? (
             <a className="hover:text-gray-700 dark:hover:text-gray-300 transition-colors" href={sourceHref} target="_blank" rel="noopener noreferrer">
-              Source
+              Read more at {sourceName ?? 'Source'}
             </a>
           ) : null}
         </div>
@@ -245,7 +213,7 @@ export default function ContinuousArticleFeedClient({
         </h1>
 
         {item.summary ? (
-          <div className="mt-6 border-l-2 border-gray-300 dark:border-gray-700 pl-5 text-gray-700 dark:text-gray-300 font-serif text-lg leading-8">
+          <div className="mt-6 border-l-2 border-gray-300 dark:border-gray-700 pl-5 text-gray-700 dark:text-gray-300 text-lg leading-8">
             {item.summary}
           </div>
         ) : null}
@@ -280,9 +248,9 @@ export default function ContinuousArticleFeedClient({
                   href={sourceHref}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-primary hover:underline break-all"
+                  className="text-primary hover:underline"
                 >
-                  {sourceHref}
+                  Read more at {sourceName ?? 'Source'}
                 </a>
               </div>
             </div>
@@ -362,11 +330,14 @@ export default function ContinuousArticleFeedClient({
       </div>
 
       <aside className="w-full lg:w-1/3 lg:min-w-0 lg:sticky lg:top-24 lg:self-start">
-        <div className="flex items-center justify-between pb-3 border-b border-gray-200 dark:border-gray-800">
-          <h3 className="text-xs font-semibold tracking-widest uppercase text-gray-600 dark:text-gray-300">Latest News</h3>
-          <Link className="text-xs font-mono text-gray-500 hover:text-gray-700 dark:hover:text-gray-300 transition-colors" href="/news">
-            View all
-          </Link>
+        <div className="flex flex-col gap-2 pb-3 border-b border-gray-200 dark:border-gray-800">
+          <div className="w-10 h-[2px] bg-gray-300 dark:bg-gray-600"></div>
+          <div className="flex items-center justify-between">
+            <h3 className="font-serif text-xl font-bold text-text-main dark:text-white">Latest News</h3>
+            <Link className="text-xs font-mono text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 transition-colors uppercase tracking-widest" href="/news">
+              View all
+            </Link>
+          </div>
         </div>
 
         <div className="mt-5 flex flex-col gap-4">
@@ -392,9 +363,9 @@ export default function ContinuousArticleFeedClient({
                   ) : null}
                 </div>
                 <div className="flex-1 min-w-0">
-                  <div className="text-sm font-semibold text-gray-900 dark:text-white leading-snug line-clamp-3">
+                  <h4 className="font-serif text-base font-bold text-text-main dark:text-white leading-snug line-clamp-3 hover:text-primary hover:underline hover:decoration-[0.15em] hover:underline-offset-[0.12em] hover:decoration-primary transition-colors">
                     {n.title}
-                  </div>
+                  </h4>
                 </div>
               </Link>
             )

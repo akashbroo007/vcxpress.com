@@ -91,18 +91,20 @@ export default function LiveWireTimeline({articles, count}: LiveWireTimelineProp
               {/* Line segment below dot (connects to next item) */}
               {!isLastItem && (
                 <div 
-                  className="w-px flex-grow min-h-[24px] mt-1 origin-top transition-all duration-500 ease-out"
-                  style={{
-                    backgroundColor: isLineActive ? '#1a1a2e' : '#D1D5DB',
-                    transform: isLineActive ? 'scaleY(1)' : 'scaleY(1)',
-                  }}
+                  className={`
+                    w-px flex-grow min-h-[24px] mt-1 origin-top transition-all duration-500 ease-out
+                    ${isLineActive 
+                      ? 'bg-[#1a1a2e] dark:bg-gray-400' 
+                      : 'bg-gray-300 dark:bg-gray-700'
+                    }
+                  `}
                 />
               )}
             </div>
 
             {/* Content */}
             <div className="flex flex-col gap-1 pb-6">
-              <span className="text-xs font-bold text-text-subtle font-mono">
+              <span className="text-xs font-bold text-text-subtle dark:text-gray-400 font-mono">
                 {article.publishedDate
                   ? new Date(article.publishedDate).toLocaleDateString(undefined, {
                       month: 'short',
@@ -113,7 +115,7 @@ export default function LiveWireTimeline({articles, count}: LiveWireTimelineProp
               </span>
               <Link
                 className={`
-                  font-serif hover:text-primary leading-snug transition-all duration-300
+                  font-serif hover:text-primary hover:underline hover:decoration-[0.15em] hover:underline-offset-[0.12em] hover:decoration-primary leading-snug transition-all duration-300
                   ${isDotActive
                     ? 'font-bold text-text-main dark:text-white' 
                     : 'font-medium text-text-main/70 dark:text-white/70'

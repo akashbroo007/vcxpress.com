@@ -74,7 +74,7 @@ export default async function GlobalFooter() {
           <div className="mb-8">
             <div className="flex items-center gap-2 mb-4">
               <Image alt="" aria-hidden="true" className="h-8 w-8" height={32} src="/brand/icons/vcx-icon-32.png" width={32} />
-              <span className="font-serif text-xl font-medium tracking-wide text-text-main dark:text-white transition-colors duration-300 ease-in-out">VCXpress</span>
+              <span className="font-serif text-xl font-medium tracking-wide text-text-main dark:text-white transition-colors duration-300 ease-in-out">VCXPRESS</span>
             </div>
             <p className="text-sm text-text-main/60 dark:text-white/60 mb-6 leading-relaxed transition-colors duration-300 ease-in-out">
               The premier source for global business, finance, and technology news. We provide the intelligence professionals need to make smarter decisions.
@@ -188,7 +188,7 @@ export default async function GlobalFooter() {
           <div className="mb-8">
             <div className="flex items-center gap-2 mb-4">
               <Image alt="" aria-hidden="true" className="h-8 w-8" height={32} src="/brand/icons/vcx-icon-32.png" width={32} />
-              <span className="font-serif text-xl font-medium tracking-wide text-text-main dark:text-white transition-colors duration-300 ease-in-out">VCXpress</span>
+              <span className="font-serif text-xl font-medium tracking-wide text-text-main dark:text-white transition-colors duration-300 ease-in-out">VCXPRESS</span>
             </div>
             <p className="text-sm text-text-main/60 dark:text-white/60 mb-6 leading-relaxed transition-colors duration-300 ease-in-out">
               The premier source for global business, finance, and technology news. We provide the intelligence professionals need to make smarter decisions.
@@ -298,7 +298,7 @@ export default async function GlobalFooter() {
           <div className="col-span-4">
             <div className="flex items-center gap-2 mb-4">
               <Image alt="" aria-hidden="true" className="h-8 w-8" height={32} src="/brand/icons/vcx-icon-32.png" width={32} />
-              <span className="font-serif text-xl font-medium tracking-wide text-text-main dark:text-white transition-colors duration-300 ease-in-out">VCXpress</span>
+              <span className="font-serif text-xl font-medium tracking-wide text-text-main dark:text-white transition-colors duration-300 ease-in-out">VCXPRESS</span>
             </div>
             <p className="text-sm text-text-main/60 dark:text-white/60 mb-6 leading-relaxed transition-colors duration-300 ease-in-out">
               The premier source for global business, finance, and technology news. We provide the intelligence professionals need to make smarter decisions.

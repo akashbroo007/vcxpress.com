@@ -1,5 +1,5 @@
 import type {Metadata} from 'next'
-import {IBM_Plex_Mono, Merriweather, Geist } from 'next/font/google'
+import {IBM_Plex_Mono, Lexend_Deca} from 'next/font/google'
 
 import './globals.css'
 import GlobalNavbar from '@/components/GlobalNavbar'
@@ -9,8 +9,7 @@ import {ThemeProvider} from '@/components/ThemeProvider'
 import { cn } from "@/lib/utils";
 
 const ibmPlexMono = IBM_Plex_Mono({subsets: ['latin'], weight: ['400', '500', '600'], variable: '--font-mono'})
-const merriweather = Merriweather({subsets: ['latin'], weight: ['300', '400', '700', '900'], variable: '--font-serif'})
-const geist = Geist({subsets:['latin'],variable:'--font-sans'})
+const lexendDeca = Lexend_Deca({subsets: ['latin'], weight: ['300', '400', '500'], variable: '--font-body'})
 
 export const metadata: Metadata = {
   title: 'VCXPRESS',
@@ -28,7 +27,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning className={cn(ibmPlexMono.variable, merriweather.variable, "font-sans", geist.variable)}>
+    <html lang="en" suppressHydrationWarning className={cn(ibmPlexMono.variable, lexendDeca.variable)}>
       <head>
         <link
           rel="stylesheet"

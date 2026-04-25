@@ -67,7 +67,7 @@ export default function LiveCategoryArticles({initialCategory}: {initialCategory
     <section className="mt-10">
       <div className="flex items-center justify-between pb-4 border-b border-gray-200 dark:border-gray-700">
         <div className="flex flex-col gap-1">
-          <div className="w-8 h-[2px] bg-gray-300 mb-1"></div>
+          <div className="w-8 h-[2px] bg-gray-300 dark:bg-gray-600 mb-1"></div>
           <h2 className="font-serif text-2xl font-semibold text-text-main dark:text-white">Latest in {category.name}</h2>
         </div>
       </div>
@@ -85,7 +85,7 @@ export default function LiveCategoryArticles({initialCategory}: {initialCategory
               href={`/news/${a.slug}`}
             >
               <div className="flex items-center justify-between gap-4">
-                <div className="text-xs font-semibold text-gray-500 uppercase tracking-widest font-mono">
+                <div className="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-widest font-mono">
                   {a.publishedDate
                     ? new Date(a.publishedDate).toLocaleDateString(undefined, {month: 'short', day: 'numeric', year: 'numeric'})
                     : ''}

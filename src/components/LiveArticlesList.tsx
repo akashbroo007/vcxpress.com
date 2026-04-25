@@ -101,11 +101,11 @@ export default function LiveArticlesList({initialArticles}: {initialArticles: Ar
               </h3>
               <p className="text-gray-600 dark:text-gray-400 leading-relaxed line-clamp-2">{a.summary}</p>
               <div className="flex items-center gap-4 mt-1">
-                <span className="text-xs font-semibold text-gray-500 group-hover:text-gray-700 flex items-center gap-1">
+                <span className="text-xs font-semibold text-gray-500 dark:text-gray-400 group-hover:text-gray-700 dark:group-hover:text-gray-300 flex items-center gap-1">
                   Read Analysis <span className="material-symbols-outlined text-[14px]">arrow_forward</span>
                 </span>
-                <span className="text-xs text-gray-400">•</span>
-                <span className="text-xs text-gray-400">{a.companyName}</span>
+                <span className="text-xs text-gray-400 dark:text-gray-500">•</span>
+                <span className="text-xs text-gray-400 dark:text-gray-500">{a.companyName}</span>
               </div>
             </div>
 
