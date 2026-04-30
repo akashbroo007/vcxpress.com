@@ -177,23 +177,23 @@ export default async function Home({searchParams}: {searchParams?: Promise<{page
                   </h3>
                 </div>
                 <LiveWireTimeline articles={latest} count={liveWireCount} />
-                <div className="mt-10 p-5 pb-0 bg-gray-50 dark:bg-white/5 rounded-sm border border-gray-200 dark:border-white/10">
+                <div className="mt-8 p-4 bg-white dark:bg-white/5 rounded-lg border border-gray-100 dark:border-white/10 shadow-sm">
                   <div className="flex items-center gap-2 mb-3">
-                    <span className="material-symbols-outlined text-gray-600 dark:text-gray-300">
+                    <span className="material-symbols-outlined text-sm text-gray-500 dark:text-gray-400">
                       mail
                     </span>
-                    <h4 className="font-serif font-semibold text-lg text-gray-800 dark:text-white uppercase tracking-wide">
+                    <h4 className="font-serif font-semibold text-sm text-gray-800 dark:text-white uppercase tracking-wide">
                       Daily Briefing
                     </h4>
                   </div>
-                  <p className="text-sm text-text-main dark:text-gray-300 mb-4 leading-relaxed font-medium">
+                  <p className="text-xs text-gray-600 dark:text-gray-400 mb-3 leading-relaxed">
                     Get the intelligence you need. Delivered every morning.
                   </p>
                   <NewsletterForm
                     source="homepage_daily_briefing"
-                    turnstileScale={0.9}
-                    inputClassName="w-full px-2.5 py-1.5 text-xs border border-gray-200 bg-white rounded-sm focus:border-primary focus:ring-1 focus:ring-primary/20 outline-none dark:bg-gray-900 dark:border-gray-600 dark:text-white font-mono placeholder:text-gray-400"
-                    buttonClassName="w-full bg-[#1a1a2e] hover:bg-[#252542] text-white text-xs font-semibold py-1.5 rounded-sm transition-colors uppercase tracking-widest font-mono disabled:opacity-70"
+                    turnstileScale={0.85}
+                    inputClassName="w-full px-3 py-2 text-xs border border-gray-200 dark:border-gray-600 bg-gray-50 dark:bg-gray-800 rounded-md focus:border-primary focus:ring-1 focus:ring-primary/20 outline-none dark:text-white placeholder:text-gray-400"
+                    buttonClassName="w-full bg-[#1a1a2e] hover:bg-[#252542] text-white text-xs font-semibold py-2 rounded-md transition-colors uppercase tracking-widest disabled:opacity-70"
                   />
                 </div>
               </div>

@@ -27,7 +27,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning className={cn(ibmPlexMono.variable, lexendDeca.variable)}>
+    <html lang="en" suppressHydrationWarning className={cn(ibmPlexMono.variable, lexendDeca.variable)} data-scroll-behavior="smooth">
       <head>
         <link
           rel="stylesheet"

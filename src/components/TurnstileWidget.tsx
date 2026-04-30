@@ -1,6 +1,6 @@
 'use client'
 
-import {useEffect, useRef} from 'react'
+import {useEffect, useRef, useState} from 'react'
 
 declare global {
   interface Window {
@@ -8,6 +8,7 @@ declare global {
       render: (container: string | HTMLElement, params: Record<string, unknown>) => string
       reset: (widgetId: string) => void
       remove: (widgetId: string) => void
+      getResponse: (widgetId: string) => string | undefined
     }
   }
 }
@@ -35,12 +36,16 @@ function loadTurnstile() {
     s.src = 'https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit'
     s.async = true
     s.defer = true
+    // Add crossorigin attribute for better error handling
+    s.crossOrigin = 'anonymous'
     s.addEventListener('load', () => {
       s.setAttribute('data-turnstile-loaded', 'true')
       resolve()
     })
     s.addEventListener('error', () => reject(new Error('Failed to load Turnstile')))
-    document.head.appendChild(s)
+    
+    // Append to body instead of head to avoid blocking
+    document.body.appendChild(s)
   })
 
   return turnstileLoader
@@ -63,6 +68,7 @@ export default function TurnstileWidget({siteKey, onToken, onError, onExpire, cl
   const onTokenRef = useRef(onToken)
   const onErrorRef = useRef(onError)
   const onExpireRef = useRef(onExpire)
+  const [loadError, setLoadError] = useState(false)
 
   useEffect(() => {
     onTokenRef.current = onToken
@@ -72,46 +78,52 @@ export default function TurnstileWidget({siteKey, onToken, onError, onExpire, cl
 
   useEffect(() => {
     let canceled = false
+    let retryCount = 0
+    const maxRetries = 2
 
-    ;(async () => {
+    const initTurnstile = async () => {
       try {
         await loadTurnstile()
         if (canceled) return
 
-        if (!window.turnstile) throw new Error('Turnstile not available')
+        if (!window.turnstile) {
+          throw new Error('Turnstile not available')
+        }
 
         const container = containerRef.current
         if (!container) return
 
-        if (widgetIdRef.current) return
-
-        // Clear container safely without innerHTML
+        // Clear container safely
         while (container.firstChild) {
           container.removeChild(container.firstChild)
         }
 
-        if (process.env.NODE_ENV !== 'production') {
-          console.info('[turnstile] render', {action, hostname: window.location.hostname})
-        }
+        // Reduced console logging for cleaner output
 
         const widgetId = window.turnstile.render(container, {
           sitekey: siteKey,
           callback: (token: unknown) => {
             if (typeof token === 'string') onTokenRef.current(token)
-            if (process.env.NODE_ENV !== 'production') {
-              console.info('[turnstile] token received', {action, tokenLength: typeof token === 'string' ? token.length : 0})
-            }
           },
           'error-callback': () => {
-            if (process.env.NODE_ENV !== 'production') {
-              console.warn('[turnstile] error-callback', {action, hostname: window.location.hostname})
+            // Auto-retry on error
+            if (retryCount < maxRetries && !canceled) {
+              retryCount++
+              setTimeout(() => {
+                if (!canceled && window.turnstile && widgetIdRef.current) {
+                  try {
+                    window.turnstile.reset(widgetIdRef.current!)
+                  } catch {
+                    // If reset fails, re-init
+                    initTurnstile()
+                  }
+                }
+              }, 1000)
+            } else {
+              onErrorRef.current?.()
             }
-            onErrorRef.current?.()
           },
           'expired-callback': () => {
-            if (process.env.NODE_ENV !== 'production') {
-              console.info('[turnstile] expired-callback', {action})
-            }
             onExpireRef.current?.()
           },
           action,
@@ -119,13 +131,15 @@ export default function TurnstileWidget({siteKey, onToken, onError, onExpire, cl
         })
 
         widgetIdRef.current = widgetId
-      } catch (e) {
-        if (process.env.NODE_ENV !== 'production') {
-          console.warn('[turnstile] failed to initialize', e)
+      } catch {
+        if (!canceled) {
+          setLoadError(true)
+          onErrorRef.current?.()
         }
-        onErrorRef.current?.()
       }
-    })()
+    }
+
+    initTurnstile()
 
     return () => {
       canceled = true
@@ -133,19 +147,35 @@ export default function TurnstileWidget({siteKey, onToken, onError, onExpire, cl
         try {
           window.turnstile.remove(widgetIdRef.current)
         } catch {
-          // ignore
+          // ignore cleanup errors
         }
       }
       widgetIdRef.current = null
     }
   }, [action, cData, siteKey])
 
+  if (loadError) {
+    return (
+      <div className={`max-w-full overflow-hidden ${className || ''}`}>
+        <div className="text-sm text-amber-600 dark:text-amber-400 bg-amber-50 dark:bg-amber-900/20 p-3 rounded">
+          Security check unavailable. Please refresh the page or try again later.
+        </div>
+      </div>
+    )
+  }
+
   return (
     <div className={`max-w-full overflow-hidden ${className || ''}`} style={{width: 300 * scale}}>
       <div
         style={{transform: `scale(${scale})`, transformOrigin: 'top left'}}
       >
-        <div ref={containerRef} className="w-[300px]" style={{minHeight: '65px'}} />
+        <div 
+          ref={containerRef} 
+          className="w-[300px]" 
+          style={{minHeight: '65px'}}
+          aria-live="polite"
+          role="status"
+        />
       </div>
     </div>
   )

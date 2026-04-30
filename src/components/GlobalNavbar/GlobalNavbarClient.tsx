@@ -172,28 +172,9 @@ export default function GlobalNavbar() {
                 </svg>
               </button>
 
-              {/* Theme toggle - desktop only (hidden on mobile and tablet) */}
-              <label
-                className="ui-switch hidden md:inline-flex items-center justify-center h-10 px-1 rounded-md hover:bg-gray-100 dark:hover:bg-white/10 transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
-                aria-label="Toggle theme"
-              >
-                <input
-                  type="checkbox"
-                  checked={mounted && theme === 'dark'}
-                  onChange={() => {
-                    if (!mounted) return
-                    toggleTheme()
-                  }}
-                  disabled={!mounted}
-                />
-                <span className="slider" aria-hidden="true">
-                  <span className="circle" />
-                </span>
-              </label>
-
-              {/* Subscribe button - smaller on mobile */}
+              {/* Subscribe button */}
               <button
-                className="bg-[#1a1a2e] hover:bg-[#252542] text-white text-[10px] sm:text-sm font-semibold px-2 sm:px-5 py-1.5 sm:py-2.5 rounded-md transition-all duration-200 uppercase tracking-wide hover:shadow-lg hover:shadow-black/20 hover:-translate-y-0.5"
+                className="bg-[#1a1a2e] hover:bg-[#252542] text-white text-[10px] sm:text-sm font-semibold h-10 px-2 sm:px-5 rounded-md transition-all duration-200 uppercase tracking-wide hover:shadow-lg hover:shadow-black/20 hover:-translate-y-0.5"
                 type="button"
                 onClick={() => {
                   setSubscribeOpen(true)
@@ -324,29 +305,6 @@ export default function GlobalNavbar() {
 
           {/* Navigation items - main nav */}
           <nav className="flex-1 py-6 px-4 overflow-y-auto">
-            {/* Theme toggle - mobile only */}
-            <div className="sm:hidden mb-6 px-4 py-3 rounded-lg border border-gray-200 dark:border-white/10 bg-gray-50 dark:bg-white/5">
-              <div className="flex items-center justify-between">
-                <span className="text-sm font-medium text-text-main dark:text-white">Dark mode</span>
-                <label
-                  className="ui-switch inline-flex items-center justify-center h-8 px-1 rounded-md disabled:opacity-50 disabled:cursor-not-allowed"
-                  aria-label="Toggle theme"
-                >
-                  <input
-                    type="checkbox"
-                    checked={mounted && theme === 'dark'}
-                    onChange={() => {
-                      if (!mounted) return
-                      toggleTheme()
-                    }}
-                    disabled={!mounted}
-                  />
-                  <span className="slider" aria-hidden="true">
-                    <span className="circle" />
-                  </span>
-                </label>
-              </div>
-            </div>
             <ul className="space-y-1">
               {mainNavItems.map((item) => (
                 <li key={item.label}>
@@ -388,6 +346,30 @@ export default function GlobalNavbar() {
               ))}
             </ul>
           </nav>
+
+          {/* Theme toggle */}
+          <div className="px-4 py-3 border-t border-gray-100 dark:border-white/10">
+            <div className="flex items-center justify-between">
+              <span className="text-sm font-medium text-text-main dark:text-white">Dark mode</span>
+              <label
+                className="ui-switch inline-flex items-center justify-center h-8 px-1 rounded-md disabled:opacity-50 disabled:cursor-not-allowed"
+                aria-label="Toggle theme"
+              >
+                <input
+                  type="checkbox"
+                  checked={mounted && theme === 'dark'}
+                  onChange={() => {
+                    if (!mounted) return
+                    toggleTheme()
+                  }}
+                  disabled={!mounted}
+                />
+                <span className="slider" aria-hidden="true">
+                  <span className="circle" />
+                </span>
+              </label>
+            </div>
+          </div>
 
           {/* Social icons */}
           <div className="p-4 border-t border-gray-100 dark:border-white/10">

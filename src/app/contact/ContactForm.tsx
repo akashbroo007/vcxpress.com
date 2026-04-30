@@ -26,7 +26,8 @@ export default function ContactForm() {
   const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle')
   const [error, setError] = useState('')
 
-  const submit = async () => {
+  const submit = async (event?: React.FormEvent) => {
+    event?.preventDefault()
     const nameTrimmed = fullName.trim()
     const emailTrimmed = email.trim().toLowerCase()
     const subjectTrimmed = subject.trim()
@@ -153,10 +154,8 @@ export default function ContactForm() {
   return (
     <form
       className="flex flex-col gap-6"
-      onSubmit={(event) => {
-        event.preventDefault()
-        submit()
-      }}
+      onSubmit={submit}
+      noValidate
     >
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <label className="flex flex-col flex-1">
@@ -275,9 +274,10 @@ export default function ContactForm() {
           <p>We respect your privacy. All communications regarding news tips are kept strictly confidential.</p>
         </div>
         <button
-          className="w-full sm:w-auto min-w-[160px] h-12 rounded bg-[#1a1a2e] hover:bg-[#252542] transition-colors text-white text-base font-semibold shadow-sm flex items-center justify-center gap-2"
+          className="w-full sm:w-auto min-w-[160px] h-12 rounded bg-[#1a1a2e] hover:bg-[#252542] transition-colors text-white text-base font-semibold shadow-sm flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
           type="submit"
-          disabled={status === 'loading'}
+          disabled={status === 'loading' || !captchaToken}
+          aria-disabled={status === 'loading' || !captchaToken}
         >
           <span>{status === 'loading' ? 'Sending…' : 'Send Message'}</span>
           <span className="material-symbols-outlined text-[18px]">send</span>
