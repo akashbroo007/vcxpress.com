@@ -1,10 +1,12 @@
 import Link from 'next/link'
 import Image from 'next/image'
+import {Suspense} from 'react'
 
 import {sanityFetch} from '@/lib/sanity.client'
 import {ARTICLES_LIST_QUERY} from '@/lib/sanity.queries'
 import NewsletterForm from '@/components/NewsletterForm'
 import Pagination from '@/components/Pagination'
+import {CategoryPageSkeleton} from '@/components/ui/skeleton'
 
 import {safeSanityImageUrl} from '@/lib/sanity/image'
 
@@ -35,10 +37,18 @@ const formatTime = (iso: string) => {
 }
 
 export default async function ArticlesPage({searchParams}: {searchParams?: Promise<{page?: string}>}) {
+  return (
+    <Suspense fallback={<CategoryPageSkeleton />}>
+      <ArticlesContent searchParams={searchParams} />
+    </Suspense>
+  )
+}
+
+async function ArticlesContent({searchParams}: {searchParams?: Promise<{page?: string}>}) {
   const params = await searchParams
   const currentPage = Math.max(1, parseInt(params?.page ?? '1', 10))
   const articlesPerPage = 12
-  const articles = await sanityFetch<ArticleListItem[]>(ARTICLES_LIST_QUERY, {}, {cache: 'no-store', tags: ['articles']})
+  const articles = await sanityFetch<ArticleListItem[]>(ARTICLES_LIST_QUERY, {}, {revalidate: 60, tags: ['articles']})
 
   const totalPages = Math.max(1, Math.ceil(articles.length / articlesPerPage))
   const safePage = Math.min(currentPage, totalPages)

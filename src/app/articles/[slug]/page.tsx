@@ -1,12 +1,14 @@
 import type {Metadata} from 'next'
 import Link from 'next/link'
 import {notFound} from 'next/navigation'
+import {Suspense} from 'react'
 
 import {sanityFetch} from '@/lib/sanity.client'
 import {ARTICLE_BY_SLUG_QUERY, LATEST_NEWS_SIDEBAR_QUERY, NEWS_CONTINUOUS_FEED_ITEMS_QUERY, NEWS_RECOMMENDED_NEXT_QUERY} from '@/lib/sanity.queries'
 import {safeSanityImageUrl} from '@/lib/sanity/image'
 import ScrollProgressBar from '@/components/ScrollProgressBar'
 import ContinuousArticleFeedClient from '@/components/ContinuousArticleFeedClient'
+import {ArticleDetailSkeleton} from '@/components/ui/skeleton'
 
 type ArticleDetail = {
   _id: string
@@ -94,12 +96,20 @@ export async function generateMetadata({params}: PageProps): Promise<Metadata> {
 }
 
 export default async function ArticleDetailPage({params}: PageProps) {
+  return (
+    <Suspense fallback={<ArticleDetailSkeleton />}>
+      <ArticleDetailContent params={params} />
+    </Suspense>
+  )
+}
+
+async function ArticleDetailContent({params}: PageProps) {
   const {slug} = await params
 
   const article = await sanityFetch<ArticleDetail | null>(
     ARTICLE_BY_SLUG_QUERY,
     {slug},
-    {cache: 'no-store', tags: ['articles', `article:${slug}`]},
+    {revalidate: 60, tags: ['articles', `article:${slug}`]},
   )
 
   if (!article) notFound()

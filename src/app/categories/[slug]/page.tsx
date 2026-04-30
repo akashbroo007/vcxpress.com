@@ -1,9 +1,11 @@
 import Link from 'next/link'
 import {notFound} from 'next/navigation'
+import {Suspense} from 'react'
 
 import {sanityFetch} from '@/lib/sanity.client'
 import {CATEGORY_BY_SLUG_WITH_ARTICLES_QUERY} from '@/lib/sanity.queries'
 import Pagination from '@/components/Pagination'
+import {CategoryPageSkeleton} from '@/components/ui/skeleton'
 
 type CategoryDetail = {
   _id: string
@@ -28,6 +30,14 @@ type PageProps = {
 }
 
 export default async function CategoryDetailPage({params, searchParams}: PageProps) {
+  return (
+    <Suspense fallback={<CategoryPageSkeleton />}>
+      <CategoryDetailContent params={params} searchParams={searchParams} />
+    </Suspense>
+  )
+}
+
+async function CategoryDetailContent({params, searchParams}: PageProps) {
   const {slug} = await params
   const sp = await searchParams
   const currentPage = Math.max(1, Number.parseInt(sp?.page ?? '1', 10) || 1)
@@ -36,7 +46,7 @@ export default async function CategoryDetailPage({params, searchParams}: PagePro
   const category = await sanityFetch<CategoryDetail | null>(
     CATEGORY_BY_SLUG_WITH_ARTICLES_QUERY,
     {slug},
-    {cache: 'no-store', tags: ['articles', 'categories', `category:${slug}`]},
+    {revalidate: 60, tags: ['articles', 'categories', `category:${slug}`]},
   )
 
   if (!category) notFound()

@@ -6,6 +6,7 @@ import Image from 'next/image'
 import {safeSanityImageUrl} from '@/lib/sanity/image'
 import {useSanityArticlesList} from '@/lib/sanity.swr'
 import {ARTICLES_LIST_QUERY} from '@/lib/sanity.queries'
+import {ArticleCardSkeleton} from '@/components/ui/skeleton'
 
 type ArticleListItem = {
   _id: string
@@ -71,8 +72,10 @@ export default function ArticlesSWRList({
 
   if (displayArticles.length === 0) {
     return (
-      <div className="py-8">
-        <p className="text-gray-600 dark:text-gray-400">No articles yet.</p>
+      <div className="space-y-6">
+        {[0, 1, 2, 3, 4, 5].map((idx) => (
+          <ArticleCardSkeleton key={idx} />
+        ))}
       </div>
     )
   }

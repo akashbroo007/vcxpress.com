@@ -12,6 +12,9 @@ import {
   LATEST_FEATURED_ARTICLE_QUERY,
   LATEST_NEWS_EXCLUDING_FEATURED_QUERY,
 } from '@/lib/sanity.queries'
+import {
+  HeroSectionSkeleton,
+} from '@/components/ui/skeleton'
 
 // Types
 
@@ -85,6 +88,11 @@ export default function HomepageLiveFeed({
 
   const displayFeatured: FeaturedArticle | null = featured || initialFeatured
   const displayLatest: LatestArticle[] = latest || initialLatest
+
+  // Show skeleton if no data is available
+  if (!displayFeatured && (!displayLatest || displayLatest.length === 0)) {
+    return <HeroSectionSkeleton />
+  }
 
   return (
     <>

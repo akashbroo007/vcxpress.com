@@ -420,29 +420,29 @@ export default function GlobalNavbar() {
         <div className="fixed inset-0 z-[60]">
           <button
             aria-label="Close subscribe modal"
-            className="absolute inset-0 bg-black/50"
+            className="absolute inset-0 bg-black/30 backdrop-blur-sm"
             type="button"
             onClick={() => setSubscribeOpen(false)}
           />
-          <div className="absolute left-1/2 top-20 w-[92vw] max-w-md -translate-x-1/2 rounded-xl border border-gray-200 dark:border-white/10 bg-white dark:bg-[#101622] p-6 shadow-xl">
-            <div className="flex items-start justify-between gap-4">
-              <div className="flex flex-col gap-1">
-                <h3 className="font-serif text-2xl font-bold text-text-main dark:text-white">Subscribe</h3>
-                <p className="text-sm text-gray-500 dark:text-gray-400">
+          <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[90vw] max-w-sm rounded-lg border border-gray-200/50 dark:border-white/5 bg-white/95 dark:bg-[#101622]/95 backdrop-blur-md p-4 shadow-lg">
+            <div className="flex items-start justify-between gap-3">
+              <div className="flex flex-col gap-0.5">
+                <h3 className="font-serif text-lg font-semibold text-text-main dark:text-white">Subscribe</h3>
+                <p className="text-xs text-gray-500 dark:text-gray-400">
                   Get the intelligence you need. Delivered every morning.
                 </p>
               </div>
               <button
                 aria-label="Close"
-                className="inline-flex items-center justify-center h-9 w-9 rounded-lg border border-gray-200 dark:border-white/10 bg-gray-50 dark:bg-white/5 hover:bg-gray-100 dark:hover:bg-white/10 transition-colors"
+                className="inline-flex items-center justify-center h-7 w-7 rounded-md border border-gray-200/50 dark:border-white/5 bg-gray-50/50 dark:bg-white/5 hover:bg-gray-100 dark:hover:bg-white/10 transition-colors"
                 type="button"
                 onClick={() => setSubscribeOpen(false)}
               >
-                <CloseIcon className="h-5 w-5" />
+                <CloseIcon className="h-4 w-4" />
               </button>
             </div>
 
-            <div className="mt-5">
+            <div className="mt-4">
               <NewsletterForm
                 source="navbar_subscribe"
                 onSuccess={() => {
@@ -451,8 +451,8 @@ export default function GlobalNavbar() {
                     setSubscribeOpen(false)
                   }, 1400)
                 }}
-                inputClassName="w-full px-4 py-3 text-sm border border-gray-200 dark:border-gray-600 bg-gray-50 dark:bg-gray-800 rounded-lg focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none dark:text-white placeholder:text-gray-400"
-                buttonClassName="w-full bg-[#1a1a2e] hover:bg-[#252542] text-white text-sm font-semibold py-3 rounded-lg transition-all duration-200 uppercase tracking-widest disabled:opacity-70 hover:shadow-lg hover:shadow-black/20"
+                inputClassName="w-full px-3 py-2 text-sm border border-gray-200/50 dark:border-gray-600/50 bg-gray-50/50 dark:bg-gray-800/50 rounded-md focus:border-primary focus:ring-1 focus:ring-primary/20 outline-none dark:text-white placeholder:text-gray-400"
+                buttonClassName="w-full bg-[#1a1a2e] hover:bg-[#252542] text-white text-xs font-semibold py-2 rounded-md transition-all duration-200 uppercase tracking-widest disabled:opacity-70"
               />
             </div>
           </div>

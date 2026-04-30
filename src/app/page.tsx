@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import Image from 'next/image'
+import {Suspense} from 'react'
 
 import {sanityFetch} from '@/lib/sanity.client'
 import {
@@ -11,6 +12,7 @@ import NewsletterForm from '@/components/NewsletterForm'
 import Pagination from '@/components/Pagination'
 import LiveWireTimeline from '@/components/LiveWireTimeline'
 import HomepageLiveFeed from '@/components/HomepageLiveFeed'
+import {HeroSectionSkeleton} from '@/components/ui/skeleton'
 
 type ArticleListItem = {
   _id: string
@@ -38,6 +40,14 @@ type ArticleListItem = {
 export const revalidate = 300 // 5 minutes
 
 export default async function Home({searchParams}: {searchParams?: Promise<{page?: string}>}) {
+  return (
+    <Suspense fallback={<HeroSectionSkeleton />}>
+      <HomeContent searchParams={searchParams} />
+    </Suspense>
+  )
+}
+
+async function HomeContent({searchParams}: {searchParams?: Promise<{page?: string}>}) {
   const params = await searchParams
   const currentPage = Math.max(1, parseInt(params?.page ?? '1', 10))
   const storiesPerPage = 10
